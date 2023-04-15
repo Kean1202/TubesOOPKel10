@@ -1,5 +1,3 @@
-package Simplicity;
-
 public class Sim {
     //Attributes
 

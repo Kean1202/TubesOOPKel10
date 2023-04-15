@@ -17,7 +17,7 @@ public abstract class Furniture implements PurchasableObject{
     public String getName(){
         return name;
     }
-
+    
     public int getPrice(){
         return price;
     }
