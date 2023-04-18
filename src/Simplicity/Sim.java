@@ -215,7 +215,26 @@ public class Sim {
             throw new invalidMultitudeNumber(duration);
         }
         else{
-            // TODO EH SORI JAZMY GW MALAH NGERJAIN PUNYA LU, sok diubah aja
+            Thread thread = new Thread(new Runnable(){
+                public void run(){
+                    int repetition = duration / 30;
+                    for (int i = 0; i<repetition; i++){
+                        try{
+                            Thread.sleep(30 * 1000);
+                            decreaseSimNeed("Mood", 10);
+                            decreaseSimNeed("Hunger", 10);
+                            simAddMoney(simJob.getSalary()/2);
+                        }
+                        catch (InterruptedException e){
+                            System.out.println(e.getMessage());
+                        }
+                        catch (negativeParameterException n){
+                            System.out.println(n.getMessage());
+                        }
+                    }    
+                }
+            });
+            thread.start();
         }
     }
 

@@ -6,7 +6,7 @@ public class tester {
         Job[] arrayOfJobs = {cook, janitor};
         Sim Kean = new Sim("Kean Nafis Santang", arrayOfJobs, 1000);
         try{
-            Kean.exercise(120);
+            Kean.work(120);
         }
         catch (invalidMultitudeNumber n){
             System.out.println(n.getMessage());
