@@ -1,23 +1,23 @@
-public abstract class Furniture implements PurchasableObject{
+public abstract class Furniture extends SimplicityObject implements PurchasableObject, Storable{
     //Atributes
-    private String name;
-    private int price;
+    private int price; 
     private int length;
     private int width;
 
     //Constructor
-    public Furniture(String name, int price, int length, int width){
-        this.name = name;
+    public Furniture(String type, int price, int length, int width){
+        super(type);
         this.price = price;
         this.length = length;
         this.width = width;
     }
 
-    //Getter
-    public String getName(){
-        return name;
+    //Setter
+    public void setPrice(int price){
+        this.price = price;
     }
-    
+
+    //Getter
     public int getPrice(){
         return price;
     }
@@ -29,4 +29,6 @@ public abstract class Furniture implements PurchasableObject{
     public int getWidth(){
         return width;
     }
+
+    public abstract void doAction();
 }
