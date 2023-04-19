@@ -222,7 +222,7 @@ public class Sim {
                     for (int i = 0; i<repetition; i++){
                         try{
                             // Biar keren gw bikin make '....'
-                            for (int j = 0; j<30/5; j++){
+                            for (int j = 0; j<30/6; j++){
                                 System.out.print("...");
                                 Thread.sleep(30/5 * 1000);
                             }
@@ -241,6 +241,13 @@ public class Sim {
                 }
             });
             thread.start();
+            //supaya dia nunggu thread lain
+            try{
+                thread.join();
+            }
+            catch (InterruptedException e){
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -256,7 +263,7 @@ public class Sim {
                         try{
                             System.out.println("Working out!");
                             // Biar keren gw bikin make '....'
-                            for (int j = 0; j<20/5; j++){
+                            for (int j = 0; j<20/4; j++){
                                 System.out.print("...");
                                 Thread.sleep(20/5 * 1000);
                             }
@@ -277,6 +284,13 @@ public class Sim {
             });
 
             thread.start();
+            // supaya dia nunggu thread lain
+            try{
+                thread.join();
+            }
+            catch (InterruptedException e){
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -285,8 +299,8 @@ public class Sim {
             public void run(){
                 try{
                     System.out.println("Using the bathroom");
-                    for (int j = 0; j<10/5; j++){
-                        System.out.print("///");
+                    for (int j = 0; j<10/2; j++){
+                        System.out.print("...");
                         Thread.sleep(10/5 * 1000);
                     }
                     System.out.println("");
@@ -303,6 +317,14 @@ public class Sim {
             }
         }); 
         thread.start();
+        // supaya dia nunggu thread lain
+        try{
+            thread.join();
+        }
+        catch (InterruptedException e){
+            System.out.println(e.getMessage());
+        }
+        
     }
     
 
