@@ -31,9 +31,9 @@ public class Sim {
         simInventory = new Inventory("default");
 
         //setting starting numbers for sim needs
-        simHunger = 100;
-        simMood = 100;
-        simHealth = 100;
+        simHunger = 80;
+        simMood = 80;
+        simHealth = 80;
         simStatus = "Idle";
         lastSleep = 0;
         lastBathroom = 0;
@@ -215,12 +215,18 @@ public class Sim {
             throw new invalidMultitudeNumber(duration);
         }
         else{
+            System.out.println("You are currently working as a " + getSimJobName());
             Thread thread = new Thread(new Runnable(){
                 public void run(){
                     int repetition = duration / 30;
                     for (int i = 0; i<repetition; i++){
                         try{
-                            Thread.sleep(30 * 1000);
+                            // Biar keren gw bikin make '....'
+                            for (int j = 0; j<30/5; j++){
+                                System.out.print("...");
+                                Thread.sleep(30/5 * 1000);
+                            }
+                            System.out.println("");
                             decreaseSimNeed("Mood", 10);
                             decreaseSimNeed("Hunger", 10);
                             simAddMoney(simJob.getSalary()/2);
@@ -231,7 +237,7 @@ public class Sim {
                         catch (negativeParameterException n){
                             System.out.println(n.getMessage());
                         }
-                    }    
+                    } 
                 }
             });
             thread.start();
@@ -248,7 +254,13 @@ public class Sim {
                     int repetition = duration / 20;
                     for (int i = 0; i<repetition; i++){
                         try{
-                            Thread.sleep(20 * 1000);
+                            System.out.println("Working out!");
+                            // Biar keren gw bikin make '....'
+                            for (int j = 0; j<20/5; j++){
+                                System.out.print("...");
+                                Thread.sleep(20/5 * 1000);
+                            }
+                            System.out.println("");
                             addSimNeed("Health", 5);
                             addSimNeed("Mood", 10);
                             decreaseSimNeed("Hunger", 5);
@@ -268,9 +280,35 @@ public class Sim {
         }
     }
 
+    public void useBathroom(){
+        Thread thread = new Thread(new Runnable(){
+            public void run(){
+                try{
+                    System.out.println("Using the bathroom");
+                    for (int j = 0; j<10/5; j++){
+                        System.out.print("///");
+                        Thread.sleep(10/5 * 1000);
+                    }
+                    System.out.println("");
+                    decreaseSimNeed("Hunger", 20);
+                    addSimNeed("Mood", 10);
+                }
+                catch (InterruptedException e){
+                    System.out.println(e.getMessage());
+                }
+                catch (negativeParameterException n){
+                    System.out.println(n.getMessage());
+                }
+                
+            }
+        }); 
+        thread.start();
+    }
+    
+
     // END OF METHODS
 
-    // Nested class inventory
+    // TODO Nested class inventory
     public class Inventory{
         private String placeholder;
         public Inventory(String placeholder){
