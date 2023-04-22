@@ -367,11 +367,11 @@ public class Sim {
 
     // END OF METHODS
 
-    // TODO Nested class inventory
     // Kayaknya bakal make hash map
     public class Inventory{
         HashMap<String, Integer> MapInventory;
 
+        // TODO GANTI DARI STRING KE OBJECT
         public Inventory(){
             MapInventory = new HashMap<String, Integer>();
         }
