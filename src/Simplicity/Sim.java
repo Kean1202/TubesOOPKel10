@@ -343,7 +343,7 @@ public class Sim {
             MapInventory.putIfAbsent(itemName, itemAmount);
             if (MapInventory.containsKey(itemName)){
                 MapInventory.replace(itemName, (MapInventory.get(itemName)+itemAmount));
-                System.out.println("Added " + itemAmount + " " + itemName + "(s) to your inventory")
+                System.out.println("Added " + itemAmount + " " + itemName + "(s) to your inventory");
             }
             else{
                 System.out.print(itemName + "is now in your inventory");
@@ -354,10 +354,18 @@ public class Sim {
             if (MapInventory.containsKey(itemName) && (MapInventory.get(itemName) > 1)){
                 MapInventory.replace(itemName, (MapInventory.get(itemName)-1));
             }
+            else if (MapInventory.get(itemName) <= 1){
+                MapInventory.remove(itemName);
+            }
             else{
                 System.out.println("The item "+ itemName+ " is not in your inventory!");
             }
         }
+
+        public int getNumberOfItems(){
+            return MapInventory.size();
+        }
+
     
     }
 }
