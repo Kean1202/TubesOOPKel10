@@ -28,7 +28,7 @@ public class Sim {
         this.simFullName = fullName;
         this.simJob = getRandomJob(jobList);
         simMoney = money;
-        simInventory = new Inventory("default");
+        simInventory = new Inventory();
 
         //setting starting numbers for sim needs
         simHunger = 80;
@@ -331,11 +331,34 @@ public class Sim {
     // END OF METHODS
 
     // TODO Nested class inventory
+    // Kayaknya bakal make hash map
     public class Inventory{
-        private String placeholder;
-        public Inventory(String placeholder){
-            this.placeholder = placeholder;
+        HashMap<String, Integer> MapInventory;
+
+        public Inventory(){
+            MapInventory = new HashMap<String, Integer>();
         }
+
+        public void addInventory(String itemName, Integer itemAmount){
+            MapInventory.putIfAbsent(itemName, itemAmount);
+            if (MapInventory.containsKey(itemName)){
+                MapInventory.replace(itemName, (MapInventory.get(itemName)+itemAmount));
+                System.out.println("Added " + itemAmount + " " + itemName + "(s) to your inventory")
+            }
+            else{
+                System.out.print(itemName + "is now in your inventory");
+            }
+        }
+
+        public void decreaseInventory(String itemName){
+            if (MapInventory.containsKey(itemName) && (MapInventory.get(itemName) > 1)){
+                MapInventory.replace(itemName, (MapInventory.get(itemName)-1));
+            }
+            else{
+                System.out.println("The item "+ itemName+ " is not in your inventory!");
+            }
+        }
+    
     }
 }
 
