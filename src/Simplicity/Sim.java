@@ -5,7 +5,7 @@ public class Sim {
     private String simFullName;
     private Job simJob;
     private int simMoney;
-    private Inventory simInventory;
+    public Inventory simInventory;
     private int simHunger;
     private int simMood;
     private int simHealth;
@@ -15,6 +15,7 @@ public class Sim {
     private int lastSleep;
     private int lastBathroom;
     private int timeWorked;
+    private int daysSinceJobChange;
 
     // get random job
     // TODO implement array of jobs
@@ -38,6 +39,7 @@ public class Sim {
         lastSleep = 0;
         lastBathroom = 0;
         timeWorked = 0;
+        daysSinceJobChange = 0;
     }
 
     //Getters
@@ -85,6 +87,12 @@ public class Sim {
         return timeWorked;
     }
 
+    public int getLastJobChange(){
+        return daysSinceJobChange;
+    }
+
+    
+
     // END OF GETTERS
 
     //Setters
@@ -93,8 +101,23 @@ public class Sim {
     }
 
     public void simChangeJob(Job job){
-        simJob = job;
-        System.out.println("Your new job is: " + job.getName());
+        // 12 * 60 = 12 menit dalam detik
+        if (getTimeWorked() >= 30){
+            // harus bisa bayar setengah gaji dari gaji pekerjaan baru
+            if (getSimMoney() >= job.getSalary()/2){
+                simJob = job;
+                simDecreaseMoney(job.getSalary()/2);
+                System.out.println("Success! Your new job is: " + job.getName());
+                daysSinceJobChange = 0;
+            }
+            else{
+                System.out.println("You don't have enough money to become a " + job.getName());
+            }
+        }
+        else{
+            System.out.println("You haven't worked long enough in your current job to change jobs");
+        }
+        
     }
 
     public void simAddMoney(int amount){
@@ -210,11 +233,19 @@ public class Sim {
     // END OF SETTERS
 
     //Methods
+
+    // Method untuk cek udh dapet gaji ato blm
+
+    // Method untuk kerja
     public void work(int duration) throws invalidMultitudeNumber{
         if (duration % 120 != 0){
             throw new invalidMultitudeNumber(duration);
         }
         else{
+            //ganti status sim
+            simChangeStatus("Working");
+            //ganti jam kerja sim
+            changeTimeWorked(duration);
             System.out.println("You are currently working as a " + getSimJobName());
             Thread thread = new Thread(new Runnable(){
                 public void run(){
@@ -229,7 +260,9 @@ public class Sim {
                             System.out.println("");
                             decreaseSimNeed("Mood", 10);
                             decreaseSimNeed("Hunger", 10);
-                            simAddMoney(simJob.getSalary()/2);
+                            simAddMoney(simJob.getSalary()/8);
+                            // TODO gaji dikasih setiap 4 menit (240 detik), cara ceknya gmn ya?
+                            // untuk sementara dibagi jadi 8 biar dikasih tiap 30 detik
                         }
                         catch (InterruptedException e){
                             System.out.println(e.getMessage());
@@ -251,11 +284,13 @@ public class Sim {
         }
     }
 
+    //Method untuk olahraga
     public void exercise(int duration) throws invalidMultitudeNumber{
         if (duration % 20 != 0){
             throw new invalidMultitudeNumber(duration);
         }
         else{
+            simChangeStatus("Exercising");
             Thread thread = new Thread(new Runnable(){
                 public void run(){
                     int repetition = duration / 20;
@@ -294,7 +329,9 @@ public class Sim {
         }
     }
 
+    //Method untuk ke kamar mandi
     public void useBathroom(){
+        simChangeStatus("In the bathroom");
         Thread thread = new Thread(new Runnable(){
             public void run(){
                 try{
@@ -340,21 +377,21 @@ public class Sim {
         }
 
         public void addInventory(String itemName, Integer itemAmount){
-            MapInventory.putIfAbsent(itemName, itemAmount);
             if (MapInventory.containsKey(itemName)){
                 MapInventory.replace(itemName, (MapInventory.get(itemName)+itemAmount));
                 System.out.println("Added " + itemAmount + " " + itemName + "(s) to your inventory");
             }
             else{
-                System.out.print(itemName + "is now in your inventory");
+                MapInventory.putIfAbsent(itemName, itemAmount);
+                System.out.println(itemName + " is now in your inventory" + " (" + itemAmount + ")");
             }
         }
 
-        public void decreaseInventory(String itemName){
-            if (MapInventory.containsKey(itemName) && (MapInventory.get(itemName) > 1)){
-                MapInventory.replace(itemName, (MapInventory.get(itemName)-1));
+        public void decreaseInventory(String itemName, int itemAmount){
+            if (MapInventory.containsKey(itemName) && (MapInventory.get(itemName)-itemAmount >= 1)){
+                MapInventory.replace(itemName, (MapInventory.get(itemName)-itemAmount));
             }
-            else if (MapInventory.get(itemName) <= 1){
+            else if (MapInventory.get(itemName)-itemAmount <= 0){
                 MapInventory.remove(itemName);
             }
             else{
@@ -366,6 +403,17 @@ public class Sim {
             return MapInventory.size();
         }
 
+        public void printInventory(){
+            if (!MapInventory.isEmpty()){
+                for (Map.Entry<String, Integer> entry: MapInventory.entrySet()){
+                    System.out.println(entry.getKey() + " , amount: " + entry.getValue());
+                }
+            }
+
+            else{
+                System.out.println("Your inventory is empty");
+            }
+        }
     
     }
 }
