@@ -1,3 +1,5 @@
+package Simplicity;
+
 import java.util.*;
 
 public class Sim {

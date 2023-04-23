@@ -1,4 +1,8 @@
+package Simplicity;
+
 import java.util.*;
+import Simplicity.Objects.*;
+
 public class tester {
     public static void main(String[] args) {
         Job cook = new Job("cook", 100);
@@ -6,9 +10,11 @@ public class tester {
         Job teacher = new Job("teacher", 75);
         Job CEO = new Job("CEO", 200);
         Job[] allJobs = Job.getAllJobs(cook, janitor, teacher, CEO);
+        Toilet toilet = new Toilet("toilet", 100, 1, 1);
         Sim Kean = new Sim("Kean Nafis Santang", allJobs, 75);
         try{
             Kean.work(120);
+            toilet.doAction(Kean);
         }
         catch (invalidMultitudeNumber n) {
             System.out.println(n.getMessage());

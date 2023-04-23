@@ -1,3 +1,7 @@
+package Simplicity.Objects;
+
+import Simplicity.Sim;
+
 public abstract class Furniture extends SimplicityObject implements PurchasableObject, Storable{
     //Atributes
     private int price; 
@@ -30,5 +34,5 @@ public abstract class Furniture extends SimplicityObject implements PurchasableO
         return width;
     }
 
-    public abstract void doAction();
+    public abstract void doAction(Sim sim);
 }

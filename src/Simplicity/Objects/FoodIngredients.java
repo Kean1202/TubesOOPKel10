@@ -1,3 +1,5 @@
+package Simplicity.Objects;
+
 public class FoodIngredients extends SimplicityObject implements Edible, Storable, PurchasableObject {
     private int price;
     private int repletition;

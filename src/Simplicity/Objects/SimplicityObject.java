@@ -1,3 +1,5 @@
+package Simplicity.Objects;
+
 public class SimplicityObject {
     private String type;
 

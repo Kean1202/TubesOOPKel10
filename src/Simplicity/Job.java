@@ -1,3 +1,5 @@
+package Simplicity;
+
 public class Job {
     private String name;
     private int salary;
