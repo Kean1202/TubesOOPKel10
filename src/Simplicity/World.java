@@ -19,7 +19,7 @@ public class World {
 	private String currentDay; //untuk menyimpan nama hari
 
 	//Konstruktor
-	private World(int length, int width, List<String> houses){
+	private World(int length, int width, List<House> houses){
 		this.worldLength = length;
 		this.worldWidth = width;
 		this.worldHouses = new ArrayList<House>(houses);
@@ -70,7 +70,7 @@ public class World {
         this.worldLength = length;
     }
 
-    public void addworldHouse(String house) {
+    public void addworldHouse(House house) {
         this.worldHouses.add(house);
     }
 
