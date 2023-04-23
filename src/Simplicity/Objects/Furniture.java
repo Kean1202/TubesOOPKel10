@@ -11,7 +11,7 @@ public abstract class Furniture extends SimplicityObject implements PurchasableO
         this.length = length;
         this.width = width;
     }
-
+    
     //Setter
     public void setPrice(int price){
         this.price = price;

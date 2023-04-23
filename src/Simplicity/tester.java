@@ -5,8 +5,8 @@ public class tester {
         Job janitor = new Job("janitor", 50);
         Job teacher = new Job("teacher", 75);
         Job CEO = new Job("CEO", 200);
-        Job[] arrayOfJobs = {cook, janitor, teacher};
-        Sim Kean = new Sim("Kean Nafis Santang", arrayOfJobs, 75);
+        Job[] allJobs = Job.getAllJobs(cook, janitor, teacher, CEO);
+        Sim Kean = new Sim("Kean Nafis Santang", allJobs, 75);
         try{
             Kean.work(120);
         }
