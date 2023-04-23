@@ -382,8 +382,80 @@ public class Sim {
         }
     }
 
-    // TODO Yang implementasi makan tolong buat kode supaya dia mulai timer 4 menit dari terakhir makan, kalo gamakan dia manggil fungsi
-    // checkLastBathroom
+    // Method untuk Makan
+    public void simEat(FoodCuisine food){
+        //ngurangin waktu world
+        //World.decreaseTime(30);
+        Thread thread = new Thread(new Runnable(){
+            public void run(){
+                try{
+                    System.out.println("Eating");
+                    for (int j = 0; j<30/2; j++){
+                        System.out.print("...");
+                        Thread.sleep(30/15 * 1000);
+                    }
+                    System.out.println("");
+                    decreaseSimNeed("Hunger", food.getRepletition());
+                }
+                catch (InterruptedException e){
+                    System.out.println(e.getMessage());
+                }
+                catch (negativeParameterException n){
+                    System.out.println(n.getMessage());
+                }
+                
+            }
+        }); 
+        thread.start();
+
+        try{
+            thread.join();
+        }
+        catch (InterruptedException e){
+            System.out.println(e.getMessage());
+        }
+
+
+    }
+
+    //Method untuk masak
+    public void simCook(FoodCuisine food){
+        Thread thread = new Thread(new Runnable(){
+            public void run(){
+                try{
+                    System.out.println("Cooking");
+                    for (int j = 0; j<((food.getRepletition()*1.5)/2); j++){
+                        System.out.print("...");
+                        Thread.sleep((food.getRepletition()*1.5)/(food.getRepletition()%2) * 1000);
+                    }
+                    System.out.println("");
+                    addSimNeed("Mood", 10);
+
+                    //menambahkan makanan ke inventory
+                    simInventory.addInventory(food,1);
+                }
+                catch (InterruptedException e){
+                    System.out.println(e.getMessage());
+                }
+                catch (negativeParameterException n){
+                    System.out.println(n.getMessage());
+                }
+                
+            }
+        }); 
+        thread.start();
+
+        try{
+            thread.join();
+        }
+        catch (InterruptedException e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+
+
 
     // TODO yang implementasi waktu bikin perhitungan waktu per hari dan pergantian hari
     
