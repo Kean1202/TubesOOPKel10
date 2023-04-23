@@ -1,5 +1,6 @@
 package Simplicity;
 
+import javafx.util.*;
 import java.util.*;
 
 public class Sim {
@@ -27,10 +28,10 @@ public class Sim {
     }
 
     //Constructor
-    public Sim(String fullName, Job[] jobList, int money){
+    public Sim(String fullName, Job[] jobList){
         this.simFullName = fullName;
         this.simJob = getRandomJob(jobList);
-        simMoney = money;
+        simMoney = 100;
         simInventory = new Inventory();
 
         //setting starting numbers for sim needs
@@ -371,11 +372,25 @@ public class Sim {
         }
         
     }
+
+    // Method untuk memeriksa kapan terakhir ke toilet
+    public void checkLastBathroom(){
+        if (lastBathroom >= 4 * 60){    //4*60 adalah 4 menit dalam detik
+            System.out.println("You forgot to go to the bathroom after you ate!");
+            decreaseSimNeed("Mood", 5);
+            decreaseSimNeed("Health", 5);
+        }
+    }
+
+    // TODO Yang implementasi makan tolong buat kode supaya dia mulai timer 4 menit dari terakhir makan, kalo gamakan dia manggil fungsi
+    // checkLastBathroom
+
+    // TODO yang implementasi waktu bikin perhitungan waktu per hari dan pergantian hari
     
 
     // END OF METHODS
 
-    // Kayaknya bakal make hash map
+    // Diimplementasikan dengan hash map
     public class Inventory{
         HashMap<String, Integer> MapInventory;
 
