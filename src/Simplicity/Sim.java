@@ -248,6 +248,8 @@ public class Sim {
             changeTimeWorked(duration);
             System.out.println("You are currently working as a " + getSimJobName());
             Thread thread = new Thread(new Runnable(){
+                float simSalary = (float)simJob.getSalary();
+                float sumSalary = 0;
                 public void run(){
                     int repetition = duration / 30;
                     for (int i = 0; i<repetition; i++){
@@ -258,11 +260,10 @@ public class Sim {
                                 Thread.sleep(30/5 * 1000);
                             }
                             System.out.println("");
+                            Thread.sleep(30 * 1000);
                             decreaseSimNeed("Mood", 10);
                             decreaseSimNeed("Hunger", 10);
-                            simAddMoney(simJob.getSalary()/8);
-                            // TODO gaji dikasih setiap 4 menit (240 detik), cara ceknya gmn ya?
-                            // untuk sementara dibagi jadi 8 biar dikasih tiap 30 detik
+                            sumSalary += simSalary / 8;
                         }
                         catch (InterruptedException e){
                             System.out.println(e.getMessage());
@@ -270,7 +271,12 @@ public class Sim {
                         catch (negativeParameterException n){
                             System.out.println(n.getMessage());
                         }
-                    } 
+                        
+                    }
+                    simAddMoney((int)sumSalary);   
+                    System.out.println("You earned " + sumSalary + " dollars");
+                    System.out.println("Your money: " + getSimMoney());
+                    
                 }
             });
             thread.start();
