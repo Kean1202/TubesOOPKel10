@@ -1,6 +1,5 @@
 package Simplicity;
 
-
 public class Room {
     private int roomWidth=6 ;
     private int roomLength=6 ;
