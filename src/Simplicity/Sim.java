@@ -138,36 +138,35 @@ public class Sim {
         }
         else{
             //menambahkan hunger
-            if (needType == "Hunger"){
-                if (simHunger + amount >= 100){
-                    simHunger = 100;
+            switch (needType) {
+                case "Hunger" -> {
+                    if (simHunger + amount >= 100) {
+                        simHunger = 100;
+                    } else {
+                        simHunger += amount;
+                    }
+                    System.out.println("Your hunger is now " + simHunger);
                 }
-                else{
-                    simHunger += amount;
-                }
-                System.out.println("Your hunger is now " + simHunger);
-            }
 
-            //menambahkan Mood
-            else if (needType == "Mood"){
-                if (simMood + amount >= 100){
-                    simMood = 100;
+                //menambahkan Mood
+                case "Mood" -> {
+                    if (simMood + amount >= 100) {
+                        simMood = 100;
+                    } else {
+                        simMood += amount;
+                    }
+                    System.out.println("Your mood is now " + simMood);
                 }
-                else{
-                    simMood += amount;
-                }
-                System.out.println("Your mood is now " + simMood);
-            }
 
-            //menambahkan Health
-            else if (needType == "Health"){
-                if (simHealth + amount >= 100){
-                    simHealth = 100;
+                //menambahkan Health
+                case "Health" -> {
+                    if (simHealth + amount >= 100) {
+                        simHealth = 100;
+                    } else {
+                        simHealth += amount;
+                    }
+                    System.out.println("Your health is now " + simHealth);
                 }
-                else{
-                    simHealth += amount;
-                }
-                System.out.println("Your health is now " + simHealth);
             }
         }
         
@@ -180,36 +179,35 @@ public class Sim {
         }
         else{
             //menambahkan hunger
-            if (needType == "Hunger"){
-                if (simHunger - amount <= 0){
-                    simHunger = 0;
+            switch (needType) {
+                case "Hunger" -> {
+                    if (simHunger - amount <= 0) {
+                        simHunger = 0;
+                    } else {
+                        simHunger -= amount;
+                    }
+                    System.out.println("Your hunger is now " + simHunger);
                 }
-                else{
-                    simHunger -= amount;
-                }
-                System.out.println("Your hunger is now " + simHunger);
-            }
 
-            //menambahkan Mood
-            else if (needType == "Mood"){
-                if (simMood - amount <= 0){
-                    simMood = 0;
+                //menambahkan Mood
+                case "Mood" -> {
+                    if (simMood - amount <= 0) {
+                        simMood = 0;
+                    } else {
+                        simMood -= amount;
+                    }
+                    System.out.println("Your mood is now " + simMood);
                 }
-                else{
-                    simMood -= amount;
-                }
-                System.out.println("Your mood is now " + simMood);
-            }
 
-            //menambahkan Health
-            else if (needType == "Health"){
-                if (simHealth - amount == 0){
-                    simHealth = 0;
+                //menambahkan Health
+                case "Health" -> {
+                    if (simHealth - amount == 0) {
+                        simHealth = 0;
+                    } else {
+                        simHealth -= amount;
+                    }
+                    System.out.println("Your health is now " + simHealth);
                 }
-                else{
-                    simHealth -= amount;
-                }
-                System.out.println("Your health is now " + simHealth);
             }
         }
         
@@ -280,10 +278,10 @@ public class Sim {
                         catch (negativeParameterException n){
                             System.out.println(n.getMessage());
                         }
-                        
+
                     }
 
-                    
+
                 }
             });
             thread.start();
