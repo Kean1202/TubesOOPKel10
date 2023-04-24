@@ -37,7 +37,7 @@ public class World {
 
 	public static World getInstance() {
         if (instance == null) {
-            instance = new World(64,64, new ArrayList<House>());
+            instance = new World(100,200, new ArrayList<House>());
         }
         return instance;
     }
