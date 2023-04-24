@@ -247,12 +247,8 @@ public class Sim {
         else{
             //ganti status sim
             simChangeStatus("Working");
-            //ganti jam kerja sim
-            changeTimeWorked(duration);
             System.out.println("You are currently working as a " + getSimJobName());
             Thread thread = new Thread(new Runnable(){
-                float simSalary = (float)simJob.getSalary();
-                float sumSalary = 0;
                 public void run(){
                     int repetition = duration / 30;
                     for (int i = 0; i<repetition; i++){
@@ -266,7 +262,17 @@ public class Sim {
                             Thread.sleep(30 * 1000);
                             decreaseSimNeed("Mood", 10);
                             decreaseSimNeed("Hunger", 10);
-                            sumSalary += simSalary / 8;
+                            //ganti jam kerja sim
+                            changeTimeWorked(30);
+                            if(getTimeWorked() == 240){
+                                simAddMoney(simJob.getSalary());
+                                System.out.println("You have worked for 4 minutes.");
+                                System.out.println("You earned " + simJob.getSalary() + " dollars.");
+                                System.out.println("Your money: " + getSimMoney());
+                            }
+                            else{
+                                System.out.println("You have worked for "+ (float)getTimeWorked()/60 + " minutes.");
+                            }
                         }
                         catch (InterruptedException e){
                             System.out.println(e.getMessage());
@@ -276,9 +282,7 @@ public class Sim {
                         }
                         
                     }
-                    simAddMoney((int)sumSalary);   
-                    System.out.println("You earned " + sumSalary + " dollars");
-                    System.out.println("Your money: " + getSimMoney());
+
                     
                 }
             });
