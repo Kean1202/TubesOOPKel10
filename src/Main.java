@@ -51,6 +51,25 @@ public class Main {
 
         //MENU
         Scanner scanner = new Scanner(System.in);
-        int choices = scanner.nextInt();
+
+        boolean exit = false;
+        while(!exit){
+            int choices = scanner.nextInt();
+            switch(choices){
+                case 1:
+                    while(true){
+                        System.out.println("i'm gaming rn");
+                    }
+                case 2:
+                    System.out.println("help");
+                    break;
+                case 3:
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid input!");
+            }
+        }
+
     }
 }
