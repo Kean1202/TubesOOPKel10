@@ -1,6 +1,6 @@
 package Simplicity;
 
-import javafx.util.*;
+import Simplicity.Objects.*;
 import java.util.*;
 
 public class Sim {
@@ -400,7 +400,7 @@ public class Sim {
                         Thread.sleep(30/15 * 1000);
                     }
                     System.out.println("");
-                    decreaseSimNeed("Hunger", food.getRepletition());
+                    decreaseSimNeed("Hunger", food.getRepletion());
                 }
                 catch (InterruptedException e){
                     System.out.println(e.getMessage());
@@ -429,20 +429,19 @@ public class Sim {
             public void run(){
                 try{
                     System.out.println("Cooking");
-                    for (int j = 0; j<((food.getRepletition()*1.5)/2); j++){
+                    for (int j = 0; j<((food.getRepletion()*1.5)/2); j++){
                         System.out.print("...");
-                        Thread.sleep((food.getRepletition()*1.5)/(food.getRepletition()%2) * 1000);
+
+                        //ERROR
+//                        Thread.sleep((food.getRepletition()*1.5)/(food.getRepletition()%2) * 1000);
                     }
                     System.out.println("");
                     addSimNeed("Mood", 10);
 
                     //menambahkan makanan ke inventory
-                    simInventory.addInventory(food,1);
-                }
-                catch (InterruptedException e){
-                    System.out.println(e.getMessage());
-                }
-                catch (negativeParameterException n){
+                    //ERROR
+//                    simInventory.addInventory(food,1);
+                } catch (negativeParameterException n){
                     System.out.println(n.getMessage());
                 }
                 
