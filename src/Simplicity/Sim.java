@@ -386,10 +386,15 @@ public class Sim {
     
     // Method untuk memeriksa kapan terakhir tidur
     public void checkLastSleep(){
-        if (getLastSleep >= 10 * 60){    
+        if (lastBathroom >= 10 * 60){    
             System.out.println("You haven't slept yet, please get some rest !");
-            decreaseSimNeed("Mood", 5);
-            decreaseSimNeed("Health", 5);
+            try{
+                decreaseSimNeed("Mood", 5);
+                decreaseSimNeed("Health", 5);
+            }
+            catch (negativeParameterException n){
+                System.out.println(n.getMessage());
+            }
         }
     }
 
