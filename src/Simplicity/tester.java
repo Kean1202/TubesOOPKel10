@@ -11,11 +11,12 @@ public class tester {
         Job CEO = new Job("CEO", 200);
         Job[] allJobs = Job.getAllJobs(cook, janitor, teacher, CEO);
         Toilet toilet = new Toilet("toilet", 100, 1, 1);
-        Sim Kean = new Sim("Kean Nafis Santang", allJobs, 75);
+        Sim Kean = new Sim("Kean Nafis Santang", allJobs);
         try{
             Kean.work(120);
             toilet.doAction(Kean);
         }
+        // jujur gw nyesel make nama gw sendiri buat bikin sim
         catch (invalidMultitudeNumber n) {
             System.out.println(n.getMessage());
         }
