@@ -10,14 +10,14 @@ public class tester {
         Job teacher = new Job("teacher", 75);
         Job CEO = new Job("CEO", 200);
         Job[] allJobs = Job.getAllJobs(cook, janitor, teacher, CEO);
-        Toilet toilet = new Toilet("Toilet", 100, 1, 1);
-        FoodIngredients egg = new FoodIngredients("egg", 2, 3);
-        Sim Kean = new Sim("Kean Nafis Santang", allJobs);
+        Toilet toilet = new Toilet("toilet", 100, 1, 1);
+        Sim Kean = new Sim("Kean Nafis Santang", allJobs, 75);
         try{
             Kean.work(120);
             Kean.work(120);
             toilet.doAction(Kean);
         }
+        // jujur gw nyesel make nama gw sendiri buat bikin sim
         catch (invalidMultitudeNumber n) {
             System.out.println(n.getMessage());
         }

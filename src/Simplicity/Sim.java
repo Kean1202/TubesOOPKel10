@@ -377,8 +377,13 @@ public class Sim {
     public void checkLastBathroom(){
         if (lastBathroom >= 4 * 60){    //4*60 adalah 4 menit dalam detik
             System.out.println("You forgot to go to the bathroom after you ate!");
-            decreaseSimNeed("Mood", 5);
-            decreaseSimNeed("Health", 5);
+            try{
+                decreaseSimNeed("Mood", 5);
+                decreaseSimNeed("Health", 5);
+            }
+            catch (negativeParameterException n){
+                System.out.println(n.getMessage());
+            }
         }
     }
 
