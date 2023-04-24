@@ -10,9 +10,11 @@ public class tester {
         Job teacher = new Job("teacher", 75);
         Job CEO = new Job("CEO", 200);
         Job[] allJobs = Job.getAllJobs(cook, janitor, teacher, CEO);
-        Toilet toilet = new Toilet("toilet", 100, 1, 1);
-        Sim Kean = new Sim("Kean Nafis Santang", allJobs, 75);
+        Toilet toilet = new Toilet("Toilet", 100, 1, 1);
+        FoodIngredients egg = new FoodIngredients("egg", 2, 3);
+        Sim Kean = new Sim("Kean Nafis Santang", allJobs);
         try{
+            Kean.work(120);
             Kean.work(120);
             toilet.doAction(Kean);
         }
@@ -24,21 +26,23 @@ public class tester {
         Kean.simChangeJob(CEO);
 
         System.out.println(Kean.getSimMoney());
+        System.out.println(egg.getClass().getSimpleName());
+
         
-        // BUAT TESTING INVENTORY
-        // Kean.simInventory.addInventory("Egg", 1);
-        // Kean.simInventory.addInventory("Book", 5);
-        // Kean.simInventory.addInventory("Book", 5);
-        // Kean.simInventory.addInventory("Lamp", 2);
-        // Kean.simInventory.printInventory();
-        // System.out.println(" ");
-        // Kean.simInventory.decreaseInventory("Lamp", 2);
-        // Kean.simInventory.printInventory();
-        // System.out.println(" ");
-        // Kean.simInventory.decreaseInventory("Egg", 1);
-        // Kean.simInventory.decreaseInventory("Book", 10);
-        // Kean.simInventory.printInventory();
-        // System.out.println(" ");
+//         BUAT TESTING INVENTORY
+//         Kean.simInventory.addInventory(Egg, 1);
+//         Kean.simInventory.addInventory(Book, 5);
+//         Kean.simInventory.addInventory(Book, 5);
+//         Kean.simInventory.addInventory(Lamp, 2);
+//         Kean.simInventory.printInventory();
+//         System.out.println(" ");
+//         Kean.simInventory.decreaseInventory(Lamp, 2);
+//         Kean.simInventory.printInventory();
+//         System.out.println(" ");
+//         Kean.simInventory.decreaseInventory("Egg", 1);
+//         Kean.simInventory.decreaseInventory("Book", 10);
+//         Kean.simInventory.printInventory();
+//         System.out.println(" ");
         
     }
 }
