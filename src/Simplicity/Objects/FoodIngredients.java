@@ -2,12 +2,12 @@ package Simplicity.Objects;
 
 public class FoodIngredients extends SimplicityObject implements Edible, Storable, PurchasableObject {
     private int price;
-    private int repletition;
+    private int repletion;
 
-    public FoodIngredients(String type, int price, int repletition){
+    public FoodIngredients(String type, int price, int repletion){
         super(type);
         this.price = price;
-        this.repletition = repletition;
+        this.repletion = repletion;
     }
 
     //Setter
@@ -15,8 +15,8 @@ public class FoodIngredients extends SimplicityObject implements Edible, Storabl
         this.price = price;
     }
 
-    public void setRepletition(int repletition){
-        this.repletition = repletition;
+    public void setRepletion(int repletion){
+        this.repletion = repletion;
     }
 
     //Getter
@@ -25,6 +25,6 @@ public class FoodIngredients extends SimplicityObject implements Edible, Storabl
     }
 
     public int getRepletion(){
-        return repletition;
+        return repletion;
     }
 }

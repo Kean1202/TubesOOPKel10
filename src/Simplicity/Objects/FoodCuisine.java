@@ -3,29 +3,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FoodCuisine extends FoodIngredients{
-	private List<String> ingredients;
+public class FoodCuisine extends SimplicityObject implements Edible, Storable{
+	private List<FoodIngredients> ingredients;
 	private int cuisineRepletion;
 
 	//Constructor
-	public FoodCuisine(int repletion){
+	public FoodCuisine(String type, int repletion) {
+		super(type);
 		this.cuisineRepletion = repletion;
 		this.ingredients = new ArrayList<>();
 	}
 	//Method
-	@Override
-	public void addIngredients(String ingredient){
+	public void addIngredients(FoodIngredients ingredient){
 		this.ingredients.add(ingredient);
-		this.cuisineRepletion += ingredient.getRepletion();
+		this.cuisineRepletion = this.cuisineRepletion + ingredient.getRepletion();
 
 	}
 
-    public void setRepletition(int repletition){
-        this.cuisineRepletition = repletition;
+    public void setRepletion(int repletion){
+        this.cuisineRepletion = repletion;
 	}
 
     //Getter
-    public int getRepletition(){
+    public int getRepletion(){
         return cuisineRepletion;
     }
 

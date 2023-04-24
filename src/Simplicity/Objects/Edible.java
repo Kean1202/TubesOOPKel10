@@ -1,7 +1,7 @@
 package Simplicity.Objects;
 
 public interface Edible {
-    public void setRepletition(int repletition);
+    public void setRepletion(int repletion);
     public int getRepletion();
 }
  
