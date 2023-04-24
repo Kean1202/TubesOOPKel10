@@ -563,7 +563,7 @@ public class Sim {
         public void printInventory(){
             if (!MapInventory.isEmpty()){
                 for (Map.Entry<SimplicityObject, Integer> entry: MapInventory.entrySet()){
-                    System.out.println(entry.getKey().getType() + " , amount: " + entry.getValue());
+                    System.out.println(entry.getKey().getType() + ", amount: " + entry.getValue());
                 }
             }
 
