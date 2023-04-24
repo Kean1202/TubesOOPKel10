@@ -13,21 +13,26 @@ public class tester {
         Toilet toilet = new Toilet("toilet", 100, 1, 1);
         FoodIngredients egg = new FoodIngredients("egg",1 ,2);
         Sim Kean = new Sim("Kean Nafis Santang", allJobs);
-        try{
-            Kean.work(120);
-            Kean.work(120);
-            toilet.doAction(Kean);
-        }
-        // jujur gw nyesel make nama gw sendiri buat bikin sim
-        catch (invalidMultitudeNumber n) {
-            System.out.println(n.getMessage());
-        }
-        System.out.println(Kean.getSimMoney());
+        // try{
+        //     Kean.work(120);
+        //     Kean.work(120);
+        //     toilet.doAction(Kean);
+        // }
+        // // jujur gw nyesel make nama gw sendiri buat bikin sim
+        // catch (invalidMultitudeNumber n) {
+        //     System.out.println(n.getMessage());
+        // }
+        // System.out.println(Kean.getSimMoney());
 
-        Kean.simChangeJob(CEO);
+        // Kean.simChangeJob(CEO);
 
         System.out.println(Kean.getSimMoney());
         System.out.println(egg.getClass().getSimpleName());
+
+        Kean.simInventory.addInventory(egg, 5);
+        Kean.simInventory.addInventory(toilet, 1);
+        Kean.simInventory.printInventory();
+
 
         
 //         BUAT TESTING INVENTORY

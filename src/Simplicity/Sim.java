@@ -139,34 +139,34 @@ public class Sim {
         else{
             //menambahkan hunger
             switch (needType) {
-                case "Hunger" -> {
+                case "Hunger": 
                     if (simHunger + amount >= 100) {
                         simHunger = 100;
                     } else {
                         simHunger += amount;
                     }
                     System.out.println("Your hunger is now " + simHunger);
-                }
+                    break;
 
                 //menambahkan Mood
-                case "Mood" -> {
+                case "Mood":
                     if (simMood + amount >= 100) {
                         simMood = 100;
                     } else {
                         simMood += amount;
                     }
                     System.out.println("Your mood is now " + simMood);
-                }
+                    break;
 
                 //menambahkan Health
-                case "Health" -> {
+                case "Health":
                     if (simHealth + amount >= 100) {
                         simHealth = 100;
                     } else {
                         simHealth += amount;
                     }
                     System.out.println("Your health is now " + simHealth);
-                }
+                    break;
             }
         }
         
@@ -180,34 +180,34 @@ public class Sim {
         else{
             //menambahkan hunger
             switch (needType) {
-                case "Hunger" -> {
+                case "Hunger":
                     if (simHunger - amount <= 0) {
                         simHunger = 0;
                     } else {
                         simHunger -= amount;
                     }
                     System.out.println("Your hunger is now " + simHunger);
-                }
+                    break;
 
                 //menambahkan Mood
-                case "Mood" -> {
+                case "Mood":
                     if (simMood - amount <= 0) {
                         simMood = 0;
                     } else {
                         simMood -= amount;
                     }
                     System.out.println("Your mood is now " + simMood);
-                }
+                    break;
 
                 //menambahkan Health
-                case "Health" -> {
+                case "Health":
                     if (simHealth - amount == 0) {
                         simHealth = 0;
                     } else {
                         simHealth -= amount;
                     }
                     System.out.println("Your health is now " + simHealth);
-                }
+                    break;
             }
         }
         
@@ -526,33 +526,33 @@ public class Sim {
 
     // Diimplementasikan dengan hash map
     public class Inventory{
-        HashMap<String, Integer> MapInventory;
+        HashMap<Storable, Integer> MapInventory;
 
         // TODO GANTI DARI STRING KE OBJECT
         public Inventory(){
-            MapInventory = new HashMap<String, Integer>();
+            MapInventory = new HashMap<Storable, Integer>();
         }
 
-        public void addInventory(String itemName, Integer itemAmount){
-            if (MapInventory.containsKey(itemName)){
-                MapInventory.replace(itemName, (MapInventory.get(itemName)+itemAmount));
-                System.out.println("Added " + itemAmount + " " + itemName + "(s) to your inventory");
+        public void addInventory(Storable item, Integer itemAmount){
+            if (MapInventory.containsKey(item)){
+                MapInventory.replace(item, (MapInventory.get(item)+itemAmount));
+                System.out.println("Added " + itemAmount + " " + item.getClass().getSimpleName() + "(s) to your inventory");
             }
             else{
-                MapInventory.putIfAbsent(itemName, itemAmount);
-                System.out.println(itemName + " is now in your inventory" + " (" + itemAmount + ")");
+                MapInventory.putIfAbsent(item, itemAmount);
+                System.out.println(item.getClass().getSimpleName()+ " is now in your inventory" + " (" + itemAmount + ")");
             }
         }
 
-        public void decreaseInventory(String itemName, int itemAmount){
-            if (MapInventory.containsKey(itemName) && (MapInventory.get(itemName)-itemAmount >= 1)){
-                MapInventory.replace(itemName, (MapInventory.get(itemName)-itemAmount));
+        public void decreaseInventory(Storable item, int itemAmount){
+            if (MapInventory.containsKey(item) && (MapInventory.get(item)-itemAmount >= 1)){
+                MapInventory.replace(item, (MapInventory.get(item)-itemAmount));
             }
-            else if (MapInventory.get(itemName)-itemAmount <= 0){
-                MapInventory.remove(itemName);
+            else if (MapInventory.get(item)-itemAmount <= 0){
+                MapInventory.remove(item);
             }
             else{
-                System.out.println("The item "+ itemName+ " is not in your inventory!");
+                System.out.println("The item "+ item.getClass().getSimpleName()+ " is not in your inventory!");
             }
         }
 
@@ -562,8 +562,8 @@ public class Sim {
 
         public void printInventory(){
             if (!MapInventory.isEmpty()){
-                for (Map.Entry<String, Integer> entry: MapInventory.entrySet()){
-                    System.out.println(entry.getKey() + " , amount: " + entry.getValue());
+                for (Map.Entry<Storable, Integer> entry: MapInventory.entrySet()){
+                    System.out.println(entry.getKey().getClass().getSimpleName() + " , amount: " + entry.getValue());
                 }
             }
 
