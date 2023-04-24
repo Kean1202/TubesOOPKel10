@@ -536,11 +536,11 @@ public class Sim {
         public void addInventory(Storable item, Integer itemAmount){
             if (MapInventory.containsKey(item)){
                 MapInventory.replace(item, (MapInventory.get(item)+itemAmount));
-                System.out.println("Added " + itemAmount + " " + item.getClass().getSimpleName() + "(s) to your inventory");
+                System.out.println("Added " + itemAmount + " " + item.getType() + "(s) to your inventory");
             }
             else{
                 MapInventory.putIfAbsent(item, itemAmount);
-                System.out.println(item.getClass().getSimpleName()+ " is now in your inventory" + " (" + itemAmount + ")");
+                System.out.println(item.getType()+ " is now in your inventory" + " (" + itemAmount + ")");
             }
         }
 
@@ -552,7 +552,7 @@ public class Sim {
                 MapInventory.remove(item);
             }
             else{
-                System.out.println("The item "+ item.getClass().getSimpleName()+ " is not in your inventory!");
+                System.out.println("The item "+ item.getType()+ " is not in your inventory!");
             }
         }
 
@@ -563,7 +563,7 @@ public class Sim {
         public void printInventory(){
             if (!MapInventory.isEmpty()){
                 for (Map.Entry<Storable, Integer> entry: MapInventory.entrySet()){
-                    System.out.println(entry.getKey().getClass().getSimpleName() + " , amount: " + entry.getValue());
+                    System.out.println(entry.getKey().getType() + " , amount: " + entry.getValue());
                 }
             }
 
