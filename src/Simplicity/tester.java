@@ -11,7 +11,8 @@ public class tester {
         Job CEO = new Job("CEO", 200);
         Job[] allJobs = Job.getAllJobs(cook, janitor, teacher, CEO);
         Toilet toilet = new Toilet("toilet", 100, 1, 1);
-        Sim Kean = new Sim("Kean Nafis Santang", allJobs, 75);
+        FoodIngredients egg = new FoodIngredients("egg",1 ,2);
+        Sim Kean = new Sim("Kean Nafis Santang", allJobs);
         try{
             Kean.work(120);
             Kean.work(120);
