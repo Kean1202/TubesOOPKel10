@@ -526,14 +526,14 @@ public class Sim {
 
     // Diimplementasikan dengan hash map
     public class Inventory{
-        HashMap<Storable, Integer> MapInventory;
+        HashMap<SimplicityObject, Integer> MapInventory;
 
         // TODO GANTI DARI STRING KE OBJECT
         public Inventory(){
-            MapInventory = new HashMap<Storable, Integer>();
+            MapInventory = new HashMap<SimplicityObject, Integer>();
         }
 
-        public void addInventory(Storable item, Integer itemAmount){
+        public void addInventory(SimplicityObject item, Integer itemAmount){
             if (MapInventory.containsKey(item)){
                 MapInventory.replace(item, (MapInventory.get(item)+itemAmount));
                 System.out.println("Added " + itemAmount + " " + item.getType() + "(s) to your inventory");
@@ -544,7 +544,7 @@ public class Sim {
             }
         }
 
-        public void decreaseInventory(Storable item, int itemAmount){
+        public void decreaseInventory(SimplicityObject item, int itemAmount){
             if (MapInventory.containsKey(item) && (MapInventory.get(item)-itemAmount >= 1)){
                 MapInventory.replace(item, (MapInventory.get(item)-itemAmount));
             }
@@ -562,7 +562,7 @@ public class Sim {
 
         public void printInventory(){
             if (!MapInventory.isEmpty()){
-                for (Map.Entry<Storable, Integer> entry: MapInventory.entrySet()){
+                for (Map.Entry<SimplicityObject, Integer> entry: MapInventory.entrySet()){
                     System.out.println(entry.getKey().getType() + " , amount: " + entry.getValue());
                 }
             }
