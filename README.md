@@ -3,4 +3,4 @@
 #### Jazmy Izzati Alamsyah - 18221124
 #### Dirasiella Damasari Hamdani - 18219072
 #### Muhammad Rabbani Brata - 18219118
-#### [NAMA] [NIM]
+#### Laurensia Audrey Pramashinta - 18221114
