@@ -33,7 +33,7 @@ public class tester {
         Kean.simInventory.addInventory(toilet, 1);
         Kean.simInventory.printInventory();
         Kean.simInventory.addInventory(egg, 5);
-        Kean.simInventory.decreaseInventory(toilet, 0);
+        Kean.simInventory.decreaseInventory(toilet, 1);
         Kean.simInventory.decreaseInventory(egg, 5);
         Kean.simInventory.printInventory();
         Kean.simInventory.decreaseInventory(egg, 5);
