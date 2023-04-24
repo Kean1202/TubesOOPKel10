@@ -9,17 +9,10 @@ public class House {
     public House(int x, int y) {
         this.location = new int[] {x, y};
         this.roomList = new ArrayList<>();
-    }
-
-    public String getRoomName(int index) {
-        return this.roomList.get(index).getName();
+        this.roomList.add(new Room("Bedroom", 6, 6));
     }
 
     public List<Room> getRoomList() {
         return this.roomList;
-    }
-
-    public void setRoomName(int index, String name) {
-        this.roomList.get(index).setName(name);
     }
 }
