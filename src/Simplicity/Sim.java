@@ -341,6 +341,57 @@ public class Sim {
             }
         }
     }
+    
+    // Method untuk tidur
+    public void sleep(int duration) throws invalidMultitudeNumber {
+        if (duration % (4*60) != 0){
+            throw new invalidMultitudeNumber(duration);
+        }
+        else{
+            simChangeStatus("Sleeping");
+            Thread thread = new Thread(new Runnable(){
+                public void run(){
+                    int repetition = duration / (4*60);
+                    for (int i = 0; i<repetition; i++){
+                        try{
+                            System.out.println("Zzzz...");
+                            for (int j = 0; j<240/48; j++){
+                                System.out.print("...");
+                                Thread.sleep(240/5 * 1000);
+                            }
+                            System.out.println("");
+                            addSimNeed("Mood", 30);
+                            addSimNeed("Health", 20);
+                        }
+                        catch (InterruptedException e){
+                            System.out.println(e.getMessage());
+                        }
+                        catch (negativeParameterException n){
+                            System.out.println(n.getMessage());
+                        }
+                    }
+                    
+                }
+            });
+            thread.start();
+            // supaya dia nunggu thread lain
+            try{
+                thread.join();
+            }
+            catch (InterruptedException e){
+                System.out.println(e.getMessage());
+            }        
+        }
+    }
+    
+    // Method untuk memeriksa kapan terakhir tidur
+    public void checkLastSleep(){
+        if (getLastSleep >= 10 * 60){    
+            System.out.println("You haven't slept yet, please get some rest !");
+            decreaseSimNeed("Mood", 5);
+            decreaseSimNeed("Health", 5);
+        }
+    }
 
     //Method untuk ke kamar mandi
     public void useBathroom(){
