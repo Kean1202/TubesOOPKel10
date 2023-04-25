@@ -516,7 +516,22 @@ public class Sim {
 
     }
 
-
+public void simBuyItem(Map<String, PurchasableObject> objectMap,  String itemName){
+    PurchasableObject object = objectMap.get(itemName);
+    if (object != null){
+        if (object.getPrice() <= getSimMoney()){
+            this.simMoney = this.simMoney - object.getPrice();
+            simInventory.addInventory((SimplicityObject)object, 1);
+            System.out.println("You have bought " + ((SimplicityObject) object).getType() + " for " + object.getPrice() + " Simplicity Coins");
+        }
+        else{
+            System.out.println("You don't have enough money to buy " + ((SimplicityObject) object).getType());
+        }
+    }
+    else{
+        System.out.println("Item not found");
+    }
+}
 
 
     // TODO yang implementasi waktu bikin perhitungan waktu per hari dan pergantian hari
@@ -584,17 +599,5 @@ class negativeParameterException extends Exception{
 
     public String getMessage(){
         return ("Invalid operation, negative number detected: " + amount);
-    }
-}
-
-class invalidMultitudeNumber extends Exception{
-    private int amount;
-
-    public invalidMultitudeNumber(int amount){
-        this.amount = amount;
-    }
-
-    public String getMessage(){
-        return (amount + " is an invalid number for this operation, please input a different amount");
     }
 }
