@@ -5,6 +5,7 @@ import java.util.List;
 public class House {
     private int[] location;
     private List<Room> roomList;
+    private int roomTotal;
 
     public House(int x, int y) {
         this.location = new int[] {x, y};
@@ -18,5 +19,9 @@ public class House {
 
     public int[] getLocation() {
         return location;
+    }
+
+    public int getRoomTotal() {
+        return roomTotal;
     }
 }
