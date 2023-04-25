@@ -14,6 +14,7 @@ public class Sim {
     private int simHealth;
     private String simStatus;
     private int[] location;
+    private House house;
 
     //Attribute untuk ngecek kondisi
     private int lastSleep;
@@ -568,6 +569,18 @@ public void simBuyItem(Map<String, PurchasableObject> objectMap,  String itemNam
         // tunggu thread lain selesai
         try {
             thread.join();
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void HouseUpgrade(int roomTotal) {
+        try {
+            // Tunggu selama 18 menit
+            Thread.sleep(18 * 60 * 1000);
+    
+            // Tambahkan ruangan ke dalam house
+            house.setRoomTotal(house.getRoomTotal() + roomTotal);
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
