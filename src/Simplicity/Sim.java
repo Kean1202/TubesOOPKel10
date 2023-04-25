@@ -542,36 +542,36 @@ public void simBuyItem(Map<String, PurchasableObject> objectMap,  String itemNam
     }
 }
 
-//method untuk berkunjung
-public void simVisit(House destination) {
-    simChangeStatus("On the way to visit " + destination.toString());
-    double distance = Math.sqrt(Math.pow(destination.getLocation()[0] - getLocation()[0], 2)
-            + Math.pow(destination.getLocation()[1] - getLocation()[1], 2));
-    int time = (int) distance;
-    Thread thread = new Thread(() -> {
-        try {
-            System.out.println("Visiting " + destination.toString());
-            for (int j = 0; j < time; j++) {
-                System.out.print("...");
-                Thread.sleep(1000);
+    //method untuk berkunjung
+    public void simVisit(House destination) {
+        simChangeStatus("On the way to visit " + destination.toString());
+        double distance = Math.sqrt(Math.pow(destination.getLocation()[0] - getLocation()[0], 2)
+                + Math.pow(destination.getLocation()[1] - getLocation()[1], 2));
+        int time = (int) distance;
+        Thread thread = new Thread(() -> {
+            try {
+                System.out.println("Visiting " + destination.toString());
+                for (int j = 0; j < time; j++) {
+                    System.out.print("...");
+                    Thread.sleep(1000);
+                }
+                System.out.println("");
+                addSimNeed("Mood", 10);
+                decreaseSimNeed("Hunger", 10);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            } catch (negativeParameterException n) {
+                System.out.println(n.getMessage());
             }
-            System.out.println("");
-            addSimNeed("Mood", 10);
-            decreaseSimNeed("Hunger", 10);
+        });
+        thread.start();
+        // tunggu thread lain selesai
+        try {
+            thread.join();
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
-        } catch (negativeParameterException n) {
-            System.out.println(n.getMessage());
         }
-    });
-    thread.start();
-    // tunggu thread lain selesai
-    try {
-        thread.join();
-    } catch (InterruptedException e) {
-        System.out.println(e.getMessage());
     }
-}
 
 
 
