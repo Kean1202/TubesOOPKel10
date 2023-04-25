@@ -1,6 +1,7 @@
 package Simplicity.Objects;
 
 import Simplicity.Sim;
+import Simplicity.invalidMultitudeNumber;
 
 public class Bed extends Furniture {
 
@@ -10,7 +11,7 @@ public class Bed extends Furniture {
     }
 
     //masih prototype
-    public void doAction(Sim sim) {
-        //sim.sleep();
+    public void doAction(Sim sim, int duration) throws invalidMultitudeNumber {
+        sim.sleep(duration);
     }
 }

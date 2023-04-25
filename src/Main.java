@@ -4,7 +4,7 @@ import Simplicity.Objects.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args){
         //INSTANCES
 
         //LIST OF SIMS
@@ -40,6 +40,12 @@ public class Main {
         newSim.simBuyItem(purchasableMap, "single bed");
         newSim.simInventory.printInventory();
         System.out.println(newSim.getSimMoney());
+        try{
+            singleBed.doAction(newSim, 240);
+        }
+        catch (invalidMultitudeNumber n){
+            System.out.println(n.getMessage());
+        }
         
 //
 //        if(listSim.size() == 0){

@@ -34,5 +34,4 @@ public abstract class Furniture extends SimplicityObject implements PurchasableO
         return width;
     }
 
-    public abstract void doAction(Sim sim);
 }
