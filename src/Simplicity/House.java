@@ -15,4 +15,8 @@ public class House {
     public List<Room> getRoomList() {
         return this.roomList;
     }
+
+    public int[] getLocation() {
+        return location;
+    }
 }
