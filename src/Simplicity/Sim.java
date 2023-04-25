@@ -13,6 +13,7 @@ public class Sim {
     private int simMood;
     private int simHealth;
     private String simStatus;
+    private int[] location;
 
     //Attribute untuk ngecek kondisi
     private int lastSleep;
@@ -92,6 +93,10 @@ public class Sim {
 
     public int getLastJobChange(){
         return daysSinceJobChange;
+    }
+
+    public int[] getLocation() {
+        return location;
     }
 
     
@@ -229,6 +234,10 @@ public class Sim {
 
     public void changeTimeWorked(int amount){
         timeWorked += amount;
+    }
+
+    public void setLocation(int[] location) {
+        this.location = location;
     }
 
     // END OF SETTERS
@@ -532,6 +541,41 @@ public void simBuyItem(Map<String, PurchasableObject> objectMap,  String itemNam
         System.out.println("Item not found");
     }
 }
+
+//method untuk berkunjung
+public void simVisit(House destination) {
+    simChangeStatus("On the way to visit " + destination.toString());
+    double distance = Math.sqrt(Math.pow(destination.getLocation()[0] - getLocation()[0], 2)
+            + Math.pow(destination.getLocation()[1] - getLocation()[1], 2));
+    int time = (int) distance;
+    Thread thread = new Thread(() -> {
+        try {
+            System.out.println("Visiting " + destination.toString());
+            for (int j = 0; j < time; j++) {
+                System.out.print("...");
+                Thread.sleep(1000);
+            }
+            System.out.println("");
+            addSimNeed("Mood", 10);
+            decreaseSimNeed("Hunger", 10);
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        } catch (negativeParameterException n) {
+            System.out.println(n.getMessage());
+        }
+    });
+    thread.start();
+    // tunggu thread lain selesai
+    try {
+        thread.join();
+    } catch (InterruptedException e) {
+        System.out.println(e.getMessage());
+    }
+}
+
+
+
+
 
 
     // TODO yang implementasi waktu bikin perhitungan waktu per hari dan pergantian hari
