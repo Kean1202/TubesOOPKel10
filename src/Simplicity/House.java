@@ -24,4 +24,8 @@ public class House {
     public int getRoomTotal() {
         return roomTotal;
     }
+
+    public void setRoomTotal(int roomTotal) {
+        this.roomTotal = roomTotal;
+    }
 }
