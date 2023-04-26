@@ -1,7 +1,10 @@
 import Simplicity.*;
 import Simplicity.Objects.*;
 
+import java.security.InvalidParameterException;
 import java.util.*;
+
+import javax.naming.InvalidNameException;
 
 public class Main {
     public static void main(String[] args){
@@ -37,16 +40,21 @@ public class Main {
 
         //TESTING
         Sim newSim = new Sim("m", allJobs);
-        newSim.simBuyItem(purchasableMap, "single bed");
         newSim.simInventory.printInventory();
         System.out.println(newSim.getSimMoney());
+        
         try{
-            singleBed.doAction(newSim, 240);
+            newSim.simBuyItem(purchasableMap, "single bed", 1);
+            toilet.doAction(newSim);
         }
         catch (invalidMultitudeNumber n){
             System.out.println(n.getMessage());
         }
-        
+        catch (negativeParameterException e){
+            System.out.println(e.getMessage());
+        }
+
+        newSim.simInventory.printInventory();
 //
 //        if(listSim.size() == 0){
 //            System.out.println("No sims created yet!");
