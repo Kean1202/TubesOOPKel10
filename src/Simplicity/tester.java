@@ -13,7 +13,7 @@ public class tester {
         Toilet toilet = new Toilet("toilet", 100, 1, 1);
         FoodIngredients egg = new FoodIngredients("egg",1 ,2);
         Sim Kean = new Sim("Kean Nafis Santang", allJobs);
-        FoodCuisine Sushi = new FoodCuisine("Sushi", 5)
+        FoodCuisine Sushi = new FoodCuisine("Sushi", 5);
         // try{
         //     Kean.work(120);
         //     Kean.work(120);
