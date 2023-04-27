@@ -42,6 +42,40 @@ public class Room {
         }
     }
 
+    //method
+    public boolean pasangBarang(Furniture furniture, Point position) {
+        int furnitureLength = furniture.getLength();
+        int furnitureWidth = furniture.getWidth();
+    
+        // Check if the furniture fits inside the room
+        if (position.getX() + furnitureLength > roomLength ||
+                position.getY() + furnitureWidth > roomWidth) {
+            System.out.println("Furniture does not fit inside the room");
+            return false;
+        }
+    
+        // Check if the area is vacant
+        for (int i = position.getX(); i < position.getX() + furnitureLength; i++) {
+            for (int j = position.getY(); j < position.getY() + furnitureWidth; j++) {
+                if (!vacantRoom[i][j]) {
+                    System.out.println("Cannot place furniture, area is not vacant");
+                    return false;
+                }
+            }
+        }
+    
+        // Place the furniture
+        for (int i = position.getX(); i < position.getX() + furnitureLength; i++) {
+            for (int j = position.getY(); j < position.getY() + furnitureWidth; j++) {
+                vacantRoom[i][j] = false;
+            }
+        }
+        furniture.setPosition(position);
+        listFurniture.add(furniture);
+        return true;
+    }
+    
+
 
     //getter
     public String getName(){
