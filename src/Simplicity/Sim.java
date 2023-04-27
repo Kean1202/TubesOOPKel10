@@ -500,17 +500,21 @@ public class Sim {
                     for (int j = 0; j<((food.getRepletion()*1.5)/2); j++){
                         System.out.print("...");
 
-                        //ERROR
-//                        Thread.sleep((food.getRepletition()*1.5)/(food.getRepletition()%2) * 1000);
+                        //ERROR -> solved, cuman typo harusnya repletion bukan repletition
+                        double sleepValDouble = (food.getRepletion()*1.5)/(food.getRepletion()%2) * 1000;
+                        long sleepValLong = (long) sleepValDouble;
+                        Thread.sleep(sleepValLong);
                     }
                     System.out.println("");
                     addSimNeed("Mood", 10);
 
                     //menambahkan makanan ke inventory
-                    //ERROR
-//                    simInventory.addInventory(food,1);
-                } catch (negativeParameterException n){
+                    //ERROR -> solved
+                    simInventory.addInventory(food, 1);
+                } catch (negativeParameterException n) {
                     System.out.println(n.getMessage());
+                } catch (InterruptedException e){
+                    System.out.println(e.getMessage());
                 }
                 
             }
@@ -654,6 +658,7 @@ public class Sim {
 
         public void printInventory(){
             if (!MapInventory.isEmpty()){
+                System.out.println(getSimName() + "'s Inventory: ");
                 for (Map.Entry<SimplicityObject, Integer> entry: MapInventory.entrySet()){
                     System.out.println(entry.getKey().getType() + ", amount: " + entry.getValue());
                 }

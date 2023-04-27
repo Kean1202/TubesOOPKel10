@@ -10,7 +10,7 @@ public class House {
     public House(int x, int y) {
         this.location = new int[] {x, y};
         this.roomList = new ArrayList<>();
-        this.roomList.add(new Room("Bedroom", 6, 6));
+        this.roomList.add(new Room("Bedroom"));  // ini blm jalan kalo make konstruktor yg sblm gw ubah
     }
 
     public List<Room> getRoomList() {
