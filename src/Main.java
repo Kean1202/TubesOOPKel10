@@ -27,15 +27,23 @@ public class Main {
         //FURNITURE
         Bed singleBed = new Bed("single bed", 100,4, 1);
         Bed queenSizeBed = new Bed("queen size bed",100, 4, 2);
-        Bed kingSizeBed = new Bed("king size bed",100, 4, 2);
+        Bed kingSizeBed = new Bed("king size bed",150, 5, 2);
         Toilet toilet = new Toilet("toilet", 10, 1, 1);
-
+        Stove gasStove = new Stove("gas stove", 50, 2, 1);
+        Stove elStove = new Stove("electric stove", 200, 1, 1);
+        Desk desk = new Desk("desk", 50, 3, 3);
+        Clock clock = new Clock("clock", 10, 1, 1, 0);
+        
         //OBJECTS
         Map<String, PurchasableObject> purchasableMap = new HashMap<String, PurchasableObject>(){{
             put(singleBed.getType(), singleBed);
             put(queenSizeBed.getType(), queenSizeBed);
             put(kingSizeBed.getType(), kingSizeBed);
             put(toilet.getType(), toilet);
+            put(gasStove.getType(), gasStove);
+            put(elStove.getType(), elStove);
+            put(desk.getType(), desk);
+            put(clock.getType(), clock);
         }};
 
         //TESTING
