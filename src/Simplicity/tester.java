@@ -13,6 +13,7 @@ public class tester {
         Toilet toilet = new Toilet("toilet", 100, 1, 1);
         FoodIngredients egg = new FoodIngredients("egg",1 ,2);
         Sim Kean = new Sim("Kean Nafis Santang", allJobs);
+        FoodCuisine Sushi = new FoodCuisine("Sushi", 5)
         // try{
         //     Kean.work(120);
         //     Kean.work(120);
@@ -26,35 +27,25 @@ public class tester {
 
         // Kean.simChangeJob(CEO);
 
-        System.out.println(Kean.getSimMoney());
-        System.out.println(egg.getClass().getSimpleName());
-
-        Kean.simInventory.addInventory(egg, 5);
-        Kean.simInventory.addInventory(toilet, 1);
-        Kean.simInventory.printInventory();
-        Kean.simInventory.addInventory(egg, 5);
-        Kean.simInventory.decreaseInventory(toilet, 1);
-        Kean.simInventory.decreaseInventory(egg, 5);
-        Kean.simInventory.printInventory();
-        Kean.simInventory.decreaseInventory(egg, 5);
+        Kean.simCook(Sushi);
         Kean.simInventory.printInventory();
 
+        // BUAT TESTING INVENTORY
+        // System.out.println(Kean.getSimMoney());
+        // System.out.println(egg.getClass().getSimpleName());
 
-        
-//         BUAT TESTING INVENTORY
-//         Kean.simInventory.addInventory(Egg, 1);
-//         Kean.simInventory.addInventory(Book, 5);
-//         Kean.simInventory.addInventory(Book, 5);
-//         Kean.simInventory.addInventory(Lamp, 2);
-//         Kean.simInventory.printInventory();
-//         System.out.println(" ");
-//         Kean.simInventory.decreaseInventory(Lamp, 2);
-//         Kean.simInventory.printInventory();
-//         System.out.println(" ");
-//         Kean.simInventory.decreaseInventory("Egg", 1);
-//         Kean.simInventory.decreaseInventory("Book", 10);
-//         Kean.simInventory.printInventory();
-//         System.out.println(" ");
+        // Kean.simInventory.addInventory(egg, 5);
+        // Kean.simInventory.addInventory(toilet, 1);
+        // Kean.simInventory.printInventory();
+        // Kean.simInventory.addInventory(egg, 5);
+        // Kean.simInventory.decreaseInventory(toilet, 1);
+        // Kean.simInventory.decreaseInventory(egg, 5);
+        // Kean.simInventory.printInventory();
+        // Kean.simInventory.decreaseInventory(egg, 5);
+        // Kean.simInventory.printInventory();
+
+
+        // use this to run the tester: java -classpath out\production\TubesOOPKel10 Simplicity.tester
         
     }
 }

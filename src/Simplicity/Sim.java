@@ -508,7 +508,7 @@ public class Sim {
 
                     //menambahkan makanan ke inventory
                     //ERROR
-//                    simInventory.addInventory(food,1);
+                    simInventory.addInventory(food, 1);
                 } catch (negativeParameterException n){
                     System.out.println(n.getMessage());
                 }
