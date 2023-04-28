@@ -12,13 +12,14 @@ public class Room {
     private Room bawah;
     private Room kiri;
     private Room kanan;
+    private int[] roomLocation;
     private ArrayList<Furniture> listFurniture;
     private final boolean[][] vacantRoom = new boolean[roomLength][roomWidth];
     // private final Furniture[][] furnitureMatrix = new Furniture[roomLength][roomWidth];
 
     //default room
     public Room() {
-        //ini nunggu pasangBarang()
+
 
         // pasangBarang(bed);
         // pasangBarang(stove);
@@ -78,8 +79,11 @@ public class Room {
 
 
     //getter
-    public String getName(){
+    public String getRoomName(){
         return roomName;
+    }
+    public int[] getRoomLocation() {
+        return roomLocation;
     }
     public int getRoomWidth() {
         return roomWidth;
@@ -104,7 +108,7 @@ public class Room {
     }
 
     //setter
-    public void setName(String roomName){
+    public void setRoomName(String roomName){
         this.roomName = roomName;
     }
     public void setRoomWidth(int roomWidth) {
@@ -124,6 +128,9 @@ public class Room {
     }
     public void setKanan(Room room){
         this.kanan=room;
+    }
+    public void setLocation(int[] roomLocation) {
+        this.roomLocation = roomLocation;
     }
     public void setListObjek(ArrayList<Furniture> listFurniture) {
         this.listFurniture = listFurniture;
