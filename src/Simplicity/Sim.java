@@ -5,6 +5,7 @@ import Simplicity.House.*;
 
 import java.util.*;
 
+// TODO tambah syarat di Main bahwa sim harus hidup buat dipake
 public class Sim {
     //Attributes
     private String simFullName;
@@ -23,9 +24,10 @@ public class Sim {
     private int lastBathroom;
     private int timeWorked;
     private int daysSinceJobChange;
+    private boolean hasEaten;
+    private boolean isSimAlive;
 
     // get random job
-    // TODO implement array of jobs
     public Job getRandomJob(Job[] array){
         int random = new Random().nextInt(array.length);
         return array[random];
@@ -47,6 +49,8 @@ public class Sim {
         lastBathroom = 0;
         timeWorked = 0;
         daysSinceJobChange = 0;
+        hasEaten = false;
+        isSimAlive = true;
     }
 
     //Getters
@@ -102,13 +106,14 @@ public class Sim {
         return location;
     }
 
-    
+    public boolean getSimAlive() { return isSimAlive;}
 
     // END OF GETTERS
 
     //Setters
     public void simChangeName(String name){
         simFullName = name;
+        System.out.println("Your name is now: " + simFullName);
     }
 
     public void simChangeJob(Job job){
@@ -228,7 +233,9 @@ public class Sim {
     } 
 
     public void changeLastBathroom(int amount){
-        lastBathroom += amount;
+        if (hasEaten){
+            lastBathroom += amount;
+        }
     }
 
     public void changeLastSleep(int amount){
@@ -251,12 +258,14 @@ public class Sim {
 
     // Method untuk kerja
     public void work(int duration) throws invalidMultitudeNumber{
+        // duration is in seconds
         if (duration % 120 != 0){
             throw new invalidMultitudeNumber(duration);
         }
         else{
-            //ganti status sim
+            // Ganti status sim
             simChangeStatus("Working");
+            // Mulai kerja
             System.out.println("You are currently working as a " + getSimJobName());
             Thread thread = new Thread(new Runnable(){
                 public void run(){
@@ -274,6 +283,9 @@ public class Sim {
                             decreaseSimNeed("Hunger", 10);
                             //ganti jam kerja sim
                             changeTimeWorked(30);
+                            // Ganti waktu gk ke toilet dll
+                            changeLastBathroom(30);
+                            changeLastSleep(30);
                             if(getTimeWorked() == 240){
                                 simAddMoney(simJob.getSalary());
                                 System.out.println("You have worked for 4 minutes.");
@@ -304,6 +316,11 @@ public class Sim {
             catch (InterruptedException e){
                 System.out.println(e.getMessage());
             }
+            // check if sim died afterwards
+            simDeathCheck();
+            if (isSimAlive){
+                simStatus = "Idle";
+            }
         }
     }
 
@@ -314,6 +331,7 @@ public class Sim {
         }
         else{
             simChangeStatus("Exercising");
+             //mulai olahraga
             Thread thread = new Thread(new Runnable(){
                 public void run(){
                     int repetition = duration / 20;
@@ -329,6 +347,9 @@ public class Sim {
                             addSimNeed("Health", 5);
                             addSimNeed("Mood", 10);
                             decreaseSimNeed("Hunger", 5);
+                            // ganti waktu gk tidur, gak ke kamar mandi, dll
+                            changeLastSleep(20);
+                            changeLastBathroom(20);
                         }
                         catch (InterruptedException e){
                             System.out.println(e.getMessage());
@@ -348,6 +369,10 @@ public class Sim {
             }
             catch (InterruptedException e){
                 System.out.println(e.getMessage());
+            }
+            simDeathCheck();
+            if (isSimAlive){
+                simStatus = "Idle";
             }
         }
     }
@@ -372,6 +397,8 @@ public class Sim {
                             System.out.println("");
                             addSimNeed("Mood", 30);
                             addSimNeed("Health", 20);
+                            changeLastBathroom(240);
+                            lastSleep = 0;
                         }
                         catch (InterruptedException e){
                             System.out.println(e.getMessage());
@@ -390,20 +417,10 @@ public class Sim {
             }
             catch (InterruptedException e){
                 System.out.println(e.getMessage());
-            }        
-        }
-    }
-    
-    // Method untuk memeriksa kapan terakhir tidur
-    public void checkLastSleep(){
-        if (lastBathroom >= 10 * 60){    
-            System.out.println("You haven't slept yet, please get some rest !");
-            try{
-                decreaseSimNeed("Mood", 5);
-                decreaseSimNeed("Health", 5);
             }
-            catch (negativeParameterException n){
-                System.out.println(n.getMessage());
+            simDeathCheck();
+            if (isSimAlive){
+                simStatus = "Idle";
             }
         }
     }
@@ -422,6 +439,9 @@ public class Sim {
                     System.out.println("");
                     decreaseSimNeed("Hunger", 20);
                     addSimNeed("Mood", 10);
+                    lastBathroom = 0;
+                    hasEaten = false;
+                    changeLastSleep(10);
                 }
                 catch (InterruptedException e){
                     System.out.println(e.getMessage());
@@ -440,21 +460,12 @@ public class Sim {
         catch (InterruptedException e){
             System.out.println(e.getMessage());
         }
-        
-    }
 
-    // Method untuk memeriksa kapan terakhir ke toilet
-    public void checkLastBathroom(){
-        if (lastBathroom >= 4 * 60){    //4*60 adalah 4 menit dalam detik
-            System.out.println("You forgot to go to the bathroom after you ate!");
-            try{
-                decreaseSimNeed("Mood", 5);
-                decreaseSimNeed("Health", 5);
-            }
-            catch (negativeParameterException n){
-                System.out.println(n.getMessage());
-            }
+        simDeathCheck();
+        if (isSimAlive){
+            simStatus = "Idle";
         }
+        
     }
 
     // Method untuk Makan
@@ -470,7 +481,10 @@ public class Sim {
                         Thread.sleep(30/15 * 1000);
                     }
                     System.out.println("");
-                    decreaseSimNeed("Hunger", food.getRepletion());
+                    addSimNeed("Hunger", food.getRepletion());
+                    hasEaten = true;
+                    changeLastSleep(30);
+                    // lastBathroom gadiubah karena baru kelar makan
                 }
                 catch (InterruptedException e){
                     System.out.println(e.getMessage());
@@ -490,6 +504,11 @@ public class Sim {
             System.out.println(e.getMessage());
         }
 
+        simDeathCheck();
+        if (isSimAlive){
+            simStatus = "Idle";
+        }
+
 
     }
 
@@ -505,6 +524,9 @@ public class Sim {
                         //ERROR -> solved, cuman typo harusnya repletion bukan repletition
                         double sleepValDouble = (food.getRepletion()*1.5)/(food.getRepletion()%2) * 1000;
                         long sleepValLong = (long) sleepValDouble;
+                        int sleepValInt = (int) sleepValDouble;
+                        changeLastSleep(sleepValInt);
+                        changeLastBathroom(sleepValInt);
                         Thread.sleep(sleepValLong);
                     }
                     System.out.println("");
@@ -528,6 +550,10 @@ public class Sim {
         }
         catch (InterruptedException e){
             System.out.println(e.getMessage());
+        }
+        simDeathCheck();
+        if (isSimAlive){
+            simStatus = "Idle";
         }
 
     }
@@ -581,6 +607,8 @@ public class Sim {
                 for (int j = 0; j < time; j++) {
                     System.out.print("...");
                     Thread.sleep(1000);
+                    changeLastSleep(1);
+                    changeLastBathroom(1);
                 }
                 System.out.println("");
                 addSimNeed("Mood", 10);
@@ -597,6 +625,11 @@ public class Sim {
             thread.join();
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
+        }
+
+        simDeathCheck();
+        if (isSimAlive){
+            simStatus = "Idle";
         }
     }
 
@@ -651,6 +684,57 @@ public class Sim {
         }
         scanner.close();
     }
+
+    // Method untuk memeriksa kapan terakhir ke toilet
+    public void checkLastBathroom(){
+        if (lastBathroom >= 4 * 60){    //4*60 adalah 4 menit dalam detik
+            System.out.println("You forgot to go to the bathroom after you ate!");
+            try{
+                decreaseSimNeed("Mood", 5);
+                decreaseSimNeed("Health", 5);
+            }
+            catch (negativeParameterException n){
+                System.out.println(n.getMessage());
+            }
+        }
+    }
+
+    // Method untuk memeriksa kapan terakhir tidur
+    public void checkLastSleep(){
+        if (lastBathroom >= 10 * 60){
+            System.out.println("You haven't slept yet, please get some rest!");
+            try{
+                decreaseSimNeed("Mood", 5);
+                decreaseSimNeed("Health", 5);
+            }
+            catch (negativeParameterException n){
+                System.out.println(n.getMessage());
+            }
+        }
+    }
+
+    // Method untuk memeriksa kondisi overall SIM
+    public void simDeathCheck(){
+        if (simMood <= 0){
+            System.out.println(simFullName + " is depressed. Your sim has died");
+            isSimAlive = false;
+        }
+        else if (simHunger <= 0){
+            System.out.println(simFullName + " has died of starvation");
+            isSimAlive = false;
+        }
+
+        else if (simHealth == 0){
+            System.out.println(simFullName + " has died due to poor health conditions");
+            isSimAlive = false;
+        }
+    }
+
+    // Method untuk menonaktifkan SIM
+    public void deactivateSim(){
+        isSimAlive = true;
+    }
+
 
 
 
