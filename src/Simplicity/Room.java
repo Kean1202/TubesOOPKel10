@@ -12,13 +12,14 @@ public class Room {
     private Room bawah;
     private Room kiri;
     private Room kanan;
+    private int[] roomLocation;
     private ArrayList<Furniture> listFurniture;
     private final boolean[][] vacantRoom = new boolean[roomLength][roomWidth];
     // private final Furniture[][] furnitureMatrix = new Furniture[roomLength][roomWidth];
 
     //default room
     public Room() {
-        //ini nunggu pasangBarang()
+
 
         // pasangBarang(bed);
         // pasangBarang(stove);
@@ -42,10 +43,47 @@ public class Room {
         }
     }
 
+    //method
+    public boolean pasangBarang(Furniture furniture, Point position) {
+        int furnitureLength = furniture.getLength();
+        int furnitureWidth = furniture.getWidth();
+    
+        // Check if the furniture fits inside the room
+        if (position.getX() + furnitureLength > roomLength ||
+                position.getY() + furnitureWidth > roomWidth) {
+            System.out.println("Furniture does not fit inside the room");
+            return false;
+        }
+    
+        // Check if the area is vacant
+        for (int i = position.getX(); i < position.getX() + furnitureLength; i++) {
+            for (int j = position.getY(); j < position.getY() + furnitureWidth; j++) {
+                if (!vacantRoom[i][j]) {
+                    System.out.println("Cannot place furniture, area is not vacant");
+                    return false;
+                }
+            }
+        }
+    
+        // Place the furniture
+        for (int i = position.getX(); i < position.getX() + furnitureLength; i++) {
+            for (int j = position.getY(); j < position.getY() + furnitureWidth; j++) {
+                vacantRoom[i][j] = false;
+            }
+        }
+        furniture.setPosition(position);
+        listFurniture.add(furniture);
+        return true;
+    }
+    
+
 
     //getter
-    public String getName(){
+    public String getRoomName(){
         return roomName;
+    }
+    public int[] getRoomLocation() {
+        return roomLocation;
     }
     public int getRoomWidth() {
         return roomWidth;
@@ -70,7 +108,7 @@ public class Room {
     }
 
     //setter
-    public void setName(String roomName){
+    public void setRoomName(String roomName){
         this.roomName = roomName;
     }
     public void setRoomWidth(int roomWidth) {
@@ -90,6 +128,9 @@ public class Room {
     }
     public void setKanan(Room room){
         this.kanan=room;
+    }
+    public void setLocation(int[] roomLocation) {
+        this.roomLocation = roomLocation;
     }
     public void setListObjek(ArrayList<Furniture> listFurniture) {
         this.listFurniture = listFurniture;

@@ -1,6 +1,8 @@
 package Simplicity;
 
 import Simplicity.Objects.*;
+import Simplicity.House.*;
+
 import java.util.*;
 
 public class Sim {
@@ -610,6 +612,46 @@ public class Sim {
         }
     }
 
+    //pindah ruangan
+    public void simMoveRoom(){
+        Room roomSim = new Room();
+        Scanner scanner = new Scanner(System.in);
+        List<Room> roomList = house.getRoomList();
+
+        String roomNow = roomSim.getRoomName(); //room tempat sim berada sekarang
+
+        System.out.println("List of Rooms :"); // menampilkan daftar room yang ada di house
+        for (Room room : roomList){
+            System.out.println(room.getRoomName());
+        }
+
+        boolean check = false;
+        while(!check){
+            System.out.print("Insert your destination room : ");
+            String roomName = scanner.nextLine();
+            if (roomNow.equals(roomName)){
+                System.out.println("You're already in the room");
+                System.out.println();
+            }else{
+                // room yang di input ada di house
+                for (Room room : roomList){
+                    if (roomName.equals(room.getRoomName())){
+                        int[] roomLoc = {room.getRoomLocation()[0],room.getRoomLocation()[1]};
+                        setLocation(roomLoc); // sim pindah ke room tujuan
+                        check = true;
+                        break;
+                    }
+                }
+                // room yang di input tidak ada di house
+                if(!check){
+                    System.out.println("There's no " + roomName + "in this house");
+                    System.out.println();
+                }
+            }
+        }
+        scanner.close();
+    }
+
 
 
 
@@ -669,5 +711,7 @@ public class Sim {
         }
     
     }
+
+
 }
 

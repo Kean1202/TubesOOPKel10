@@ -1,6 +1,5 @@
 package Simplicity.Objects;
 
-import Simplicity.Sim;
 
 public abstract class Furniture extends SimplicityObject implements PurchasableObject, Storable{
     //Atributes
@@ -21,6 +20,14 @@ public abstract class Furniture extends SimplicityObject implements PurchasableO
         this.price = price;
     }
 
+    public void setLength(int length){
+        this.length = length;
+    }
+
+    public void setWidth(int width){
+        this.width = width;
+    }
+    
     //Getter
     public int getPrice(){
         return price;
