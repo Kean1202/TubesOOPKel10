@@ -717,16 +717,16 @@ public class Sim {
     public void simDeathCheck(){
         if (simMood <= 0){
             System.out.println(simFullName + " is depressed. Your sim has died");
-            isSimAlive = false;
+            deactivateSim();
         }
         else if (simHunger <= 0){
             System.out.println(simFullName + " has died of starvation");
-            isSimAlive = false;
+            deactivateSim();
         }
 
         else if (simHealth == 0){
             System.out.println(simFullName + " has died due to poor health conditions");
-            isSimAlive = false;
+            deactivateSim();
         }
     }
 
