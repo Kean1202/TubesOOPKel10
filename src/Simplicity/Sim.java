@@ -732,7 +732,7 @@ public class Sim {
 
     // Method untuk menonaktifkan SIM
     public void deactivateSim(){
-        isSimAlive = true;
+        isSimAlive = false;
     }
 
 
