@@ -620,7 +620,7 @@ public class Sim {
 
         String roomNow = roomSim.getRoomName(); //room tempat sim berada sekarang
 
-        System.out.println("List of Rooms :") // menampilkan daftar room yang ada di house
+        System.out.println("List of Rooms :"); // menampilkan daftar room yang ada di house
         for (Room room : roomList){
             System.out.println(room.getRoomName());
         }
