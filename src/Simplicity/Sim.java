@@ -624,7 +624,6 @@ public class Sim {
     public class Inventory{
         HashMap<SimplicityObject, Integer> MapInventory;
 
-        // TODO GANTI DARI STRING KE OBJECT
         public Inventory(){
             MapInventory = new HashMap<SimplicityObject, Integer>();
         }
