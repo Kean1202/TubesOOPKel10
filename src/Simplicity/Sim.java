@@ -801,6 +801,17 @@ public class Sim {
             }
         }
 
+        public boolean checkContains(String objName){
+            boolean isContained = false;
+            for (Map.Entry<SimplicityObject, Integer> entry: MapInventory.entrySet()){
+                if (entry.getKey().getType().equals(objName)){
+                    isContained = true;
+                    break;
+                }
+            }
+            return isContained;
+        }
+
         public int getNumberOfItems(){
             return MapInventory.size();
         }
