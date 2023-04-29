@@ -599,9 +599,15 @@ public class Sim {
     }
 
     public void HouseUpgrade(int roomTotal) {
+        int upgradeCost = 1500 * roomTotal;
+        if (simMoney < upgradeCost) {
+            System.out.println("Insufficient funds to upgrade the house.");
+            return;
+        }
         try {
             // Tunggu selama 18 menit
             Thread.sleep(18 * 60 * 1000);
+            simDecreaseMoney(upgradeCost);
     
             // Tambahkan ruangan ke dalam house
             house.setRoomTotal(house.getRoomTotal() + roomTotal);
