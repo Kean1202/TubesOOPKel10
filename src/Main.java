@@ -1,10 +1,7 @@
 import Simplicity.*;
 import Simplicity.Objects.*;
-
-import java.security.InvalidParameterException;
 import java.util.*;
 
-import javax.naming.InvalidNameException;
 
 public class Main {
     public static void main(String[] args){
@@ -160,7 +157,7 @@ class MenuOptions{
         }
     }
 
-    public void addSim(ArrayList<Sim> simList, Job[] allJobs){
+    public void addSim(ArrayList<Sim> simList, Job[] allJobs, World world){
         boolean success = false;
         boolean foundSameName = false;
         String newName = "";
@@ -183,7 +180,17 @@ class MenuOptions{
             }
         }
         // Sim ditambah ke arraylist
-        Sim newSim = new Sim(newName, allJobs);
+        Sim newSim = new Sim(newName, allJobs, world);
+        // Sim diberi item awal
+        Bed singleBed = new Bed("single bed", 100,4, 1);
+        Toilet toilet = new Toilet("toilet", 10, 1, 1);
+        Stove gasStove = new Stove("gas stove", 50, 2, 1);
+        Desk desk = new Desk("desk", 50, 3, 3);
+        newSim.simInventory.addInventory(singleBed, 1);
+        newSim.simInventory.addInventory(toilet, 1);
+        newSim.simInventory.addInventory(gasStove, 1);
+        newSim.simInventory.addInventory(desk, 1);
+        // Sim ditambah ke arraylist
         simList.add(newSim);
         System.out.println("Sim successfully added");
     }

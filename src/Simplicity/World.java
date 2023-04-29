@@ -1,9 +1,6 @@
 package Simplicity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.time.LocalDateTime; // Format : yyyy-MM-ddTHH:mm:ss.SSS
+import java.util.*;
 
 public class World {
 	private int worldLength;
@@ -12,21 +9,14 @@ public class World {
 	
 	//Attribute untuk menghitung singleton instance
 	private static World instance;
-
-    //Attribute untuk waktu
-    private int[] timeSeries; // untuk mengeset 24 jam
-	private LocalDateTime currentTime; //untuk menyimpan waktu dengan format : yyyy-MM-ddTHH:mm:ss.SSS
-	private String currentDay; //untuk menyimpan nama hari
+	private WorldTime worldTime;
 
 	//Konstruktor
-	private World(int length, int width, List<House> houses){
+	private World(int length, int width, List<House> houses, WorldTime worldTime){
 		this.worldLength = length;
 		this.worldWidth = width;
-		this.worldHouses = new ArrayList<House>(houses);
-		this.timeSeries = new int[24];
-		this.currentTime = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0); //start day with 00:00:00.00
-		this.currentDay = currentTime.getDayOfWeek().name();
-		// Membuat task untuk melakukan method pergantian waktu (tick) tiap detik
+		this.worldHouses = houses;
+		this.worldTime = worldTime;
 
 	}
 
@@ -37,10 +27,11 @@ public class World {
 
 	public static World getInstance() {
         if (instance == null) {
-            instance = new World(64,64, new ArrayList<House>());
+            instance = new World(64,64, new ArrayList<House>(), new WorldTime());
         }
         return instance;
     }
+	
 	public int getworldWidth(){
 		return worldWidth;
 	}
@@ -54,12 +45,8 @@ public class World {
 
 	}
 
-	public LocalDateTime getCurrentTime(){
-		return currentTime;
-	}
-
-	public String getCurrentDay(){
-		return currentDay;
+	public WorldTime getWorldTime(){
+		return worldTime;
 	}
 
     public void setworldWidth(int width) {
@@ -73,21 +60,4 @@ public class World {
     public void addworldHouse(House house) {
         this.worldHouses.add(house);
     }
-
-	public void setTimeSeries(int[] timeSeries){
-		this.timeSeries = timeSeries;
-	}
-
-	public void decreaseTime(int seconds){
-		currentTime = currentTime.minusSeconds(seconds);
-		if (currentTime.getHour() == 0 && currentTime.getMinute() ==0 && currentTime.getSecond()==0){
-			Arrays.fill(timeSeries,0);
-			currentDay = currentTime.plusDays(1).getDayOfWeek().name();
-		}
-		
-	}
-
-	public void changeDay(){
-		currentDay = currentTime.plusDays(1).getDayOfWeek().name();
-	}
 }

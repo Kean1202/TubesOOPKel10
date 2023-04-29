@@ -19,8 +19,10 @@ public class Sim {
     private int simMood;
     private int simHealth;
     private String simStatus;
-    private int[] location;
+    private Point location;
     private House house;
+    private Room curRoom;
+    private World curWorld;
 
     //Attribute untuk ngecek kondisi
     private int lastSleep;
@@ -37,9 +39,10 @@ public class Sim {
     }
 
     //Constructor
-    public Sim(String fullName, Job[] jobList){
+    public Sim(String fullName, Job[] jobList, World world){
         this.simFullName = fullName;
         this.simJob = getRandomJob(jobList);
+        this.curWorld = world;
         simMoney = 100;
         simInventory = new Inventory();
 
@@ -105,7 +108,7 @@ public class Sim {
         return daysSinceJobChange;
     }
 
-    public int[] getLocation() {
+    public Point getLocation() {
         return location;
     }
 
@@ -249,7 +252,7 @@ public class Sim {
         timeWorked += amount;
     }
 
-    public void setLocation(int[] location) {
+    public void setLocation(Point location) {
         this.location = location;
     }
 
@@ -472,46 +475,40 @@ public class Sim {
     }
 
     // Method untuk Makan
-    // Method untuk Makan
     public void simEat(FoodCuisine food){
-        if (simInventory.checkContains(food.getType())){
-            Thread thread = new Thread(new Runnable(){
-                public void run(){
-                    try{
-                        System.out.println("Eating");
-                        for (int j = 0; j<30/2; j++){
-                            System.out.print("...");
-                            Thread.sleep(30/15 * 1000);
-                        }
-                        System.out.println("");
-                        addSimNeed("Hunger", food.getRepletion());
-                        hasEaten = true;
-                        changeLastSleep(30);
-                        simInventory.decreaseInventory(food, 1);
-                        // lastBathroom gadiubah karena baru kelar makan
+        //ngurangin waktu world
+        //World.decreaseTime(30);
+        Thread thread = new Thread(new Runnable(){
+            public void run(){
+                try{
+                    System.out.println("Eating");
+                    for (int j = 0; j<30/2; j++){
+                        System.out.print("...");
+                        Thread.sleep(30/15 * 1000);
                     }
-                    catch (InterruptedException e){
-                        System.out.println(e.getMessage());
-                    }
-                    catch (negativeParameterException n){
-                        System.out.println(n.getMessage());
-                    }
-
+                    System.out.println("");
+                    addSimNeed("Hunger", food.getRepletion());
+                    hasEaten = true;
+                    changeLastSleep(30);
+                    // lastBathroom gadiubah karena baru kelar makan
                 }
-            });
-            thread.start();
+                catch (InterruptedException e){
+                    System.out.println(e.getMessage());
+                }
+                catch (negativeParameterException n){
+                    System.out.println(n.getMessage());
+                }
 
-            try{
-                thread.join();
             }
-            catch (InterruptedException e){
-                System.out.println(e.getMessage());
-            }
-        }
-        else{
-            System.out.println("You don't have "+ food.getType() + " in your inventory");
-        }
+        });
+        thread.start();
 
+        try{
+            thread.join();
+        }
+        catch (InterruptedException e){
+            System.out.println(e.getMessage());
+        }
 
         simDeathCheck();
         if (isSimAlive){
@@ -523,62 +520,43 @@ public class Sim {
 
     //Method untuk masak
     public void simCook(FoodCuisine food){
-        // LOOPING buat cek udh punya ingredientsnya atau blm
-        boolean allIngredients = true;
-        List<FoodIngredients> listOfIngredieents = food.getIngredients();
-        for (FoodIngredients ingredient: listOfIngredieents) {
-            if (!simInventory.checkContains(ingredient.getType())) {
-                allIngredients = false;
-                break;
-            }
-        }
-        // semua ingredient ada = masak gas
-        if (allIngredients){
-            Thread thread = new Thread(new Runnable(){
-                public void run(){
-                    try{
-                        System.out.println("Cooking");
-                        for (int j = 0; j<((food.getRepletion()*1.5)/2); j++){
-                            System.out.print("...");
+        Thread thread = new Thread(new Runnable(){
+            public void run(){
+                try{
+                    System.out.println("Cooking");
+                    for (int j = 0; j<((food.getRepletion()*1.5)/2); j++){
+                        System.out.print("...");
 
-                            //ERROR -> solved, cuman typo harusnya repletion bukan repletition
-                            double sleepValDouble = (food.getRepletion()*1.5)/(food.getRepletion()%2) * 1000;
-                            long sleepValLong = (long) sleepValDouble;
-                            int sleepValInt = (int) sleepValDouble;
-                            changeLastSleep(sleepValInt);
-                            changeLastBathroom(sleepValInt);
-                            Thread.sleep(sleepValLong);
-                        }
-                        System.out.println("");
-                        addSimNeed("Mood", 10);
-                        for (FoodIngredients ingredient: listOfIngredieents) {
-                            simInventory.decreaseInventory(ingredient, 1);
-                        }
-
-                        //menambahkan makanan ke inventory
-                        //ERROR -> solved
-                        simInventory.addInventory(food, 1);
-                    } catch (negativeParameterException n) {
-                        System.out.println(n.getMessage());
-                    } catch (InterruptedException e){
-                        System.out.println(e.getMessage());
+                        //ERROR -> solved, cuman typo harusnya repletion bukan repletition
+                        double sleepValDouble = (food.getRepletion()*1.5)/(food.getRepletion()%2) * 1000;
+                        long sleepValLong = (long) sleepValDouble;
+                        int sleepValInt = (int) sleepValDouble;
+                        changeLastSleep(sleepValInt);
+                        changeLastBathroom(sleepValInt);
+                        Thread.sleep(sleepValLong);
                     }
+                    System.out.println("");
+                    addSimNeed("Mood", 10);
 
+                    //menambahkan makanan ke inventory
+                    //ERROR -> solved
+                    simInventory.addInventory(food, 1);
+                } catch (negativeParameterException n) {
+                    System.out.println(n.getMessage());
+                } catch (InterruptedException e){
+                    System.out.println(e.getMessage());
                 }
-            });
-            thread.start();
 
-            try{
-                thread.join();
             }
-            catch (InterruptedException e){
-                System.out.println(e.getMessage());
-            }
+        });
+        thread.start();
+
+        try{
+            thread.join();
         }
-        else{
-            System.out.println("You don't have all the ingredients, try again when you have them");
+        catch (InterruptedException e){
+            System.out.println(e.getMessage());
         }
-        // cek status
         simDeathCheck();
         if (isSimAlive){
             simStatus = "Idle";
@@ -626,8 +604,8 @@ public class Sim {
     //method untuk berkunjung
     public void simVisit(House destination) {
         simChangeStatus("On the way to visit " + destination.toString());
-        double distance = Math.sqrt(Math.pow(destination.getLocation().getX() - getLocation()[0], 2)
-                + Math.pow(destination.getLocation().getY() - getLocation()[1], 2));
+        double distance = Math.sqrt(Math.pow(destination.getLocation().getX() - getLocation().getX(), 2)
+                + Math.pow(destination.getLocation().getY() - getLocation().getY(), 2));
         int time = (int) distance;
         Thread thread = new Thread(() -> {
             try {
@@ -681,11 +659,10 @@ public class Sim {
 
 
     public void simMoveRoom(){
-        Room roomSim = new Room();
         Scanner scanner = new Scanner(System.in);
         List<Room> roomList = house.getRoomList();
 
-        String roomNow = roomSim.getRoomName(); //room tempat sim berada sekarang
+        String roomNow = curRoom.getRoomName(); //room tempat sim berada sekarang
 
         System.out.println("List of Rooms :"); // menampilkan daftar room yang ada di house
         for (Room room : roomList){
@@ -703,7 +680,7 @@ public class Sim {
                 // room yang di input ada di house
                 for (Room room : roomList){
                     if (roomName.equals(room.getRoomName())){
-                        //int[] roomLoc = {room.getRoomLocation()[0],room.getRoomLocation()[1]};
+                        Point roomLoc = new Point(room.getRoomLocation().getX(),room.getRoomLocation().getY());
                         setLocation(roomLoc); // sim pindah ke room tujuan
                         check = true;
                         break;
