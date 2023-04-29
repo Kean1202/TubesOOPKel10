@@ -6,47 +6,45 @@ import Simplicity.*;
 import Simplicity.Objects.*;
 
 public class Room {
-    private int roomLength=6 ;
-    private int roomWidth=6 ;
+    private final int roomLength=6 ; // semua panjang room 6
+    private final int roomWidth=6 ; // semua lebar room 6
     private String roomName;
     private Room atas;
     private Room bawah;
     private Room kiri;
     private Room kanan;
     private int[] roomLocation;
-    private ArrayList<Furniture> listFurniture;
-    private final boolean[][] vacantRoom = new boolean[roomLength][roomWidth];
-    // private final Furniture[][] furnitureMatrix = new Furniture[roomLength][roomWidth];
+    private ArrayList<Furniture> listFurniture = new ArrayList<>();
+    private boolean[][] vacantRoom = new boolean[roomLength][roomWidth];
+
+    public Room(String roomName){
+        this.roomName=roomName;
+        listFurniture = new ArrayList<Furniture>();
+        for (int i = 0; i < roomLength; i++) {
+            for (int j = 0; j < roomWidth; j++) {
+                vacantRoom[i][j] = true;
+            }
+        }
+    }
 
     //default room
-    public Room() {
+    public void defaultRoom() {
+        setRoomName("default room");
+        atas = null;
+        bawah = null;
+        kiri = null;
+        kanan = null;
         Bed singleBed = new Bed("single bed", 100,4, 1);
         Toilet toilet = new Toilet("toilet", 10, 1, 1);
         Stove gasStove = new Stove("gas stove", 50, 2, 1);
         Clock clock = new Clock("clock", 10, 1, 1, 0);
         Desk desk = new Desk("desk", 50, 3, 3);
 
-        pasangBarang(singleBed,new Point(1,4));
-        pasangBarang(toilet,new Point(2,2));
-        pasangBarang(gasStove,new Point(1,2));
-        pasangBarang(clock,new Point(1,1));
-        pasangBarang(desk,new Point(3, 3));
-    }
-
-    public Room(String roomName){
-        this.roomName=roomName;
-        this.roomName = roomName;
-        atas = null;
-        bawah = null;
-        kiri = null;
-        kanan = null;
-        listFurniture = new ArrayList<Furniture>();
-
-        for (int i = 0; i < roomLength; i++) {
-            for (int j = 0; j < roomWidth; j++) {
-                vacantRoom[i][j] = true;
-            }
-        }
+        pasangBarang(singleBed,new Point(0,0));
+        pasangBarang(toilet,new Point(4,0));
+        pasangBarang(gasStove,new Point(0,2));
+        pasangBarang(clock,new Point(4,2));
+        pasangBarang(desk,new Point(1, 3));
     }
 
     //method
@@ -116,12 +114,6 @@ public class Room {
     //setter
     public void setRoomName(String roomName){
         this.roomName = roomName;
-    }
-    public void setRoomWidth(int roomWidth) {
-        this.roomWidth = roomWidth;
-    }
-    public void setRoomLength(int roomLength) {
-        this.roomLength = roomLength;
     }
     public void setAtas(Room room){
         this.atas=room;
