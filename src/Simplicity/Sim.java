@@ -136,7 +136,7 @@ public class Sim {
         else{
             System.out.println("You haven't worked long enough in your current job to change jobs");
         }
-        
+
     }
 
     public void simAddMoney(int amount){
@@ -155,7 +155,7 @@ public class Sim {
         else{
             //menambahkan hunger
             switch (needType) {
-                case "Hunger": 
+                case "Hunger":
                     if (simHunger + amount >= 100) {
                         simHunger = 100;
                     } else {
@@ -185,7 +185,7 @@ public class Sim {
                     break;
             }
         }
-        
+
     } // end of adding needs
 
     // ada exception buat angka negatif
@@ -226,14 +226,14 @@ public class Sim {
                     break;
             }
         }
-        
+
     } // end of decreasing needs
 
 
     //ganti status
     public void simChangeStatus(String newStatus){
         simStatus = newStatus;
-    } 
+    }
 
     public void changeLastBathroom(int amount){
         if (hasEaten){
@@ -334,7 +334,7 @@ public class Sim {
         }
         else{
             simChangeStatus("Exercising");
-             //mulai olahraga
+            //mulai olahraga
             Thread thread = new Thread(new Runnable(){
                 public void run(){
                     int repetition = duration / 20;
@@ -361,7 +361,7 @@ public class Sim {
                             System.out.println(n.getMessage());
                         }
                     }
-                    
+
                 }
             });
 
@@ -379,7 +379,7 @@ public class Sim {
             }
         }
     }
-    
+
     // Method untuk tidur
     public void sleep(int duration) throws invalidMultitudeNumber {
         if (duration % (4*60) != 0){
@@ -410,7 +410,7 @@ public class Sim {
                             System.out.println(n.getMessage());
                         }
                     }
-                    
+
                 }
             });
             thread.start();
@@ -452,9 +452,9 @@ public class Sim {
                 catch (negativeParameterException n){
                     System.out.println(n.getMessage());
                 }
-                
+
             }
-        }); 
+        });
         thread.start();
         // supaya dia nunggu thread lain
         try{
@@ -468,7 +468,7 @@ public class Sim {
         if (isSimAlive){
             simStatus = "Idle";
         }
-        
+
     }
 
     // Method untuk Makan
@@ -495,9 +495,9 @@ public class Sim {
                 catch (negativeParameterException n){
                     System.out.println(n.getMessage());
                 }
-                
+
             }
-        }); 
+        });
         thread.start();
 
         try{
@@ -543,9 +543,9 @@ public class Sim {
                 } catch (InterruptedException e){
                     System.out.println(e.getMessage());
                 }
-                
+
             }
-        }); 
+        });
         thread.start();
 
         try{
@@ -566,7 +566,7 @@ public class Sim {
             throw new negativeParameterException(amount);
         }
         else if(amount == 0){
-            throw new invalidMultitudeNumber(amount); 
+            throw new invalidMultitudeNumber(amount);
         }
         else{
             int time = new Random().nextInt(6)* 30 * 1000;
@@ -579,7 +579,7 @@ public class Sim {
                                 Thread.sleep(time);
                                 simDecreaseMoney(object.getPrice()*amount);
                                 simInventory.addInventory((SimplicityObject)object, amount);
-                                System.out.println("You have bought " + ((SimplicityObject) object).getType() + " for " + object.getPrice() + " Simplicity Dollars");        
+                                System.out.println("You have bought " + ((SimplicityObject) object).getType() + " for " + object.getPrice() + " Simplicity Dollars");
                             }
                             catch (InterruptedException e){
                                 System.out.println(e.getMessage());
@@ -646,7 +646,7 @@ public class Sim {
             // Tunggu selama 18 menit
             Thread.sleep(18 * 60 * 1000);
             simDecreaseMoney(upgradeCost);
-    
+
             // Tambahkan ruangan ke dalam house
             house.setRoomTotal(house.getRoomTotal() + roomTotal);
         } catch (InterruptedException e) {
@@ -654,7 +654,7 @@ public class Sim {
         }
     }
 
-  
+
     public void simMoveRoom(){
         Room roomSim = new Room();
         Scanner scanner = new Scanner(System.in);
@@ -773,7 +773,7 @@ public class Sim {
 
 
     // TODO yang implementasi waktu bikin perhitungan waktu per hari dan pergantian hari
-    
+
 
     // END OF METHODS
 
@@ -835,7 +835,7 @@ public class Sim {
                 System.out.println("Your inventory is empty");
             }
         }
-    
+
     }
 
 
