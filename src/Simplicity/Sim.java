@@ -19,8 +19,10 @@ public class Sim {
     private int simMood;
     private int simHealth;
     private String simStatus;
-    private int[] location;
+    private Point location;
     private House house;
+    private Room curRoom;
+    private World curWorld;
 
     //Attribute untuk ngecek kondisi
     private int lastSleep;
@@ -37,9 +39,10 @@ public class Sim {
     }
 
     //Constructor
-    public Sim(String fullName, Job[] jobList){
+    public Sim(String fullName, Job[] jobList, World world){
         this.simFullName = fullName;
         this.simJob = getRandomJob(jobList);
+        this.curWorld = world;
         simMoney = 100;
         simInventory = new Inventory();
 
@@ -105,7 +108,7 @@ public class Sim {
         return daysSinceJobChange;
     }
 
-    public int[] getLocation() {
+    public Point getLocation() {
         return location;
     }
 
@@ -249,7 +252,7 @@ public class Sim {
         timeWorked += amount;
     }
 
-    public void setLocation(int[] location) {
+    public void setLocation(Point location) {
         this.location = location;
     }
 
@@ -601,8 +604,8 @@ public class Sim {
     //method untuk berkunjung
     public void simVisit(House destination) {
         simChangeStatus("On the way to visit " + destination.toString());
-        double distance = Math.sqrt(Math.pow(destination.getLocation().getX() - getLocation()[0], 2)
-                + Math.pow(destination.getLocation().getY() - getLocation()[1], 2));
+        double distance = Math.sqrt(Math.pow(destination.getLocation().getX() - getLocation().getX(), 2)
+                + Math.pow(destination.getLocation().getY() - getLocation().getY(), 2));
         int time = (int) distance;
         Thread thread = new Thread(() -> {
             try {
@@ -656,11 +659,10 @@ public class Sim {
 
 
     public void simMoveRoom(){
-        Room roomSim = new Room();
         Scanner scanner = new Scanner(System.in);
         List<Room> roomList = house.getRoomList();
 
-        String roomNow = roomSim.getRoomName(); //room tempat sim berada sekarang
+        String roomNow = curRoom.getRoomName(); //room tempat sim berada sekarang
 
         System.out.println("List of Rooms :"); // menampilkan daftar room yang ada di house
         for (Room room : roomList){
@@ -678,7 +680,7 @@ public class Sim {
                 // room yang di input ada di house
                 for (Room room : roomList){
                     if (roomName.equals(room.getRoomName())){
-                        int[] roomLoc = {room.getRoomLocation()[0],room.getRoomLocation()[1]};
+                        Point roomLoc = new Point(room.getRoomLocation().getX(),room.getRoomLocation().getY());
                         setLocation(roomLoc); // sim pindah ke room tujuan
                         check = true;
                         break;

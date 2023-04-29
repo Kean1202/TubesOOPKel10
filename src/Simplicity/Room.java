@@ -43,11 +43,11 @@ public class Room {
         Clock clock = new Clock("clock", 10, 1, 1, 0);
         Desk desk = new Desk("desk", 50, 3, 3);
 
-        pasangBarang(singleBed,new Point(0,0));
-        pasangBarang(toilet,new Point(4,0));
-        pasangBarang(gasStove,new Point(0,2));
-        pasangBarang(clock,new Point(4,2));
-        pasangBarang(desk,new Point(1, 3));
+        pasangBarang(singleBed,new Point(0,0), mySim);
+        pasangBarang(toilet,new Point(4,0), mySim);
+        pasangBarang(gasStove,new Point(0,2), mySim);
+        pasangBarang(clock,new Point(4,2), mySim);
+        pasangBarang(desk,new Point(1, 3), mySim);
     }
 
     //method
