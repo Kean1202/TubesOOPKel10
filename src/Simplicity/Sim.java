@@ -3,6 +3,7 @@ package Simplicity;
 import Simplicity.Objects.*;
 import Simplicity.Objects.Clock; // supaya ngga ambigu dengan Clock bawaan java
 import Simplicity.House.*;
+import Simplicity.Sim.Inventory;
 
 import java.time.*;
 import java.util.*;
