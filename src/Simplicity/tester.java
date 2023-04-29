@@ -12,8 +12,21 @@ public class tester {
         Job[] allJobs = Job.getAllJobs(cook, janitor, teacher, CEO);
         Toilet toilet = new Toilet("toilet", 100, 1, 1);
         FoodIngredients egg = new FoodIngredients("egg",1 ,2);
+        FoodIngredients meat = new FoodIngredients("meat",1 ,2);
         Sim Kean = new Sim("Kean Nafis Santang", allJobs);
+        Kean.simInventory.addInventory(egg, 5);
+        Kean.simInventory.addInventory(meat, 1);
         FoodCuisine Sushi = new FoodCuisine("Sushi", 5);
+        Sushi.addIngredients(egg);
+        Sushi.addIngredients(meat);
+        FoodCuisine Noodles = new FoodCuisine("Noodles", 5);
+        Noodles.addIngredients(meat);
+        Kean.simCook(Sushi);
+        Kean.simInventory.printInventory();
+        Kean.simCook(Noodles);
+        Kean.simEat(Sushi);
+        Kean.simEat(Noodles);
+        Kean.simInventory.printInventory();
         // try{
         //     Kean.work(120);
         //     Kean.work(120);
@@ -26,9 +39,6 @@ public class tester {
         // System.out.println(Kean.getSimMoney());
 
         // Kean.simChangeJob(CEO);
-
-        Kean.simCook(Sushi);
-        Kean.simInventory.printInventory();
 
         // BUAT TESTING INVENTORY
         // System.out.println(Kean.getSimMoney());
