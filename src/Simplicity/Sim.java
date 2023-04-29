@@ -601,8 +601,8 @@ public class Sim {
     //method untuk berkunjung
     public void simVisit(House destination) {
         simChangeStatus("On the way to visit " + destination.toString());
-        double distance = Math.sqrt(Math.pow(destination.getLocation()[0] - getLocation()[0], 2)
-                + Math.pow(destination.getLocation()[1] - getLocation()[1], 2));
+        double distance = Math.sqrt(Math.pow(destination.getLocation().getX() - getLocation()[0], 2)
+                + Math.pow(destination.getLocation().getY() - getLocation()[1], 2));
         int time = (int) distance;
         Thread thread = new Thread(() -> {
             try {
