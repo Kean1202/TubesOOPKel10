@@ -8,14 +8,14 @@ import javax.naming.InvalidNameException;
 
 public class Main {
     public static void main(String[] args){
-        //INSTANCES
-
-        //LIST OF SIMS
-        ArrayList<Sim> listSim = new ArrayList<Sim>();
-
+        //Current SIM
+        Sim currentSim = null;
+        // LIST OF SIMS
+        ArrayList<Sim> listOfSims;
+        // GAME STATE
+        boolean gameState = false;
         //WORLD
         World world = World.getInstance();
-
         //JOBS
         Job magician = new Job("magician", 15);
         Job chef = new Job("chef", 30);
@@ -33,7 +33,7 @@ public class Main {
         Stove elStove = new Stove("electric stove", 200, 1, 1);
         Desk desk = new Desk("desk", 50, 3, 3);
         Clock clock = new Clock("clock", 10, 1, 1, 0);
-        
+
         //OBJECTS
         Map<String, PurchasableObject> purchasableMap = new HashMap<String, PurchasableObject>(){{
             put(singleBed.getType(), singleBed);
@@ -45,15 +45,19 @@ public class Main {
             put(desk.getType(), desk);
             put(clock.getType(), clock);
         }};
-
         //TESTING
-        Sim newSim = new Sim("m", allJobs);
-        newSim.simInventory.printInventory();
-        System.out.println(newSim.getSimMoney());
+        gameState = true;
+        listOfSims = new ArrayList<>();
+        MenuOptions mainMenu = new MenuOptions();
+        mainMenu.printMenu();
+        mainMenu.addSim(listOfSims, allJobs);
+        currentSim = mainMenu.changeSim(listOfSims);
+        mainMenu.viewSimInventory(currentSim, gameState, listOfSims);
+        mainMenu.viewSimInfo(currentSim, gameState, listOfSims);
         
         try{
-            newSim.simBuyItem(purchasableMap, "single bed", 1);
-            toilet.doAction(newSim);
+            currentSim.simBuyItem(purchasableMap, "single bed", 1);
+            toilet.doAction(currentSim);
         }
         catch (invalidMultitudeNumber n){
             System.out.println(n.getMessage());
@@ -62,7 +66,7 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        newSim.simInventory.printInventory();
+        currentSim.simInventory.printInventory();
 //
 //        if(listSim.size() == 0){
 //            System.out.println("No sims created yet!");
@@ -110,4 +114,106 @@ public class Main {
         // }
 
     }
+
 }
+
+class MenuOptions{
+    public void printMenu(){
+        System.out.println("========== SIMPLICITY MENU ==========");
+        System.out.println("1.  START GAME");
+        System.out.println("2.  HELP");
+        System.out.println("3.  EXIT");
+        System.out.println("4.  VIEW SIM INFO");
+        System.out.println("5.  VIEW CURRENT LOCATION");
+        System.out.println("6.  VIEW INVENTORY");
+        System.out.println("7.  UPGRADE HOUSE");
+        System.out.println("8.  MOVE ROOM");
+        System.out.println("9.  EDIT ROOM");
+        System.out.println("10. ADD SIM");
+        System.out.println("11. CHANGE SIM");
+        System.out.println("12. LIST OBJECT");
+        System.out.println("13. GO TO OBJECT");
+        System.out.println("14. ACTION");
+        System.out.println("========== /////////////// ==========");
+    }
+
+    public void viewSimInfo(Sim mySim, boolean gameState, ArrayList<Sim> simList){
+        if (gameState && !simList.isEmpty()){
+            System.out.println("Full Name    : " + mySim.getSimName());
+            System.out.println("Job          : " + mySim.getSimJobName());
+            System.out.println("Health       : " + mySim.getSimHealth());
+            System.out.println("Hunger       : " + mySim.getSimHunger());
+            System.out.println("Mood         : " + mySim.getSimMood());
+            System.out.println("Money        : " + mySim.getSimMoney());
+        }
+        else{
+            System.out.println("You must be in an active game with a minimum of (1) sim to check your sim's information");
+        }
+    }
+
+    public void viewSimInventory(Sim mySim, boolean gameState, ArrayList<Sim> simList){
+        if (gameState && !simList.isEmpty()){
+            mySim.simInventory.printInventory();
+        }
+        else{
+            System.out.println("You must be in an active game with a minimum of (1) sim to check your sim's information");
+        }
+    }
+
+    public void addSim(ArrayList<Sim> simList, Job[] allJobs){
+        boolean success = false;
+        boolean foundSameName = false;
+        String newName = "";
+        Scanner inp = new Scanner(System.in);
+        // Validasi nama sim
+        while (!success){
+            foundSameName = false;
+            System.out.println("Welcome! Please input your Sim's name: ");
+            newName = inp.nextLine();
+            // looping buat nyari yang namanya sama
+            for (Sim sim: simList){
+                if (newName.toLowerCase().equals(sim.getSimName().toLowerCase())){
+                    foundSameName = true;
+                    System.out.println("There is already another sim with that name, please choose another name!");
+                }
+            }
+            // Bila nama sudah aman, sim ditambahkan
+            if (!foundSameName){
+                success = true;
+            }
+        }
+        // Sim ditambah ke arraylist
+        Sim newSim = new Sim(newName, allJobs);
+        simList.add(newSim);
+        System.out.println("Sim successfully added");
+    }
+
+    public Sim changeSim(ArrayList<Sim> listOfSims){
+        Sim newSim = null;
+        boolean found = false;
+        String name;
+        Scanner inp = new Scanner(System.in);
+        while (!found){
+            System.out.println("Here are you current sims, please choose a sim");
+            for (Sim sim: listOfSims){
+                System.out.println(sim.getSimName());
+            }
+            System.out.println("Type in the name of the sim you want to switch to: ");
+            name = inp.nextLine();
+            for (Sim sim: listOfSims){
+                if (name.toLowerCase().equals(sim.getSimName().toLowerCase())){
+                    found = true;
+                    newSim = sim;
+                }
+            }
+            if (!found){
+                System.out.println("No sim found with that name!");
+                System.out.println();
+            }
+        }
+        System.out.println("Success! you have swapped to" + newSim.getSimName());
+        return newSim;
+    }
+}
+
+
