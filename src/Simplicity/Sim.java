@@ -3,7 +3,7 @@ package Simplicity;
 import Simplicity.Objects.*;
 import Simplicity.Objects.Clock; // supaya ngga ambigu dengan Clock bawaan java
 import Simplicity.House.*;
-import Simplicity.Sim.Inventory;
+
 
 import java.time.*;
 import java.util.*;
@@ -654,7 +654,7 @@ public class Sim {
         }
     }
 
-    Pindah ruangan
+  
     public void simMoveRoom(){
         Room roomSim = new Room();
         Scanner scanner = new Scanner(System.in);
