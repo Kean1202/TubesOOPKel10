@@ -2,7 +2,8 @@ package Simplicity;
 
 import java.util.ArrayList;
 
-import Simplicity.Objects.Furniture;
+import Simplicity.*;
+import Simplicity.Objects.*;
 
 public class Room {
     private int roomLength=6 ;
@@ -19,12 +20,17 @@ public class Room {
 
     //default room
     public Room() {
+        Bed singleBed = new Bed("single bed", 100,4, 1);
+        Toilet toilet = new Toilet("toilet", 10, 1, 1);
+        Stove gasStove = new Stove("gas stove", 50, 2, 1);
+        Clock clock = new Clock("clock", 10, 1, 1, 0);
+        Desk desk = new Desk("desk", 50, 3, 3);
 
-
-        // pasangBarang(bed);
-        // pasangBarang(stove);
-        // pasangBarang(desk);
-        // pasangBarang(clock);
+        pasangBarang(singleBed,new Point(1,4));
+        pasangBarang(toilet,new Point(2,2));
+        pasangBarang(gasStove,new Point(1,2));
+        pasangBarang(clock,new Point(1,1));
+        pasangBarang(desk,new Point(3, 3));
     }
 
     public Room(String roomName){
