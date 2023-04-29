@@ -1,8 +1,10 @@
 package Simplicity;
 
 import Simplicity.Objects.*;
+import Simplicity.Objects.Clock; // supaya ngga ambigu dengan Clock bawaan java
 import Simplicity.House.*;
 
+import java.time.*;
 import java.util.*;
 
 // TODO tambah syarat di Main bahwa sim harus hidup buat dipake
@@ -645,7 +647,7 @@ public class Sim {
         }
     }
 
-    //pindah ruangan
+    //Pindah ruangan
     public void simMoveRoom(){
         Room roomSim = new Room();
         Scanner scanner = new Scanner(System.in);
@@ -683,6 +685,28 @@ public class Sim {
             }
         }
         scanner.close();
+    }
+
+    // Melihat waktu
+    public void simCheckTime(Clock clock) {
+        WorldTime worldTime = new WorldTime();
+        Instant now = Instant.now();
+        Duration timeElapsed = Duration.between(worldTime.getStartTime(), now);
+        long timeRemaining = 720 - (timeElapsed.getSeconds() % 720);
+
+        // Menghitung waktu yang diperlukan agar aksi dapat terselesaikan
+        long timeRemainingForAction = clock.getTime() * 60 - (timeElapsed.getSeconds() % 720);
+
+        System.out.println("Time remaining today: " + formatTime(timeRemaining));
+        System.out.println("Time remaining for action: " + formatTime(timeRemainingForAction)); // untuk tindakan yang bisa ditinggal
+    }
+
+    // Utility function untuk memformat time menjadi HH:MM:SS 
+    private String formatTime(long seconds) {
+        long hours = seconds / 3600;
+        long minutes = (seconds % 3600) / 60;
+        long secs = seconds % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, secs);
     }
 
     // Method untuk memeriksa kapan terakhir ke toilet
