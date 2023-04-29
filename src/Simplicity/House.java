@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class House {
-    private int[] location;
+    private Point location;
     private List<Room> roomList;
     private int roomTotal;
 
@@ -17,7 +17,7 @@ public class House {
         return this.roomList;
     }
 
-    public int[] getLocation() {
+    public Point getLocation() {
         return location;
     }
 

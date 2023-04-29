@@ -13,12 +13,15 @@ public class Room {
     private Room bawah;
     private Room kiri;
     private Room kanan;
-    private int[] roomLocation;
+    private Point roomLocation;
     private ArrayList<Furniture> listFurniture = new ArrayList<>();
     private boolean[][] vacantRoom = new boolean[roomLength][roomWidth];
+    
+    
 
     public Room(String roomName){
         this.roomName=roomName;
+        
         listFurniture = new ArrayList<Furniture>();
         for (int i = 0; i < roomLength; i++) {
             for (int j = 0; j < roomWidth; j++) {
@@ -28,7 +31,7 @@ public class Room {
     }
 
     //default room
-    public void defaultRoom() {
+    public void defaultRoom(Sim mySim) {
         setRoomName("default room");
         atas = null;
         bawah = null;
@@ -48,9 +51,14 @@ public class Room {
     }
 
     //method
-    public boolean pasangBarang(Furniture furniture, Point position) {
+    public boolean pasangBarang(Furniture furniture, Point position, Sim mySim) {
         int furnitureLength = furniture.getLength();
         int furnitureWidth = furniture.getWidth();
+
+        if (!mySim.simInventory.checkContains(furniture.getType())) {
+            System.out.println("Cannot place furniture, item not found in inventory");
+            return false;
+        }
     
         // Check if the furniture fits inside the room
         if (position.getX() + furnitureLength > roomLength ||
@@ -75,8 +83,9 @@ public class Room {
                 vacantRoom[i][j] = false;
             }
         }
-        furniture.setPosition(position);
+        
         listFurniture.add(furniture);
+        mySim.simInventory.decreaseInventory(furniture, 1);
         return true;
     }
     
@@ -86,7 +95,7 @@ public class Room {
     public String getRoomName(){
         return roomName;
     }
-    public int[] getRoomLocation() {
+    public Point getRoomLocation() {
         return roomLocation;
     }
     public int getRoomWidth() {
@@ -127,7 +136,7 @@ public class Room {
     public void setKanan(Room room){
         this.kanan=room;
     }
-    public void setLocation(int[] roomLocation) {
+    public void setLocation(Point roomLocation) {
         this.roomLocation = roomLocation;
     }
     public void setListObjek(ArrayList<Furniture> listFurniture) {
