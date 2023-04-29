@@ -16,6 +16,10 @@ public class WorldTime {
         return worldDay;
     }
 
+    public Instant getStartTime() {
+        return startTime;
+    }
+
     private void refreshTime() {
         worldDay =(int) (worldTime.toSeconds() % 12);
     }
