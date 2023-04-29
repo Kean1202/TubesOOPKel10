@@ -653,7 +653,7 @@ public class Sim {
         }
     }
 
-    //Pindah ruangan
+    Pindah ruangan
     public void simMoveRoom(){
         Room roomSim = new Room();
         Scanner scanner = new Scanner(System.in);

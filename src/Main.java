@@ -195,8 +195,9 @@ class MenuOptions{
         Scanner inp = new Scanner(System.in);
         while (!found){
             System.out.println("Here are you current sims, please choose a sim");
-            for (Sim sim: listOfSims){
-                System.out.println(sim.getSimName());
+            for (int i = 0; i < listOfSims.size(); i++){
+                Sim sim = listOfSims.get(i);
+                System.out.println((i+1) + ". " + sim.getSimName());
             }
             System.out.println("Type in the name of the sim you want to switch to: ");
             name = inp.nextLine();
@@ -211,7 +212,7 @@ class MenuOptions{
                 System.out.println();
             }
         }
-        System.out.println("Success! you have swapped to" + newSim.getSimName());
+        System.out.println("Success! you have swapped to " + newSim.getSimName());
         return newSim;
     }
 }
