@@ -47,7 +47,7 @@ public class Main {
         listOfSims = new ArrayList<>();
         MenuOptions mainMenu = new MenuOptions();
         mainMenu.printMenu();
-        mainMenu.addSim(listOfSims, allJobs);
+        mainMenu.addSim(listOfSims, allJobs, world);
         currentSim = mainMenu.changeSim(listOfSims);
         mainMenu.viewSimInventory(currentSim, gameState, listOfSims);
         mainMenu.viewSimInfo(currentSim, gameState, listOfSims);
