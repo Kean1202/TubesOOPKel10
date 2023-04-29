@@ -8,7 +8,7 @@ public class House {
     private int roomTotal;
 
     public House(int x, int y) {
-        this.location = new int[] {x, y};
+        this.location = new Point(x,y);
         this.roomList = new ArrayList<>();
         this.roomList.add(new Room("Bedroom"));  // ini blm jalan kalo make konstruktor yg sblm gw ubah
     }

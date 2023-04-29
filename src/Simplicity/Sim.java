@@ -3,7 +3,7 @@ package Simplicity;
 import Simplicity.Objects.*;
 import Simplicity.Objects.Clock; // supaya ngga ambigu dengan Clock bawaan java
 import Simplicity.House.*;
-import Simplicity.Sim.Inventory;
+
 
 import java.time.*;
 import java.util.*;
@@ -473,43 +473,39 @@ public class Sim {
 
     // Method untuk Makan
     public void simEat(FoodCuisine food){
-        if (simInventory.checkContains(food.getType())){
-            Thread thread = new Thread(new Runnable(){
-                public void run(){
-                    try{
-                        System.out.println("Eating");
-                        for (int j = 0; j<30/2; j++){
-                            System.out.print("...");
-                            Thread.sleep(30/15 * 1000);
-                        }
-                        System.out.println("");
-                        addSimNeed("Hunger", food.getRepletion());
-                        hasEaten = true;
-                        changeLastSleep(30);
-                        // lastBathroom gadiubah karena baru kelar makan
+        //ngurangin waktu world
+        //World.decreaseTime(30);
+        Thread thread = new Thread(new Runnable(){
+            public void run(){
+                try{
+                    System.out.println("Eating");
+                    for (int j = 0; j<30/2; j++){
+                        System.out.print("...");
+                        Thread.sleep(30/15 * 1000);
                     }
-                    catch (InterruptedException e){
-                        System.out.println(e.getMessage());
-                    }
-                    catch (negativeParameterException n){
-                        System.out.println(n.getMessage());
-                    }
-
+                    System.out.println("");
+                    addSimNeed("Hunger", food.getRepletion());
+                    hasEaten = true;
+                    changeLastSleep(30);
+                    // lastBathroom gadiubah karena baru kelar makan
                 }
-            });
-            thread.start();
-
-            try{
-                thread.join();
+                catch (InterruptedException e){
+                    System.out.println(e.getMessage());
+                }
+                catch (negativeParameterException n){
+                    System.out.println(n.getMessage());
+                }
+                
             }
-            catch (InterruptedException e){
-                System.out.println(e.getMessage());
-            }
-        }
-        else{
-            System.out.println("You don't have "+ food.getType() + "in your inventory");
-        }
+        }); 
+        thread.start();
 
+        try{
+            thread.join();
+        }
+        catch (InterruptedException e){
+            System.out.println(e.getMessage());
+        }
 
         simDeathCheck();
         if (isSimAlive){
@@ -521,59 +517,43 @@ public class Sim {
 
     //Method untuk masak
     public void simCook(FoodCuisine food){
-        // LOOPING buat cek udh punya ingredientsnya atau blm
-        boolean allIngredients = true;
-        List<FoodIngredients> listOfIngredieents = food.getIngredients();
-        for (FoodIngredients ingredient: listOfIngredieents) {
-            if (!simInventory.checkContains(ingredient.getType())) {
-                allIngredients = false;
-                break;
-            }
-        }
-        // semua ingredient ada = masak gas
-        if (allIngredients){
-            Thread thread = new Thread(new Runnable(){
-                public void run(){
-                    try{
-                        System.out.println("Cooking");
-                        for (int j = 0; j<((food.getRepletion()*1.5)/2); j++){
-                            System.out.print("...");
+        Thread thread = new Thread(new Runnable(){
+            public void run(){
+                try{
+                    System.out.println("Cooking");
+                    for (int j = 0; j<((food.getRepletion()*1.5)/2); j++){
+                        System.out.print("...");
 
-                            //ERROR -> solved, cuman typo harusnya repletion bukan repletition
-                            double sleepValDouble = (food.getRepletion()*1.5)/(food.getRepletion()%2) * 1000;
-                            long sleepValLong = (long) sleepValDouble;
-                            int sleepValInt = (int) sleepValDouble;
-                            changeLastSleep(sleepValInt);
-                            changeLastBathroom(sleepValInt);
-                            Thread.sleep(sleepValLong);
-                        }
-                        System.out.println("");
-                        addSimNeed("Mood", 10);
-
-                        //menambahkan makanan ke inventory
-                        //ERROR -> solved
-                        simInventory.addInventory(food, 1);
-                    } catch (negativeParameterException n) {
-                        System.out.println(n.getMessage());
-                    } catch (InterruptedException e){
-                        System.out.println(e.getMessage());
+                        //ERROR -> solved, cuman typo harusnya repletion bukan repletition
+                        double sleepValDouble = (food.getRepletion()*1.5)/(food.getRepletion()%2) * 1000;
+                        long sleepValLong = (long) sleepValDouble;
+                        int sleepValInt = (int) sleepValDouble;
+                        changeLastSleep(sleepValInt);
+                        changeLastBathroom(sleepValInt);
+                        Thread.sleep(sleepValLong);
                     }
+                    System.out.println("");
+                    addSimNeed("Mood", 10);
 
+                    //menambahkan makanan ke inventory
+                    //ERROR -> solved
+                    simInventory.addInventory(food, 1);
+                } catch (negativeParameterException n) {
+                    System.out.println(n.getMessage());
+                } catch (InterruptedException e){
+                    System.out.println(e.getMessage());
                 }
-            });
-            thread.start();
+                
+            }
+        }); 
+        thread.start();
 
-            try{
-                thread.join();
-            }
-            catch (InterruptedException e){
-                System.out.println(e.getMessage());
-            }
+        try{
+            thread.join();
         }
-        else{
-            System.out.println("You don't have all the ingredients, try again when you have them");
+        catch (InterruptedException e){
+            System.out.println(e.getMessage());
         }
-        // cek status
         simDeathCheck();
         if (isSimAlive){
             simStatus = "Idle";
@@ -621,8 +601,8 @@ public class Sim {
     //method untuk berkunjung
     public void simVisit(House destination) {
         simChangeStatus("On the way to visit " + destination.toString());
-        double distance = Math.sqrt(Math.pow(destination.getLocation()[0] - getLocation()[0], 2)
-                + Math.pow(destination.getLocation()[1] - getLocation()[1], 2));
+        double distance = Math.sqrt(Math.pow(destination.getLocation().getX() - getLocation()[0], 2)
+                + Math.pow(destination.getLocation().getY() - getLocation()[1], 2));
         int time = (int) distance;
         Thread thread = new Thread(() -> {
             try {
@@ -674,6 +654,7 @@ public class Sim {
         }
     }
 
+  
     public void simMoveRoom(){
         Room roomSim = new Room();
         Scanner scanner = new Scanner(System.in);
@@ -785,6 +766,12 @@ public class Sim {
         isSimAlive = false;
     }
 
+
+
+
+
+
+
     // TODO yang implementasi waktu bikin perhitungan waktu per hari dan pergantian hari
     
 
@@ -824,7 +811,7 @@ public class Sim {
         public boolean checkContains(String objName){
             boolean isContained = false;
             for (Map.Entry<SimplicityObject, Integer> entry: MapInventory.entrySet()){
-                if (entry.getKey().getType().toLowerCase().equals(objName.toLowerCase())){
+                if (entry.getKey().getType().equals(objName)){
                     isContained = true;
                     break;
                 }
