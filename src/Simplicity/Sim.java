@@ -25,12 +25,18 @@ public class Sim {
     private World curWorld;
 
     //Attribute untuk ngecek kondisi
+    private int activeDuration;
     private int lastSleep;
     private int lastBathroom;
     private int timeWorked;
     private int daysSinceJobChange;
+    private int timeRemainingDelivery;
+    private int timeRemainingUpgrade;
     private boolean hasEaten;
     private boolean isSimAlive;
+    private boolean isItemInDelivery = false;
+    private boolean isHouseBeingUpgraded = false;
+
 
     // get random job
     public Job getRandomJob(Job[] array){
@@ -57,6 +63,10 @@ public class Sim {
         daysSinceJobChange = 0;
         hasEaten = false;
         isSimAlive = true;
+        timeRemainingDelivery = 0;
+        timeRemainingUpgrade = 0;
+        isItemInDelivery = false;
+        isHouseBeingUpgraded = false;
     }
 
     //Getters
@@ -66,6 +76,10 @@ public class Sim {
 
     public String getSimJobName(){
         return simJob.getName();
+    }
+    
+    public int getActiveDuration(){
+        return activeDuration;
     }
 
     public int getSimSalary(){
@@ -111,9 +125,11 @@ public class Sim {
     public Point getLocation() {
         return location;
     }
-
+    public int getTimeRemainingDelivery() { return timeRemainingDelivery;}
+    public int getTimeRemainingUpgrade() { return timeRemainingUpgrade;}
     public boolean getSimAlive() { return isSimAlive;}
-
+    public boolean getIsItemInDelivery() { return isItemInDelivery;}
+    public boolean getIsHouseBeingUpgraded() { return isHouseBeingUpgraded;}
     // END OF GETTERS
 
     //Setters
@@ -256,6 +272,17 @@ public class Sim {
         this.location = location;
     }
 
+    public void changeTimeDelivery(int amount){
+        timeRemainingDelivery -= amount;
+    }
+
+    public void changeTimeUpgrade(int amount){
+        timeRemainingUpgrade -= amount;
+    }
+
+    public void setActiveDuration(int amount){
+        activeDuration = amount*1000;
+    }
     // END OF SETTERS
 
     //Methods
@@ -273,18 +300,16 @@ public class Sim {
             simChangeStatus("Working");
             // Mulai kerja
             System.out.println("You are currently working as a " + getSimJobName());
-            Thread thread = new Thread(new Runnable(){
-                public void run(){
                     int repetition = duration / 30;
                     for (int i = 0; i<repetition; i++){
                         try{
+                            setActiveDuration(duration);
                             // Biar keren gw bikin make '....'
                             for (int j = 0; j<30/6; j++){
                                 System.out.print("...");
-                                Thread.sleep(30/5 * 1000);
+                                curWorld.getWorldTime().wait(30/5);
                             }
                             System.out.println("");
-                            Thread.sleep(30 * 1000);
                             decreaseSimNeed("Mood", 10);
                             decreaseSimNeed("Hunger", 10);
                             //ganti jam kerja sim
@@ -301,34 +326,19 @@ public class Sim {
                             else{
                                 System.out.println("You have worked for "+ (float)getTimeWorked()/60 + " minutes.");
                             }
-                        }
-                        catch (InterruptedException e){
-                            System.out.println(e.getMessage());
+
                         }
                         catch (negativeParameterException n){
                             System.out.println(n.getMessage());
                         }
-
                     }
-
-
                 }
-            });
-            thread.start();
-            //supaya dia nunggu thread lain
-            try{
-                thread.join();
-            }
-            catch (InterruptedException e){
-                System.out.println(e.getMessage());
-            }
             // check if sim died afterwards
             simDeathCheck();
             if (isSimAlive){
                 simStatus = "Idle";
             }
         }
-    }
 
     //Method untuk olahraga
     public void exercise(int duration) throws invalidMultitudeNumber{
@@ -338,8 +348,6 @@ public class Sim {
         else{
             simChangeStatus("Exercising");
             //mulai olahraga
-            Thread thread = new Thread(new Runnable(){
-                public void run(){
                     int repetition = duration / 20;
                     for (int i = 0; i<repetition; i++){
                         try{
@@ -347,7 +355,7 @@ public class Sim {
                             // Biar keren gw bikin make '....'
                             for (int j = 0; j<20/4; j++){
                                 System.out.print("...");
-                                Thread.sleep(20/5 * 1000);
+                                curWorld.getWorldTime().wait(20/5);
                             }
                             System.out.println("");
                             addSimNeed("Health", 5);
@@ -357,31 +365,17 @@ public class Sim {
                             changeLastSleep(20);
                             changeLastBathroom(20);
                         }
-                        catch (InterruptedException e){
-                            System.out.println(e.getMessage());
-                        }
                         catch (negativeParameterException n){
                             System.out.println(n.getMessage());
                         }
                     }
 
                 }
-            });
-
-            thread.start();
-            // supaya dia nunggu thread lain
-            try{
-                thread.join();
-            }
-            catch (InterruptedException e){
-                System.out.println(e.getMessage());
-            }
             simDeathCheck();
             if (isSimAlive){
                 simStatus = "Idle";
             }
         }
-    }
 
     // Method untuk tidur
     public void sleep(int duration) throws invalidMultitudeNumber {
@@ -390,15 +384,13 @@ public class Sim {
         }
         else{
             simChangeStatus("Sleeping");
-            Thread thread = new Thread(new Runnable(){
-                public void run(){
                     int repetition = duration / (4*60);
                     for (int i = 0; i<repetition; i++){
                         try{
                             System.out.println("Zzzz...");
                             for (int j = 0; j<240/48; j++){
                                 System.out.print("...");
-                                Thread.sleep(240/5 * 1000);
+                                curWorld.getWorldTime().wait(240/5);
                             }
                             System.out.println("");
                             addSimNeed("Mood", 30);
@@ -406,41 +398,27 @@ public class Sim {
                             changeLastBathroom(240);
                             lastSleep = 0;
                         }
-                        catch (InterruptedException e){
-                            System.out.println(e.getMessage());
-                        }
                         catch (negativeParameterException n){
                             System.out.println(n.getMessage());
                         }
                     }
 
                 }
-            });
-            thread.start();
-            // supaya dia nunggu thread lain
-            try{
-                thread.join();
-            }
-            catch (InterruptedException e){
-                System.out.println(e.getMessage());
-            }
             simDeathCheck();
             if (isSimAlive){
                 simStatus = "Idle";
             }
         }
-    }
 
     //Method untuk ke kamar mandi
     public void useBathroom(){
         simChangeStatus("In the bathroom");
-        Thread thread = new Thread(new Runnable(){
-            public void run(){
                 try{
                     System.out.println("Using the bathroom");
+                    setActiveDuration(10);
                     for (int j = 0; j<10/2; j++){
                         System.out.print("...");
-                        Thread.sleep(10/5 * 1000);
+                        curWorld.getWorldTime().wait(10/5);
                     }
                     System.out.println("");
                     decreaseSimNeed("Hunger", 20);
@@ -449,41 +427,24 @@ public class Sim {
                     hasEaten = false;
                     changeLastSleep(10);
                 }
-                catch (InterruptedException e){
-                    System.out.println(e.getMessage());
-                }
                 catch (negativeParameterException n){
                     System.out.println(n.getMessage());
                 }
-
-            }
-        });
-        thread.start();
-        // supaya dia nunggu thread lain
-        try{
-            thread.join();
-        }
-        catch (InterruptedException e){
-            System.out.println(e.getMessage());
-        }
-
         simDeathCheck();
         if (isSimAlive){
             simStatus = "Idle";
         }
-
+        
     }
 
     // Method untuk Makan
     public void simEat(FoodCuisine food){
         if (simInventory.checkContains(food.getType())){
-            Thread thread = new Thread(new Runnable(){
-                public void run(){
                     try{
                         System.out.println("Eating");
                         for (int j = 0; j<30/2; j++){
                             System.out.print("...");
-                            Thread.sleep(30/15 * 1000);
+                            curWorld.getWorldTime().wait(30/5);
                         }
                         System.out.println("");
                         addSimNeed("Hunger", food.getRepletion());
@@ -492,35 +453,18 @@ public class Sim {
                         simInventory.decreaseInventory(food, 1);
                         // lastBathroom gadiubah karena baru kelar makan
                     }
-                    catch (InterruptedException e){
-                        System.out.println(e.getMessage());
-                    }
                     catch (negativeParameterException n){
                         System.out.println(n.getMessage());
                     }
 
                 }
-            });
-            thread.start();
-
-            try{
-                thread.join();
-            }
-            catch (InterruptedException e){
-                System.out.println(e.getMessage());
-            }
-        }
         else{
             System.out.println("You don't have "+ food.getType() + " in your inventory");
         }
-
-
         simDeathCheck();
         if (isSimAlive){
             simStatus = "Idle";
         }
-
-
     }
 
     //Method untuk masak
@@ -536,8 +480,6 @@ public class Sim {
         }
         // semua ingredient ada = masak gas
         if (allIngredients){
-            Thread thread = new Thread(new Runnable(){
-                public void run(){
                     try{
                         System.out.println("Cooking");
                         for (int j = 0; j<((food.getRepletion()*1.5)/2); j++){
@@ -549,7 +491,7 @@ public class Sim {
                             int sleepValInt = (int) sleepValDouble;
                             changeLastSleep(sleepValInt);
                             changeLastBathroom(sleepValInt);
-                            Thread.sleep(sleepValLong);
+                            curWorld.getWorldTime().wait(sleepValInt/1000);
                         }
                         System.out.println("");
                         addSimNeed("Mood", 10);
@@ -562,30 +504,16 @@ public class Sim {
                         simInventory.addInventory(food, 1);
                     } catch (negativeParameterException n) {
                         System.out.println(n.getMessage());
-                    } catch (InterruptedException e){
-                        System.out.println(e.getMessage());
                     }
-
-                }
-            });
-            thread.start();
-
-            try{
-                thread.join();
             }
-            catch (InterruptedException e){
-                System.out.println(e.getMessage());
-            }
-        }
         else{
             System.out.println("You don't have all the ingredients, try again when you have them");
         }
-        // cek status
         simDeathCheck();
         if (isSimAlive){
             simStatus = "Idle";
         }
-
+        // cek status
     }
 
     public void simBuyItem(Map<String, PurchasableObject> objectMap,  String itemName, int amount) throws negativeParameterException, invalidMultitudeNumber{
@@ -593,20 +521,56 @@ public class Sim {
             throw new negativeParameterException(amount);
         }
         else if(amount == 0){
-            throw new invalidMultitudeNumber(amount);
+            throw new invalidMultitudeNumber(amount); 
         }
         else{
-            int time = new Random().nextInt(6)* 30 * 1000;
+            
             PurchasableObject object = objectMap.get(itemName);
             if (object != null){
                 if (object.getPrice()*amount <= getSimMoney()){
                     Thread thread = new Thread(new Runnable(){
                         public void run(){
                             try{
-                                Thread.sleep(time);
-                                simDecreaseMoney(object.getPrice()*amount);
-                                simInventory.addInventory((SimplicityObject)object, amount);
-                                System.out.println("You have bought " + ((SimplicityObject) object).getType() + " for " + object.getPrice() + " Simplicity Dollars");
+                                if(!getIsItemInDelivery()){
+                                    timeRemainingDelivery = new Random().nextInt(1,5)* 30 * 1000;
+                                    isItemInDelivery = true;
+                                    System.out.println("\nYou have bought " + ((SimplicityObject) object).getType() + " for " + object.getPrice() + " Simplicity Dollars.");   
+                                    System.out.println("Please wait for "+ (float)timeRemainingDelivery/60000 +" minutes...");
+                                    if(timeRemainingDelivery < activeDuration){
+                                        Thread.sleep(timeRemainingDelivery);
+                                        simDecreaseMoney(object.getPrice()*amount);
+                                        simInventory.addInventory((SimplicityObject)object, amount);
+                                        System.out.println("\nYour item has arrived!");
+                                        System.out.println("You have " + getSimMoney() + " Simplicity Dollars left.");
+                                        System.out.println();
+                                        isItemInDelivery = false;
+                                    }
+                                    else{
+                                        Thread.sleep(activeDuration);
+                                        System.out.println("\nYou still have an item in deladsfadfivery, please wait until it arrives");
+                                        timeRemainingDelivery -= activeDuration;
+                                    }
+
+
+                                }
+                                else{
+                                    System.out.println(timeRemainingDelivery);
+                                    System.out.println(activeDuration);
+                                    if(timeRemainingDelivery < activeDuration){
+                                        Thread.sleep(timeRemainingDelivery);
+                                        simDecreaseMoney(object.getPrice()*amount);
+                                        simInventory.addInventory((SimplicityObject)object, amount);
+                                        System.out.println("\nYour item has arrived!");
+                                        System.out.println("You have " + getSimMoney() + " Simplicity Dollars left.");
+                                        System.out.println();
+                                        isItemInDelivery = false;
+                                    }
+                                    else{
+                                        Thread.sleep(activeDuration);
+                                        System.out.println("\nYou still have an item in delivery, please wait until it arrives");
+                                        timeRemainingDelivery -= activeDuration;
+                                    }
+                                }
                             }
                             catch (InterruptedException e){
                                 System.out.println(e.getMessage());
@@ -615,10 +579,12 @@ public class Sim {
                     });
                     thread.start();
                 }
+
                 else{
                     System.out.println("You don't have enough money to buy " + ((SimplicityObject) object).getType());
                 }
             }
+
             else{
                 System.out.println("Item not found");
             }
@@ -631,39 +597,28 @@ public class Sim {
         double distance = Math.sqrt(Math.pow(destination.getLocation().getX() - getLocation().getX(), 2)
                 + Math.pow(destination.getLocation().getY() - getLocation().getY(), 2));
         int time = (int) distance;
-        Thread thread = new Thread(() -> {
             try {
                 System.out.println("Visiting " + destination.toString());
                 for (int j = 0; j < time; j++) {
                     System.out.print("...");
-                    Thread.sleep(1000);
+                    curWorld.getWorldTime().wait(1);
                     changeLastSleep(1);
                     changeLastBathroom(1);
                 }
                 System.out.println("");
                 addSimNeed("Mood", 10);
                 decreaseSimNeed("Hunger", 10);
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-            } catch (negativeParameterException n) {
+            } 
+            catch (negativeParameterException n) {
                 System.out.println(n.getMessage());
             }
-        });
-        thread.start();
-        // tunggu thread lain selesai
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-
         simDeathCheck();
         if (isSimAlive){
             simStatus = "Idle";
         }
     }
 
-    public void HouseUpgrade(int roomTotal) {
+    public void HouseUpgrade(int roomTotal, int duration) {
         int upgradeCost = 1500 * roomTotal;
         if (simMoney < upgradeCost) {
             System.out.println("Insufficient funds to upgrade the house.");
@@ -722,25 +677,13 @@ public class Sim {
 
     // Melihat waktu
     public void simCheckTime(Clock clock) {
-        WorldTime worldTime = new WorldTime();
-        Instant now = Instant.now();
-        Duration timeElapsed = Duration.between(worldTime.getStartTime(), now);
-        long timeRemaining = 720 - (timeElapsed.getSeconds() % 720);
-
-        // Menghitung waktu yang diperlukan agar aksi dapat terselesaikan
-        long timeRemainingForAction = clock.getTime() * 60 - (timeElapsed.getSeconds() % 720);
-
-        System.out.println("Time remaining today: " + formatTime(timeRemaining));
-        System.out.println("Time remaining for action: " + formatTime(timeRemainingForAction)); // untuk tindakan yang bisa ditinggal
+        WorldTime worldTime = curWorld.getWorldTime();
+        System.out.println("Time remaining today: " + worldTime.getTimeRemaining());
+        System.out.println("Time remaining for upgrade house: " + timeRemainingUpgrade);
+        System.out.println("Time remaining for item delivery: " + timeRemainingDelivery); // untuk tindakan yang bisa ditinggal
     }
 
-    // Utility function untuk memformat time menjadi HH:MM:SS 
-    private String formatTime(long seconds) {
-        long hours = seconds / 3600;
-        long minutes = (seconds % 3600) / 60;
-        long secs = seconds % 60;
-        return String.format("%02d:%02d:%02d", hours, minutes, secs);
-    }
+
 
     // Method untuk memeriksa kapan terakhir ke toilet
     public void checkLastBathroom(){
@@ -792,11 +735,7 @@ public class Sim {
         isSimAlive = false;
     }
 
-
-
-
-
-
+    //Method untuk pengecekan dan pelaksanaan tindakan yang bisa ditinggal
 
     // TODO yang implementasi waktu bikin perhitungan waktu per hari dan pergantian hari
 
