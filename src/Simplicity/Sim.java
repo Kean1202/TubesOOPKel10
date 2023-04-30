@@ -351,6 +351,7 @@ public class Sim {
                     int repetition = duration / 20;
                     for (int i = 0; i<repetition; i++){
                         try{
+                            setActiveDuration(duration);
                             System.out.println("Working out!");
                             // Biar keren gw bikin make '....'
                             for (int j = 0; j<20/4; j++){
@@ -384,10 +385,12 @@ public class Sim {
         }
         else{
             simChangeStatus("Sleeping");
+
                     int repetition = duration / (4*60);
                     for (int i = 0; i<repetition; i++){
                         try{
-                            System.out.println("Zzzz...");
+                            setActiveDuration(duration);
+                            System.out.print("Zzzz...");
                             for (int j = 0; j<240/48; j++){
                                 System.out.print("...");
                                 curWorld.getWorldTime().wait(240/5);
@@ -436,11 +439,176 @@ public class Sim {
         }
         
     }
+    // Method untuk nonton TV
+    public void simWatchTV(){
+        simChangeStatus("Watching TV");
+        try{
+            System.out.println("Watching TV");
+            setActiveDuration(30);
+            for (int i = 0; i < 30/5; i++){
+                System.out.print("browsing channels...");
+                curWorld.getWorldTime().wait(30/5);
+            }
+            System.out.println("");
+            addSimNeed("Mood", 15);
+            decreaseSimNeed("Health", 5);
+            decreaseSimNeed("Hunger", 10);
+            changeLastBathroom(30);
+            changeLastSleep(30);
+        }
+        catch(negativeParameterException n){
+            System.out.println(n.getMessage());
+        }
+    }
+
+    // Method untuk baca buku
+    public void readBook(String genre){
+        // ini default value
+        int duration = 15;
+        switch (genre){
+            case "Comic book":
+                duration = 15;
+                break;
+            case "Fantasy novel":
+                duration = 30;
+                break;
+            case "Non-fiction":
+                duration = 60;
+                break;
+        }
+
+        simChangeStatus("Reading");
+        try{
+            System.out.println("Reading a " + genre + " book");
+            setActiveDuration(duration);
+            for (int i = 0; i < duration/5; i++){
+                System.out.print("...");
+                curWorld.getWorldTime().wait(duration/5);
+            }
+            System.out.println("");
+            addSimNeed("Mood", duration/2);
+            decreaseSimNeed("Health", duration/3);
+            decreaseSimNeed("Hunger", duration/3);
+            changeLastBathroom(duration);
+            changeLastSleep(duration);
+        }
+        catch(negativeParameterException n){
+            System.out.println(n.getMessage());
+        }
+    }
+
+    // Method untuk meditasi
+    public void meditate(){
+        simChangeStatus("Meditating");
+        try{
+            System.out.println("Meditating");
+            setActiveDuration(120);
+            for (int i = 0; i < 120/5; i++){
+                System.out.print("...");
+                curWorld.getWorldTime().wait(120/24);
+            }
+            System.out.println("");
+            addSimNeed("Mood", 25);
+            decreaseSimNeed("Health", 30);
+            decreaseSimNeed("Hunger", 25);
+            changeLastBathroom(120);
+            changeLastSleep(120);
+        }
+        catch(negativeParameterException n){
+            System.out.println(n.getMessage());
+        }
+    }
+
+    // Method untuk ngeYoga
+    public void doYoga(){
+        simChangeStatus("Doing yoga");
+        try{
+            System.out.println("Doing yoga");
+            setActiveDuration(240);
+            for (int i = 0; i < 240/10; i++){
+                System.out.print("...");
+                curWorld.getWorldTime().wait(240/24);
+            }
+            System.out.println("");
+            addSimNeed("Mood", 20);
+            decreaseSimNeed("Health", 40);
+            decreaseSimNeed("Hunger", 30);
+            changeLastBathroom(240);
+            changeLastSleep(240);
+        }
+        catch(negativeParameterException n){
+            System.out.println(n.getMessage());
+        }
+    }
+
+    // Dance
+    public void dance(){
+        simChangeStatus("Dancing");
+        try{
+            System.out.println("Dancing");
+            setActiveDuration(60);
+            for (int i = 0; i < 60/6; i++){
+                System.out.print("...");
+                curWorld.getWorldTime().wait(60/10);
+            }
+            System.out.println("");
+            addSimNeed("Mood", 10);
+            decreaseSimNeed("Hunger", 10);
+            changeLastBathroom(60);
+            changeLastSleep(60);
+        }
+        catch(negativeParameterException n){
+            System.out.println(n.getMessage());
+        }
+    }
+
+    // Method untuk dengerin musik
+    public void listenToMusic(){
+        simChangeStatus("Listening to music");
+        try{
+            System.out.println("Listening to music");
+            setActiveDuration(60);
+            for (int i = 0; i < 60/6; i++){
+                System.out.print("...");
+                curWorld.getWorldTime().wait(60/10);
+            }
+            System.out.println("");
+            addSimNeed("Mood", 10);
+            decreaseSimNeed("Hunger", 10);
+            changeLastBathroom(660);
+            changeLastSleep(60);
+        }
+        catch(negativeParameterException n){
+            System.out.println(n.getMessage());
+        }
+    }
+
+    // Method untuk ngelukis
+    public void paint(){
+        simChangeStatus("Painting");
+        try{
+            System.out.println("Painting");
+            setActiveDuration(120);
+            for (int i = 0; i < 120/6; i++){
+                System.out.print("...");
+                curWorld.getWorldTime().wait(120/10);
+            }
+            System.out.println("");
+            addSimNeed("Mood", 20);
+            decreaseSimNeed("Hunger", 15);
+            changeLastBathroom(120);
+            changeLastSleep(120);
+        }
+        catch(negativeParameterException n){
+            System.out.println(n.getMessage());
+        }
+    }
 
     // Method untuk Makan
     public void simEat(FoodCuisine food){
         if (simInventory.checkContains(food.getType())){
                     try{
+                        setActiveDuration(30);
                         System.out.println("Eating");
                         for (int j = 0; j<30/2; j++){
                             System.out.print("...");
@@ -492,6 +660,7 @@ public class Sim {
                             changeLastSleep(sleepValInt);
                             changeLastBathroom(sleepValInt);
                             curWorld.getWorldTime().wait(sleepValInt/1000);
+                            setActiveDuration(sleepValInt);
                         }
                         System.out.println("");
                         addSimNeed("Mood", 10);
@@ -598,6 +767,7 @@ public class Sim {
                 + Math.pow(destination.getLocation().getY() - getLocation().getY(), 2));
         int time = (int) distance;
             try {
+                setActiveDuration(time);
                 System.out.println("Visiting " + destination.toString());
                 for (int j = 0; j < time; j++) {
                     System.out.print("...");
