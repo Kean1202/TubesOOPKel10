@@ -1,27 +1,43 @@
 package Simplicity;
-import java.time.*;
-public class WorldTime {
-    private Instant startTime = Instant.now();
-    private Duration worldTime;
-    private int worldDay;
+
+
+public class WorldTime  {
+    private int gameDay;
+    private int timeElapsed;
 
     public WorldTime() {
-        this.worldDay = 1;
+        //initial day
+        gameDay = 1;
+    }
+
+    //setter
+    public void updateTime(int duration) {
+        this.timeElapsed += duration;
     }
     
-    public int getWorldDay() {
-        Instant now = Instant.now();
-        Duration.between(startTime, now);
-        refreshTime();
-        return worldDay;
+    //getter
+    public int getTimeElapsed() {
+        return timeElapsed % 720;
     }
 
-    public Instant getStartTime() {
-        return startTime;
+    public int getDay() {
+        gameDay = (timeElapsed / 720 ) + 1;
+        return gameDay;
     }
 
-    private void refreshTime() {
-        worldDay =(int) (worldTime.toSeconds() % 12);
+    public int getTimeRemaining() {
+        getDay();
+        return gameDay * 720 - timeElapsed;
     }
 
+    //method
+    public void wait(int duration) {
+        try {
+            Thread.sleep(duration*1000);
+            updateTime(duration);
+        }
+        catch(Exception e) {
+            Thread.interrupted();
+        }
+    }
 }
