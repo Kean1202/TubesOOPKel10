@@ -13,12 +13,13 @@ public class Main {
         boolean gameState = false;
         //WORLD
         World world = World.getInstance();
+
         //JOBS
-        Job magician = new Job("magician", 15);
-        Job chef = new Job("chef", 30);
-        Job police = new Job("police", 35);
-        Job programmer = new Job("programmer", 45);
-        Job doctor = new Job("doctor", 50);
+        Job magician = new Job("Magician", 15);
+        Job chef = new Job("Chef", 30);
+        Job police = new Job("Police", 35);
+        Job programmer = new Job("Programmer", 45);
+        Job doctor = new Job("Doctor", 50);
         Job[] allJobs = Job.getAllJobs(chef,magician,police,programmer,doctor);
 
         //FURNITURE
@@ -30,7 +31,24 @@ public class Main {
         Stove elStove = new Stove("electric stove", 200, 1, 1);
         Desk desk = new Desk("desk", 50, 3, 3);
         Clock clock = new Clock("clock", 10, 1, 1, 0);
+        
+        //INGREDIENTS
+        FoodIngredients rice = new FoodIngredients("rice", 5, 5);
+        FoodIngredients egg = new FoodIngredients("egg", 3, 4);
+        FoodIngredients chicken = new FoodIngredients("chicken", 10, 8);
+        FoodIngredients meat = new FoodIngredients("meat", 12, 15);
+        FoodIngredients spinach = new FoodIngredients("spinach", 3, 2);
+        FoodIngredients carrot = new FoodIngredients("carrot", 3, 2);
+        FoodIngredients beans = new FoodIngredients("beans", 3, 2);
+        FoodIngredients milk = new FoodIngredients("milk", 3, 1);
 
+        //FOOD
+        FoodCuisine chickenRice = new FoodCuisine("chicken rice", 16);
+        FoodCuisine curryRice = new FoodCuisine("curry rice", 30);
+        FoodCuisine beanMilk = new FoodCuisine("bean milk", 5);
+        FoodCuisine sauteedVegies = new FoodCuisine("sauteed vegies", 5);
+        FoodCuisine steak = new FoodCuisine("steak", 22);
+        
         //OBJECTS
         Map<String, PurchasableObject> purchasableMap = new HashMap<String, PurchasableObject>(){{
             put(singleBed.getType(), singleBed);
@@ -41,7 +59,16 @@ public class Main {
             put(elStove.getType(), elStove);
             put(desk.getType(), desk);
             put(clock.getType(), clock);
+            put(rice.getType(), rice);
+            put(egg.getType(), egg);
+            put(chicken.getType(), chicken);
+            put(meat.getType(), meat);
+            put(spinach.getType(), spinach);
+            put(carrot.getType(), carrot);
+            put(beans.getType(), beans);
+            put(milk.getType(), milk);
         }};
+
         //TESTING
         gameState = true;
         listOfSims = new ArrayList<>();
@@ -53,8 +80,10 @@ public class Main {
         mainMenu.viewSimInfo(currentSim, gameState, listOfSims);
         
         try{
-            currentSim.simBuyItem(purchasableMap, "single bed", 1);
             toilet.doAction(currentSim);
+            currentSim.simBuyItem(purchasableMap, "rice", 1);
+            currentSim.work(120);
+            currentSim.simBuyItem(purchasableMap, "rice", 1);
         }
         catch (invalidMultitudeNumber n){
             System.out.println(n.getMessage());
@@ -64,51 +93,6 @@ public class Main {
         }
 
         currentSim.simInventory.printInventory();
-//
-//        if(listSim.size() == 0){
-//            System.out.println("No sims created yet!");
-//            Scanner str = new Scanner(System.in);
-//            System.out.println("Enter your name: ");
-//            Sim newSim = new Sim(str.nextLine(), allJobs);
-//            listSim.add(newSim);
-//            System.out.println("New sim created!");
-//        }
-//
-//        try{
-//            listSim.get(0).work(120);
-//            listSim.get(0).work(120);
-//            toilet.doAction(listSim.get(0));
-//        }
-//        // jujur gw nyesel make nama gw sendiri buat bikin sim
-//        catch (invalidMultitudeNumber n) {
-//            System.out.println(n.getMessage());
-//        }
-//        System.out.println(listSim.get(0).getSimMoney());
-
-        // //GREETINGS
-        // System.out.println("Welcome to this game!");
-
-        // //MENU
-        // Scanner scanner = new Scanner(System.in);
-
-        // boolean exit = false;
-        // while(!exit){
-        //     int choices = scanner.nextInt();
-        //     switch(choices){
-        //         case 1:
-        //             while(true){
-        //                 System.out.println("i'm gaming rn");
-        //             }
-        //         case 2:
-        //             System.out.println("help");
-        //             break;
-        //         case 3:
-        //             exit = true;
-        //             break;
-        //         default:
-        //             System.out.println("Invalid input!");
-        //     }
-        // }
 
     }
 
