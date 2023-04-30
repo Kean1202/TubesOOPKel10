@@ -80,10 +80,11 @@ public class Main {
         mainMenu.viewSimInfo(currentSim, gameState, listOfSims);
         
         try{
+            currentSim.simBuyItem(purchasableMap, "rice", 1);
             toilet.doAction(currentSim);
-            currentSim.simBuyItem(purchasableMap, "rice", 1);
+            toilet.doAction(currentSim);
             currentSim.work(120);
-            currentSim.simBuyItem(purchasableMap, "rice", 1);
+            
         }
         catch (invalidMultitudeNumber n){
             System.out.println(n.getMessage());
