@@ -5,6 +5,7 @@ import Simplicity.Objects.*;
 
 public class tester {
     public static void main(String[] args) {
+        World world = World.getInstance();
         Job cook = new Job("cook", 100);
         Job janitor = new Job("janitor", 50);
         Job teacher = new Job("teacher", 75);
@@ -13,7 +14,7 @@ public class tester {
         Toilet toilet = new Toilet("toilet", 100, 1, 1);
         FoodIngredients egg = new FoodIngredients("egg",1 ,2);
         FoodIngredients meat = new FoodIngredients("meat",1 ,2);
-        Sim Kean = new Sim("Kean Nafis Santang", allJobs);
+        Sim Kean = new Sim("Kean Nafis Santang", allJobs, world);
         Kean.simInventory.addInventory(egg, 5);
         Kean.simInventory.addInventory(meat, 1);
         FoodCuisine Sushi = new FoodCuisine("Sushi", 5);
