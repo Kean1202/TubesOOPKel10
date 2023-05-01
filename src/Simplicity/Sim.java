@@ -928,13 +928,13 @@ public class Sim {
         while(!check){
             System.out.print("Insert your destination room : ");
             String roomName = scanner.nextLine();
-            if (roomNow.equals(roomName)){
+            if (roomNow.toLowerCase().equals(roomName.toLowerCase())){
                 System.out.println("You're already in the room");
                 System.out.println();
             }else{
                 // room yang di input ada di house
                 for (Room room : roomList){
-                    if (roomName.equals(room.getRoomName())){
+                    if (roomName.toLowerCase().equals(room.getRoomName().toLowerCase())){
                         Point roomLoc = new Point(room.getRoomLocation().getX(),room.getRoomLocation().getY());
                         setLocation(roomLoc); // sim pindah ke room tujuan
                         check = true;
@@ -943,7 +943,7 @@ public class Sim {
                 }
                 // room yang di input tidak ada di house
                 if(!check){
-                    System.out.println("There's no " + roomName + "in this house");
+                    System.out.println("There's no " + roomName + " in this house");
                     System.out.println();
                 }
             }

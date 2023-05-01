@@ -77,25 +77,26 @@ public class Main {
         mainMenu.printMenu();
         mainMenu.addSim(listOfSims, allJobs, world);
         currentSim = mainMenu.changeSim(listOfSims);
-        mainMenu.viewSimInventory(currentSim, gameState, listOfSims);
-        mainMenu.viewSimInfo(currentSim, gameState, listOfSims);
-        
-        try{
-            currentSim.simBuyItem(purchasableMap, "rice", 1);
-            toilet.doAction(currentSim);
-            toilet.doAction(currentSim);
-            currentSim.work(120);
-            
-        }
-        catch (invalidMultitudeNumber n){
-            System.out.println(n.getMessage());
-        }
-        catch (negativeParameterException e){
-            System.out.println(e.getMessage());
-        }
+        mainMenu.moveRoom(currentSim);
 
-        currentSim.simInventory.printInventory();
 
+//        try{
+//
+////            currentSim.simBuyItem(purchasableMap, "rice", 1);
+////            toilet.doAction(currentSim);
+////            toilet.doAction(currentSim);
+////            currentSim.work(120);
+//
+//        }
+//        catch (invalidMultitudeNumber n){
+//            System.out.println(n.getMessage());
+//        }
+//        catch (negativeParameterException e){
+//            System.out.println(e.getMessage());
+//        }
+//
+//        currentSim.simInventory.printInventory();
+//
     }
 
 }
@@ -263,6 +264,10 @@ class MenuOptions{
     
         System.out.println("House upgrade complete!");
 
+    }
+
+    public void moveRoom(Sim currentSim){
+        currentSim.simMoveRoom();
     }
     
 }
