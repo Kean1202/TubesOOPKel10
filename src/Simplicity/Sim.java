@@ -35,6 +35,8 @@ public class Sim {
     private boolean isSimAlive;
     private boolean isItemInDelivery = false;
     private boolean isHouseBeingUpgraded = false;
+    private int bathroomCounter;
+    private int sleepCounter;
 
 
     // get random job
@@ -66,6 +68,8 @@ public class Sim {
         timeRemainingUpgrade = 0;
         isItemInDelivery = false;
         isHouseBeingUpgraded = false;
+        sleepCounter = 1;
+        bathroomCounter = 1;
 
         //setting the starting house
         //NEW HOUSE
@@ -430,6 +434,7 @@ public class Sim {
                             addSimNeed("Health", 20);
                             changeLastBathroom(240);
                             lastSleep = 0;
+                            sleepCounter = 1;
                         }
                         catch (negativeParameterException n){
                             System.out.println(n.getMessage());
@@ -461,6 +466,9 @@ public class Sim {
                 
                 simChangeStatus("Idle");
                 System.out.println("You have finished using the bathroom.");
+                hasEaten = false;
+                bathroomCounter = 1;
+                lastBathroom = 0;
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
             }
@@ -963,11 +971,12 @@ public class Sim {
 
     // Method untuk memeriksa kapan terakhir ke toilet
     public void checkLastBathroom(){
-        if (lastBathroom >= 4 * 60){    //4*60 adalah 4 menit dalam detik
+        if (lastBathroom >= (4* bathroomCounter) * 60 ){    //4*60 adalah 4 menit dalam detik
             System.out.println("You forgot to go to the bathroom after you ate!");
             try{
                 decreaseSimNeed("Mood", 5);
                 decreaseSimNeed("Health", 5);
+                bathroomCounter++;
             }
             catch (negativeParameterException n){
                 System.out.println(n.getMessage());
@@ -977,11 +986,12 @@ public class Sim {
 
     // Method untuk memeriksa kapan terakhir tidur
     public void checkLastSleep(){
-        if (lastBathroom >= 10 * 60){
+        if (lastSleep >= (10 * 60)* sleepCounter){
             System.out.println("You haven't slept yet, please get some rest!");
             try{
                 decreaseSimNeed("Mood", 5);
                 decreaseSimNeed("Health", 5);
+                sleepCounter++;
             }
             catch (negativeParameterException n){
                 System.out.println(n.getMessage());
