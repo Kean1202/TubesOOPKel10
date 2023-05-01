@@ -177,8 +177,8 @@ class MenuOptions{
         while (foundSame){
             secondBool = 0;
             Random rand = new Random();
-            x = rand.nextInt(64);
-            y = rand.nextInt(64);
+            x = rand.nextInt(0,64);
+            y = rand.nextInt(0, 64);
             for (House house: listHouse){
                 if (house.getLocation().getX() == x && house.getLocation().getY() == y){
                     foundSame = true;
