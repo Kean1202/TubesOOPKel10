@@ -1,11 +1,13 @@
 package Simplicity.Objects;
 
+import Simplicity.Point;
 
 public abstract class Furniture extends SimplicityObject implements PurchasableObject, Storable{
     //Atributes
     private int price; 
     private int length;
     private int width;
+    private Point furnitureLocation;
 
     //Constructor
     public Furniture(String type, int price, int length, int width){
@@ -27,6 +29,9 @@ public abstract class Furniture extends SimplicityObject implements PurchasableO
     public void setWidth(int width){
         this.width = width;
     }
+    public void setFurnitureLocation(Point furnitureLocation ){
+        this.furnitureLocation=furnitureLocation;
+    }
     
     //Getter
     public int getPrice(){
@@ -39,6 +44,10 @@ public abstract class Furniture extends SimplicityObject implements PurchasableO
 
     public int getWidth(){
         return width;
+    }
+
+    public Point getFurnitureLocation() {
+        return furnitureLocation;
     }
 
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Simplicity.*;
 import Simplicity.Objects.*;
 
+
 public class Room {
     private final int roomLength=6 ; // semua panjang room 6
     private final int roomWidth=6 ; // semua lebar room 6
@@ -16,12 +17,9 @@ public class Room {
     private Point roomLocation;
     private ArrayList<Furniture> listFurniture = new ArrayList<>();
     private boolean[][] vacantRoom = new boolean[roomLength][roomWidth];
-    
-    
 
     public Room(String roomName){
         this.roomName=roomName;
-        
         listFurniture = new ArrayList<Furniture>();
         for (int i = 0; i < roomLength; i++) {
             for (int j = 0; j < roomWidth; j++) {
@@ -29,6 +27,8 @@ public class Room {
             }
         }
     }
+
+
 
     //default room
     public void defaultRoom(Sim mySim) {
@@ -88,8 +88,49 @@ public class Room {
         mySim.simInventory.decreaseInventory(furniture, 1);
         return true;
     }
-    
 
+    public void printRoom() {
+        char[][] room = new char[roomLength][roomWidth];
+        for (int i = 0; i < roomLength; i++) {
+            for (int j = 0; j < roomWidth; j++) {
+                room[i][j] = '.';
+            }
+        }
+        for (Furniture furniture : listFurniture) {
+            int furnitureLength = furniture.getLength();
+            int furnitureWidth = furniture.getWidth();
+            Point furnitureLoc = furniture.getFurnitureLocation();
+            for (int i = furnitureLoc.getX(); i < furnitureLoc.getX() + furnitureLength; i++) {
+                for (int j = furnitureLoc.getY(); j < furnitureLoc.getY() + furnitureWidth; j++) {
+                    room[i][j] = 'F';
+                }
+            }
+        }
+        System.out.println("   | 1 2 3 4 5 6 |");
+        System.out.println("---+-------------+");
+        for (int i = 0; i < roomLength; i++) {
+            System.out.print(" " + (i+1) + " |");
+            for (int j = 0; j < roomWidth; j++) {
+                System.out.print(" " + room[i][j]);
+            }
+            System.out.println(" |");
+        }
+        System.out.println("---+-------------+");
+    }  
+    
+    public void displayFurniture() {
+        if (listFurniture.isEmpty()) {
+            System.out.println("It seems like you don't have any furniture yet");
+            return;
+        }
+        System.out.println("Furniture List: ");  
+        for (Furniture furniture : listFurniture) {
+            Point furnitureLoc = new Point(furniture.getFurnitureLocation().getX(),furniture.getFurnitureLocation().getY());
+            furniture.setFurnitureLocation(furnitureLoc);
+                System.out.println(furniture.getType() + " at position (" + furniture.getFurnitureLocation().getX() + "," +
+                furniture.getFurnitureLocation().getY() + ")");
+        }
+    }
 
     //getter
     public String getRoomName(){
