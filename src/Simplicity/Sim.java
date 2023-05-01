@@ -8,7 +8,6 @@ import Simplicity.House.*;
 import java.time.*;
 import java.util.*;
 
-// TODO tambah syarat di Main bahwa sim harus hidup buat dipake
 public class Sim {
     //Attributes
     private String simFullName;

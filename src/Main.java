@@ -134,8 +134,11 @@ class MenuOptions{
     }
 
     public void viewSimInventory(Sim mySim, boolean gameState, ArrayList<Sim> simList){
-        if (gameState && !simList.isEmpty()){
+        if (gameState && !simList.isEmpty() && mySim.getSimAlive()){
             mySim.simInventory.printInventory();
+        }
+        else if (!mySim.getSimAlive()){
+            System.out.println("This sim is dead and is unable to perform any actions");
         }
         else{
             System.out.println("You must be in an active game with a minimum of (1) sim to check your sim's information");
@@ -195,8 +198,13 @@ class MenuOptions{
             name = inp.nextLine();
             for (Sim sim: listOfSims){
                 if (name.toLowerCase().equals(sim.getSimName().toLowerCase())){
-                    found = true;
-                    newSim = sim;
+                    if (sim.getSimAlive()){
+                        found = true;
+                        newSim = sim;
+                    }
+                    else{
+                        System.out.println("This Sim is dead. You are unable to switch to a dead Sim");
+                    }
                 }
             }
             if (!found){
@@ -211,6 +219,7 @@ class MenuOptions{
     
 
     public void houseUpgrade(Sim currentSim, boolean gameState, ArrayList<Sim> listOfSims) {
+        
         Scanner scanner = new Scanner(System.in);
         System.out.println("How many rooms do you want to add?");
         int roomTotal = scanner.nextInt();
