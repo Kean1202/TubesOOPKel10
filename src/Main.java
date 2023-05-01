@@ -207,6 +207,30 @@ class MenuOptions{
         System.out.println("Success! you have swapped to " + newSim.getSimName());
         return newSim;
     }
+
+    
+
+    public void houseUpgrade(Sim currentSim, boolean gameState, ArrayList<Sim> listOfSims) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("How many rooms do you want to add?");
+        int roomTotal = scanner.nextInt();
+        System.out.println("How long do you want to wait for the upgrade to finish (in minutes)?");
+        int duration = scanner.nextInt();
+    
+        currentSim.HouseUpgrade(roomTotal, duration);
+        System.out.println("House upgrade is in progress...");
+        System.out.println("Please wait for " + duration + " minutes for the upgrade to finish.");
+    
+        try {
+            Thread.sleep(duration * 60 * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    
+        System.out.println("House upgrade complete!");
+
+    }
+    
 }
 
 
