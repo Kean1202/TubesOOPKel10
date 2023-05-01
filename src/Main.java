@@ -14,6 +14,7 @@ public class Main {
         //WORLD
         World world = World.getInstance();
 
+
         //JOBS
         Job magician = new Job("Magician", 15);
         Job chef = new Job("Chef", 30);
@@ -167,8 +168,32 @@ class MenuOptions{
                 success = true;
             }
         }
+        // HOUSE
+        boolean foundSame = true;
+        int x, y, secondBool;
+        x = 0;
+        y = 0;
+        List<House> listHouse = world.getworldHouses();
+        while (foundSame){
+            secondBool = 0;
+            Random rand = new Random();
+            x = rand.nextInt(0, 64);
+            y = rand.nextInt(0, 64);
+            for (House house: listHouse){
+                if (house.getLocation().getX() == x && house.getLocation().getY() == y){
+                    foundSame = true;
+                    secondBool = 1;
+                }
+            }
+            if (foundSame && secondBool != 1){
+                foundSame = false;
+            }
+        }
+
         // Sim ditambah ke arraylist
-        Sim newSim = new Sim(newName, allJobs, world);
+        Sim newSim = new Sim(newName, allJobs, world, x, y);
+        // Masukin house kw world
+        world.addworldHouse(newSim.getSimHouse());
         // Sim diberi item awal
         Bed singleBed = new Bed("single bed", 100,4, 1);
         Toilet toilet = new Toilet("toilet", 10, 1, 1);
@@ -219,7 +244,7 @@ class MenuOptions{
     
 
     public void houseUpgrade(Sim currentSim, boolean gameState, ArrayList<Sim> listOfSims) {
-        
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("How many rooms do you want to add?");
         int roomTotal = scanner.nextInt();

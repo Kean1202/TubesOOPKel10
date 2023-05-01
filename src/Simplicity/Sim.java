@@ -44,7 +44,7 @@ public class Sim {
     }
 
     //Constructor
-    public Sim(String fullName, Job[] jobList, World world){
+    public Sim(String fullName, Job[] jobList, World world, int houseX, int houseY){
         this.simFullName = fullName;
         this.simJob = getRandomJob(jobList);
         this.curWorld = world;
@@ -66,6 +66,13 @@ public class Sim {
         timeRemainingUpgrade = 0;
         isItemInDelivery = false;
         isHouseBeingUpgraded = false;
+
+        //setting the starting house
+        //NEW HOUSE
+        House startingHouse = new House(houseX, houseY);
+        setHouse(startingHouse);
+        // STARTING ROOM
+        setRoom(startingHouse.getRoomList().get(0));
     }
 
     //Getters
@@ -129,12 +136,22 @@ public class Sim {
     public boolean getSimAlive() { return isSimAlive;}
     public boolean getIsItemInDelivery() { return isItemInDelivery;}
     public boolean getIsHouseBeingUpgraded() { return isHouseBeingUpgraded;}
+
+    public House getSimHouse(){return house;}
+    public Room getCurRoom(){return curRoom;}
     // END OF GETTERS
 
     //Setters
     public void simChangeName(String name){
         simFullName = name;
         System.out.println("Your name is now: " + simFullName);
+    }
+
+    public void setRoom(Room room){
+        curRoom = room;
+    }
+    public void setHouse(House house){
+        this.house = house;
     }
 
     public void simChangeJob(Job job){
@@ -900,7 +917,7 @@ public class Sim {
         Scanner scanner = new Scanner(System.in);
         List<Room> roomList = house.getRoomList();
 
-        String roomNow = curRoom.getRoomName(); //room tempat sim berada sekarang
+        String roomNow = curRoom.getRoomName(); //room tempat sim berada sekarang -> null
 
         System.out.println("List of Rooms :"); // menampilkan daftar room yang ada di house
         for (Room room : roomList){
