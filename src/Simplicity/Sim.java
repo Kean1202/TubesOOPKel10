@@ -498,7 +498,6 @@ public class Sim {
         simChangeStatus("Reading");
             try{
                 System.out.println("Reading a " + genre + " book");
-                notifyAll();
                 setActiveDuration(duration);
                 for (int i = 0; i < duration/5; i++){
                     System.out.print("...");
@@ -628,7 +627,6 @@ public class Sim {
         if (simInventory.checkContains(food.getType())){
 
                 try{
-                    notify();
                     setActiveDuration(30);
                     System.out.println("Eating");
                     for (int j = 0; j<30/2; j++){
