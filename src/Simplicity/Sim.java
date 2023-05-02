@@ -315,9 +315,7 @@ public class Sim {
         if (duration % 120 != 0) {
             throw new invalidMultitudeNumber(duration);
         } else {
-            synchronized (this) {
                 setActiveDuration(duration);
-                notifyAll();
                 simChangeStatus("Working");
                 System.out.println("You are currently working as a " + getSimJobName());
     
@@ -350,12 +348,9 @@ public class Sim {
                             System.out.println("You have worked for " + (float) getTimeWorked() / 60 + " minutes.");
                         }
     
-                        notifyAll();
-    
                     } catch (negativeParameterException n) {
                         System.out.println(n.getMessage());
                     }
-                }
             }
         }
     
@@ -375,40 +370,37 @@ public class Sim {
             throw new invalidMultitudeNumber(duration);
         }
         else{
-            synchronized (this){
-                setActiveDuration(duration);
-                notifyAll();
-                simChangeStatus("Exercising");
-                //mulai olahraga
-                    int repetition = duration / 20;
-                    for (int i = 0; i<repetition; i++){
-                        try{
-                                setActiveDuration(duration);
-                                System.out.println("Working out!");
-                                // Biar keren gw bikin make '....'
-                                for (int j = 0; j<20/4; j++){
-                                    System.out.print("...");
-                                    curWorld.getWorldTime().wait(20/5);
-                                }
-                                System.out.println("");
-                                addSimNeed("Health", 5);
-                                addSimNeed("Mood", 10);
-                                decreaseSimNeed("Hunger", 5);
-                                // ganti waktu gk tidur, gak ke kamar mandi, dll
-                                changeLastSleep(20);
-                                changeLastBathroom(20);
+            setActiveDuration(duration);
+            simChangeStatus("Exercising");
+            //mulai olahraga
+            int repetition = duration / 20;
+            for (int i = 0; i<repetition; i++){
+                try{
+                        setActiveDuration(duration);
+                        System.out.println("Working out!");
+                        // Biar keren gw bikin make '....'
+                        for (int j = 0; j<20/4; j++){
+                            System.out.print("...");
+                            curWorld.getWorldTime().wait(20/5);
                         }
-                        catch (negativeParameterException n){
-                                System.out.println(n.getMessage());
-                        }
-                    }
+                        System.out.println("");
+                        addSimNeed("Health", 5);
+                        addSimNeed("Mood", 10);
+                        decreaseSimNeed("Hunger", 5);
+                        // ganti waktu gk tidur, gak ke kamar mandi, dll
+                        changeLastSleep(20);
+                        changeLastBathroom(20);
                 }
-                simDeathCheck();
-                if (isSimAlive){
-                    simStatus = "Idle";
+                catch (negativeParameterException n){
+                        System.out.println(n.getMessage());
                 }
             }
         }
+            simDeathCheck();
+            if (isSimAlive){
+                simStatus = "Idle";
+            }
+    }
 
     // Method untuk tidur
     public void sleep(int duration) throws invalidMultitudeNumber {
@@ -416,9 +408,7 @@ public class Sim {
             throw new invalidMultitudeNumber(duration);
         }
         else{
-            synchronized (this){
                 setActiveDuration(duration);
-                notifyAll();
                 simChangeStatus("Sleeping");
                 int repetition = duration / (4*60);
                 for (int i = 0; i<repetition; i++){
@@ -430,6 +420,7 @@ public class Sim {
                                 curWorld.getWorldTime().wait(240/5);
                             }
                             System.out.println("");
+                            System.out.println("");
                             addSimNeed("Mood", 30);
                             addSimNeed("Health", 20);
                             changeLastBathroom(240);
@@ -440,62 +431,51 @@ public class Sim {
                             System.out.println(n.getMessage());
                         }
                 }
-
-            }
         }
         simDeathCheck();
         if (isSimAlive){
             simStatus = "Idle";
         }
     }
-
+    
     //Method untuk ke kamar mandi
     public void useBathroom(){
         // duration is in seconds
-
-        synchronized (this) {
-            try {
-                setActiveDuration(10);
-                notifyAll();
-                simChangeStatus("Using Bathroom");
-                System.out.println("You are using the bathroom...");
-                for (int j = 0; j < 10 / 2; j++) {
-                    System.out.print("...");
-                    wait(10/5 * 1000);
-                }
-                
-                simChangeStatus("Idle");
-                System.out.println("You have finished using the bathroom.");
-                hasEaten = false;
-                bathroomCounter = 1;
-                lastBathroom = 0;
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-            }
+        setActiveDuration(10);
+        simChangeStatus("Using Bathroom");
+        System.out.println("You are using the bathroom...");
+        for (int j = 0; j < 10 / 2; j++) {
+            System.out.print("...");
+            curWorld.getWorldTime().wait(10/5);
         }
+        
+        simChangeStatus("Idle");
+        System.out.println("You have finished using the bathroom.");
+        hasEaten = false;
+        bathroomCounter = 1;
+        lastBathroom = 0;
     }
+    
     // Method untuk nonton TV
     public void simWatchTV(){
         simChangeStatus("Watching TV");
-        synchronized(this){
-            try{
-                System.out.println("Watching TV");
-                setActiveDuration(30);
-                notifyAll();
-                for (int i = 0; i < 30/5; i++){
-                    System.out.print("browsing channels...");
-                    curWorld.getWorldTime().wait(30/5);
-                }
-                System.out.println("");
-                addSimNeed("Mood", 15);
-                decreaseSimNeed("Health", 5);
-                decreaseSimNeed("Hunger", 10);
-                changeLastBathroom(30);
-                changeLastSleep(30);
+        try{
+            System.out.println("Watching TV");
+            setActiveDuration(30);
+
+            for (int i = 0; i < 30/5; i++){
+                System.out.print("browsing channels...");
+                curWorld.getWorldTime().wait(30/5);
             }
-            catch(negativeParameterException n){
-                System.out.println(n.getMessage());
-            }
+            System.out.println("");
+            addSimNeed("Mood", 15);
+            decreaseSimNeed("Health", 5);
+            decreaseSimNeed("Hunger", 10);
+            changeLastBathroom(30);
+            changeLastSleep(30);
+        }
+        catch(negativeParameterException n){
+            System.out.println(n.getMessage());
         }
     }
 
@@ -516,7 +496,6 @@ public class Sim {
         }
 
         simChangeStatus("Reading");
-        synchronized (this){
             try{
                 System.out.println("Reading a " + genre + " book");
                 notifyAll();
@@ -535,16 +514,13 @@ public class Sim {
             catch(negativeParameterException n){
                 System.out.println(n.getMessage());
             }
-        }
     }
-
+    
     // Method untuk meditasi
     public void meditate(){
         simChangeStatus("Meditating");
-        synchronized(this){
             try{
                 System.out.println("Meditating");
-                notifyAll();
                 setActiveDuration(120);
                 for (int i = 0; i < 120/5; i++){
                     System.out.print("...");
@@ -560,13 +536,11 @@ public class Sim {
             catch(negativeParameterException n){
                 System.out.println(n.getMessage());
             }
-        }
     }
 
     // Method untuk ngeYoga
     public void doYoga(){
         simChangeStatus("Doing yoga");
-        synchronized(this){
             try{
                 System.out.println("Doing yoga");
                 setActiveDuration(240);
@@ -584,13 +558,11 @@ public class Sim {
             catch(negativeParameterException n){
                 System.out.println(n.getMessage());
             }
-        }
     }
 
     // Dance
     public void dance(){
         simChangeStatus("Dancing");
-        synchronized(this){
             try{
                 System.out.println("Dancing");
                 setActiveDuration(60);
@@ -607,13 +579,11 @@ public class Sim {
             catch(negativeParameterException n){
                 System.out.println(n.getMessage());
             }
-        }
     }
 
     // Method untuk dengerin musik
     public void listenToMusic(){
         simChangeStatus("Listening to music");
-        synchronized(this){
             try{
                 System.out.println("Listening to music");
                 setActiveDuration(60);
@@ -630,13 +600,11 @@ public class Sim {
             catch(negativeParameterException n){
                 System.out.println(n.getMessage());
             }
-        }
     }
 
     // Method untuk ngelukis
     public void paint(){
         simChangeStatus("Painting");
-        synchronized(this){
             try{
                 System.out.println("Painting");
                 setActiveDuration(120);
@@ -653,13 +621,12 @@ public class Sim {
             catch(negativeParameterException n){
                 System.out.println(n.getMessage());
             }
-        }
     }
 
     // Method untuk Makan
     public void simEat(FoodCuisine food){
         if (simInventory.checkContains(food.getType())){
-            synchronized (this){
+
                 try{
                     notify();
                     setActiveDuration(30);
@@ -678,7 +645,6 @@ public class Sim {
                 catch (negativeParameterException n){
                     System.out.println(n.getMessage());
                 }
-            }
         }
         else{
             System.out.println("You don't have "+ food.getType() + " in your inventory");
@@ -739,29 +705,28 @@ public class Sim {
         // cek status
     }
 
-    public synchronized void simBuyItem(Map<String, PurchasableObject> objectMap, String itemName, int amount) throws negativeParameterException, invalidMultitudeNumber {
+    public void simBuyItem(Map<String, PurchasableObject> objectMap, String itemName, int amount) throws negativeParameterException, invalidMultitudeNumber {
         if (amount < 0) {
             throw new negativeParameterException(amount);
         } else if (amount == 0) {
             throw new invalidMultitudeNumber(amount);
         } else {
             PurchasableObject object = objectMap.get(itemName);
-
             if (object != null) {
                 Thread thread = new Thread(new Runnable() {
-                    public synchronized void run(){
-
-                        if (object.getPrice() * amount <= getSimMoney() && !getIsItemInDelivery()) {
-                                    try {
-                                            timeRemainingDelivery = new Random().nextInt(1, 5) * 30 * 1000;
+                    public void run(){
+                        if (object.getPrice() * amount <= getSimMoney()) {
+                                    try {  
+                                            Thread.sleep(300); 
+                                            while (getSimStatus().equals("Idle")) {
+                                                Thread.sleep(1);
+                                            }
+                                            setTimeDelivery(new Random().nextInt(1, 6) * 30 * 1000);
                                             isItemInDelivery = true;
                                             System.out.println("\nYou have bought " + ((SimplicityObject) object).getType() + " for " + object.getPrice() + " Simplicity Dollars.");
-                                            System.out.println("Please wait for " + (float) timeRemainingDelivery / 60000 + " minutes...");
-                                            wait(activeDuration);
-                                            int timeTemp = getTimeRemainingDelivery();
-                                            timeRemainingDelivery -= activeDuration;
-                                            if (timeRemainingDelivery < activeDuration) {
-                                                wait(timeTemp);
+                                            System.out.println("Please wait for " + timeRemainingDelivery / 1000 + " seconds...");
+                                            if (timeRemainingDelivery < getActiveDuration()) {
+                                                Thread.sleep(timeRemainingDelivery);
                                                 simDecreaseMoney(object.getPrice() * amount);
                                                 simInventory.addInventory((SimplicityObject) object, amount);
                                                 System.out.println("\nYour item has arrived!");
@@ -770,50 +735,33 @@ public class Sim {
                                                 isItemInDelivery = false;
                                             } 
                                             else {
-                                                try{simBuyItem(objectMap, itemName, amount);}
-                                                catch(negativeParameterException n){
-                                                    System.out.println(n.getMessage());
-                                                }
-                                                catch(invalidMultitudeNumber i){
-                                                    System.out.println(i.getMessage());
+                                                int tempActiveDuration = getActiveDuration();
+                                                while(timeRemainingDelivery > 0 && isItemInDelivery) {
+                                                    Thread.sleep(200); 
+                                                    tempActiveDuration = getActiveDuration();
+                                                    if(timeRemainingDelivery < tempActiveDuration){
+                                                        System.out.println("\n///Delivery in progress///");
+                                                        Thread.sleep(timeRemainingDelivery);
+                                                        simDecreaseMoney(object.getPrice() * amount);
+                                                        simInventory.addInventory((SimplicityObject) object, amount);
+                                                        System.out.println("\nYour item has arrived!");
+                                                        System.out.println("You have " + getSimMoney() + " Simplicity Dollars left.");
+                                                        isItemInDelivery = false;
+                                                    }
+                                                    else{
+                                                        System.out.println("\n///Delivery in progress///");
+                                                        Thread.sleep(tempActiveDuration + 100);
+                                                        timeRemainingDelivery -= tempActiveDuration;
+                                                    }
+                                                    while (getSimStatus().equals("Idle")) {
+                                                        Thread.sleep(1);
+                                                    }
                                                 }
                                             } 
                                     }
                                     catch (InterruptedException e) {
                                         System.out.println(e.getMessage());
                                     }
-                        }
-                        else if(object.getPrice() * amount <= getSimMoney() && getIsItemInDelivery()){
-                            try {
-                                System.out.println("\n\n///DELIVERY NOTICE///");
-                                System.out.println("You still have an item in delivery, please wait until it arrives");
-                                System.out.println("Please wait for " + (float) timeRemainingDelivery / 60000 + " minutes...");
-                                System.out.println("///DELIVERY NOTICE///\n");
-                                wait(activeDuration);
-                                int timeTemp = getTimeRemainingDelivery();
-                                timeRemainingDelivery -= activeDuration;
-                                if (timeRemainingDelivery < activeDuration) {
-                                    wait(timeTemp);
-                                    simDecreaseMoney(object.getPrice() * amount);
-                                    simInventory.addInventory((SimplicityObject) object, amount);
-                                    System.out.println("\nYour item has arrived!");
-                                    System.out.println("You have " + getSimMoney() + " Simplicity Dollars left.");
-                                    System.out.println();
-                                    isItemInDelivery = false;
-                                } 
-                                else {
-                                    try{simBuyItem(objectMap, itemName, amount);}
-                                    catch(negativeParameterException n){
-                                        System.out.println(n.getMessage());
-                                    }
-                                    catch(invalidMultitudeNumber i){
-                                        System.out.println(i.getMessage());
-                                    }
-                                } 
-                            }
-                            catch (InterruptedException e) {
-                                System.out.println(e.getMessage());
-                            }
                         }
                         else {
                             System.out.println("You don't have enough money to buy " + ((SimplicityObject) object).getType());
@@ -822,12 +770,61 @@ public class Sim {
                 });
 
             thread.start();   
-            } else {
+            } 
+            else {
                 System.out.println("Item not found");
             }
         }
     }
     
+    public void HouseUpgrade(int roomTotal) {
+        int upgradeCost = 1500 * roomTotal;
+        if (simMoney < upgradeCost) {
+            System.out.println("Insufficient funds to upgrade the house.");
+            return;
+        }
+        Thread thread = new Thread(new Runnable() {
+            public void run(){
+                        try {
+                            Thread.sleep(300); 
+                            while (getSimStatus().equals("Idle")) {
+                                Thread.sleep(1);
+                            }
+                            setTimeUpgrade(18*60*1000);
+                            isHouseBeingUpgraded = true;
+                            System.out.println("\nYou have upgraded your house for " + upgradeCost + " Simplicity Dollars.");
+                            int tempActiveDuration = getActiveDuration();
+                            while(timeRemainingUpgrade > 0 && isHouseBeingUpgraded) {
+                                Thread.sleep(200); 
+                                tempActiveDuration = getActiveDuration();
+                                if(timeRemainingUpgrade < tempActiveDuration){
+                                    System.out.println("\n///Upgrade in progress///");
+                                    Thread.sleep(timeRemainingUpgrade);
+                                    simDecreaseMoney(upgradeCost);
+                                    // Tambahkan ruangan ke dalam house
+                                    house.setRoomTotal(house.getRoomTotal() + roomTotal);
+                                    System.out.println("\nYour house has been upgraded!");
+                                    isHouseBeingUpgraded = false;
+                                }
+                                else{
+                                    System.out.println("\n///Upgrade in progress///");
+                                    System.out.println("Please wait for " + String.format("%.2f",(float) timeRemainingUpgrade / 60000)  + " minutes...");
+                                    System.out.println("///Upgrade in progress///");
+                                    Thread.sleep(tempActiveDuration + 100);
+                                    timeRemainingUpgrade -= tempActiveDuration;
+                                }
+                                while (getSimStatus().equals("Idle")) {
+                                    Thread.sleep(1);
+                                }
+                            }
+                            }
+                            catch (InterruptedException e) {
+                                System.out.println(e.getMessage());
+                        }
+            }
+        });
+        thread.start();
+    }
 
     //method untuk berkunjung
     public void simVisit(House destination) {
@@ -855,69 +852,6 @@ public class Sim {
         if (isSimAlive){
             simStatus = "Idle";
         }
-    }
-
-    public synchronized void HouseUpgrade(int roomTotal, int duration) {
-        int upgradeCost = 1500 * roomTotal;
-        if (simMoney < upgradeCost) {
-            System.out.println("Insufficient funds to upgrade the house.");
-            return;
-        }
-        Thread thread = new Thread(new Runnable() {
-            public synchronized void run(){
-                if (!getIsHouseBeingUpgraded()) {
-                        try {
-                                timeRemainingUpgrade = 18*60*1000;
-                                isHouseBeingUpgraded = true;
-                                System.out.println("\nYou have upgraded your house for " + upgradeCost + " Simplicity Dollars.");
-                                System.out.println("Please wait for " + (float) timeRemainingUpgrade / 60000 + " minutes...");
-                                wait(activeDuration);
-                                int timeTemp = getTimeRemainingUpgrade();
-                                timeRemainingUpgrade -= activeDuration;
-                                if (timeRemainingUpgrade < activeDuration) {
-                                    wait(timeTemp);
-                                    simDecreaseMoney(upgradeCost);
-                                    // Tambahkan ruangan ke dalam house
-                                    house.setRoomTotal(house.getRoomTotal() + roomTotal);
-                                    System.out.println("\nYour house has been upgraded!");
-                                    isHouseBeingUpgraded = false;
-                                } 
-                                else {
-                                    HouseUpgrade(roomTotal, duration);
-                                } 
-                        }
-                        catch (InterruptedException e) {
-                            System.out.println(e.getMessage());
-                        }
-                }
-                else if(getIsHouseBeingUpgraded()){
-                    try {
-                        System.out.println("\n\n///HOUSE UPGRADE NOTICE///");
-                        System.out.println("Your house is still being upgraded.");
-                        System.out.println("Please wait for " + (float) timeRemainingDelivery / 60000 + " minutes...");
-                        System.out.println("///HOUSE UPGRADE NOTICE///\n");
-                        wait(activeDuration);
-                        int timeTemp = getTimeRemainingUpgrade();
-                        timeRemainingUpgrade -= activeDuration;
-                        if (timeRemainingUpgrade < activeDuration) {
-                            wait(timeTemp);
-                            simDecreaseMoney(upgradeCost);
-                            // Tambahkan ruangan ke dalam house
-                            house.setRoomTotal(house.getRoomTotal() + roomTotal);
-                            System.out.println("\nYour house has been upgraded!");
-                            isHouseBeingUpgraded = false;
-                        } 
-                        else {
-                            HouseUpgrade(roomTotal, duration);
-                        } 
-                    }
-                    catch (InterruptedException e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-            }
-        });
-        thread.start();
     }
 
 
