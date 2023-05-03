@@ -148,7 +148,11 @@ class MenuOptions{
             System.out.println("You must be in an active game with a minimum of (1) sim to check your sim's information");
         }
     }
-
+    
+    public void viewSimLocation(Sim mySim){
+        System.out.println("Your current location is at " + mySim.getCurHouse().getHouseName() + " " + mySim.getCurRoom().getRoomName().toLowerCase());
+    }
+    
     public void viewSimInventory(Sim mySim, boolean gameState, ArrayList<Sim> simList){
         if (gameState && !simList.isEmpty() && mySim.getSimAlive()){
             mySim.simInventory.printInventory();
