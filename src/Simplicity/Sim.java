@@ -875,8 +875,7 @@ public class Sim {
                 // room yang di input ada di house
                 for (Room room : roomList){
                     if (roomName.toLowerCase().equals(room.getRoomName().toLowerCase())){
-                        Point roomLoc = new Point(room.getRoomLocation().getX(),room.getRoomLocation().getY());
-                        setLocation(roomLoc); // sim pindah ke room tujuan
+                        setRoom(room); // sim pindah ke room tujuan
                         check = true;
                         break;
                     }
