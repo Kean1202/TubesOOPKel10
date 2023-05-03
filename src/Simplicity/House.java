@@ -1,17 +1,19 @@
 package Simplicity;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
 
 public class House {
+    private String name;
     private Point location;
     private List<Room> roomList;
     private int roomTotal;
 
-    public House(int x, int y) {
+    public House(int x, int y, String name) {
         this.location = new Point(x,y);
         this.roomList = new ArrayList<>();
         this.roomList.add(new Room("Bedroom"));  // ini blm jalan kalo make konstruktor yg sblm gw ubah
+        this.name = name;
     }
 
     public List<Room> getRoomList() {
@@ -26,7 +28,15 @@ public class House {
         return roomTotal;
     }
 
+    public String getHouseName() {
+        return name;
+    }
+    
     public void setRoomTotal(int roomTotal) {
         this.roomTotal = roomTotal;
+    }
+
+    public void setHouseName(String houseName) {
+        this.name = houseName;
     }
 }
