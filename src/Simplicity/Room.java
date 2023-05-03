@@ -2,7 +2,6 @@ package Simplicity;
 
 import java.util.ArrayList;
 
-import Simplicity.*;
 import Simplicity.Objects.*;
 
 
@@ -14,7 +13,6 @@ public class Room {
     private Room bawah;
     private Room kiri;
     private Room kanan;
-    private Point roomLocation;
     private ArrayList<Furniture> listFurniture = new ArrayList<>();
     private boolean[][] vacantRoom = new boolean[roomLength][roomWidth];
 
@@ -136,9 +134,6 @@ public class Room {
     public String getRoomName(){
         return roomName;
     }
-    public Point getRoomLocation() {
-        return roomLocation;
-    }
     public int getRoomWidth() {
         return roomWidth;
     }
@@ -176,9 +171,6 @@ public class Room {
     }
     public void setKanan(Room room){
         this.kanan=room;
-    }
-    public void setLocation(Point roomLocation) {
-        this.roomLocation = roomLocation;
     }
     public void setListObjek(ArrayList<Furniture> listFurniture) {
         this.listFurniture = listFurniture;

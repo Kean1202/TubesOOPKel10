@@ -292,12 +292,12 @@ public class Sim {
         this.location = location;
     }
 
-    public void changeTimeDelivery(int amount){
-        timeRemainingDelivery -= amount;
+    public void setTimeDelivery(int amount){
+        timeRemainingDelivery = amount;
     }
 
-    public void changeTimeUpgrade(int amount){
-        timeRemainingUpgrade -= amount;
+    public void setTimeUpgrade(int amount){
+        timeRemainingUpgrade = amount;
     }
 
     public void setActiveDuration(int amount){
@@ -875,8 +875,7 @@ public class Sim {
                 // room yang di input ada di house
                 for (Room room : roomList){
                     if (roomName.toLowerCase().equals(room.getRoomName().toLowerCase())){
-                        Point roomLoc = new Point(room.getRoomLocation().getX(),room.getRoomLocation().getY());
-                        setLocation(roomLoc); // sim pindah ke room tujuan
+                        setRoom(room); // sim pindah ke room tujuan
                         check = true;
                         break;
                     }

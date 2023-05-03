@@ -32,7 +32,17 @@ public class Main {
         Stove elStove = new Stove("electric stove", 200, 1, 1);
         Desk desk = new Desk("desk", 50, 3, 3);
         Clock clock = new Clock("clock", 10, 1, 1, 0);
-        
+        Book comicBook = new Book("comic book", 0, 0, 0, "Comic book");
+        Book fantasyNovel = new Book("fantasy novel", 0, 0, 0, "Fantasy novel");
+        Book nonficBook = new Book("non-fiction book", 0, 0, 0, "Non-fiction");
+        Canvas canvas = new Canvas("canvas", 0, 0, 0);
+        DancePad dancePad = new DancePad("dance pad", 0, 0, 0);
+        MeditationMat meditationMat = new MeditationMat("meditation mat", 0, 0, 0);
+        Mp3Player mp3Player = new Mp3Player("mp3 player", 100, 1, 1);
+        TV tv = new TV("TV", 0, 0, 0);
+        YogaMat yogaMat = new YogaMat("yoga mat", 0, 0, 0);
+
+
         //INGREDIENTS
         FoodIngredients rice = new FoodIngredients("rice", 5, 5);
         FoodIngredients egg = new FoodIngredients("egg", 3, 4);
