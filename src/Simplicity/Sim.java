@@ -20,6 +20,7 @@ public class Sim {
     private String simStatus;
     private Point location;
     private House house;
+    private House curHouse;
     private Room curRoom;
     private World curWorld;
 
@@ -73,10 +74,13 @@ public class Sim {
 
         //setting the starting house
         //NEW HOUSE
-        House startingHouse = new House(houseX, houseY);
+        String houseName = simFullName + "'s House";
+        House startingHouse = new House(houseX, houseY, houseName);
         setHouse(startingHouse);
+        setCurHouse(startingHouse);
         // STARTING ROOM
         setRoom(startingHouse.getRoomList().get(0));
+
     }
 
     //Getters
@@ -142,6 +146,7 @@ public class Sim {
     public boolean getIsHouseBeingUpgraded() { return isHouseBeingUpgraded;}
 
     public House getSimHouse(){return house;}
+    public House getCurHouse(){return curHouse;}
     public Room getCurRoom(){return curRoom;}
     // END OF GETTERS
 
@@ -156,6 +161,10 @@ public class Sim {
     }
     public void setHouse(House house){
         this.house = house;
+    }
+
+    public void setCurHouse(House house){
+        curHouse = house;
     }
 
     public void simChangeJob(Job job){
