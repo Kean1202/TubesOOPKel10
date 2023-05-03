@@ -292,12 +292,12 @@ public class Sim {
         this.location = location;
     }
 
-    public void changeTimeDelivery(int amount){
-        timeRemainingDelivery -= amount;
+    public void setTimeDelivery(int amount){
+        timeRemainingDelivery = amount;
     }
 
-    public void changeTimeUpgrade(int amount){
-        timeRemainingUpgrade -= amount;
+    public void setTimeUpgrade(int amount){
+        timeRemainingUpgrade = amount;
     }
 
     public void setActiveDuration(int amount){

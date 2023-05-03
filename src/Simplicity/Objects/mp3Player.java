@@ -2,9 +2,9 @@ package Simplicity.Objects;
 
 import Simplicity.Sim;
 
-public class mp3Player extends Furniture{
+public class Mp3Player extends Furniture{
     //Constructor
-    public mp3Player(String type, int price, int length, int width) {
+    public Mp3Player(String type, int price, int length, int width) {
         super(type, price, length, width);
     }
 
