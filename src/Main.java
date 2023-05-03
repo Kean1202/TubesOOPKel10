@@ -71,9 +71,9 @@ public class Main {
         }};
 
         //TESTING
-        gameState = true;
         listOfSims = new ArrayList<>();
         MenuOptions mainMenu = new MenuOptions();
+        gameState = false;
         mainMenu.printMenu();
         mainMenu.addSim(listOfSims, allJobs, world);
         currentSim = mainMenu.changeSim(listOfSims);
@@ -102,6 +102,10 @@ public class Main {
 }
 
 class MenuOptions{
+    public void startGame(boolean gameState){
+        gameState = true;
+    }
+
     public void printMenu(){
         System.out.println("========== SIMPLICITY MENU ==========");
         System.out.println("1.  START GAME");
@@ -252,7 +256,7 @@ class MenuOptions{
         System.out.println("How long do you want to wait for the upgrade to finish (in minutes)?");
         int duration = scanner.nextInt();
     
-        currentSim.HouseUpgrade(roomTotal, duration);
+        currentSim.HouseUpgrade(roomTotal);
         System.out.println("House upgrade is in progress...");
         System.out.println("Please wait for " + duration + " minutes for the upgrade to finish.");
     
