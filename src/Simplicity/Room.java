@@ -1,11 +1,8 @@
 package Simplicity;
 
-import java.util.*;
 import java.util.ArrayList;
 
-
 import Simplicity.Objects.*;
-
 
 
 public class Room {
@@ -17,16 +14,18 @@ public class Room {
     private Room kiri;
     private Room kanan;
     private ArrayList<Furniture> listFurniture = new ArrayList<>();
-    private boolean[][] vacantRoom = new boolean[roomLength][roomWidth];
-
-
+    private boolean[][] roomGrid = new boolean[roomLength][roomWidth];
 
     public Room(String roomName){
         this.roomName=roomName;
+        atas = null;
+        bawah = null;
+        kiri = null;
+        kanan = null;
         listFurniture = new ArrayList<Furniture>();
         for (int i = 0; i < roomLength; i++) {
             for (int j = 0; j < roomWidth; j++) {
-                vacantRoom[i][j] = true;
+                roomGrid[i][j] = false;
             }
         }
     }
@@ -62,31 +61,31 @@ public class Room {
             System.out.println("Cannot place furniture, item not found in inventory");
             return false;
         }
-
+    
         // Check if the furniture fits inside the room
         if (position.getX() + furnitureLength > roomLength ||
                 position.getY() + furnitureWidth > roomWidth) {
             System.out.println("Furniture does not fit inside the room");
             return false;
         }
-
+    
         // Check if the area is vacant
         for (int i = position.getX(); i < position.getX() + furnitureLength; i++) {
             for (int j = position.getY(); j < position.getY() + furnitureWidth; j++) {
-                if (!vacantRoom[i][j]) {
+                if (!roomGrid[i][j]) {
                     System.out.println("Cannot place furniture, area is not vacant");
                     return false;
                 }
             }
         }
-
+    
         // Place the furniture
         for (int i = position.getX(); i < position.getX() + furnitureLength; i++) {
             for (int j = position.getY(); j < position.getY() + furnitureWidth; j++) {
-                vacantRoom[i][j] = false;
+                roomGrid[i][j] = false;
             }
         }
-
+        
         listFurniture.add(furniture);
         mySim.simInventory.decreaseInventory(furniture, 1);
         return true;
@@ -119,22 +118,21 @@ public class Room {
             System.out.println(" |");
         }
         System.out.println("---+-------------+");
-    }
-
-    public void displayFurniture() {
-        if (listFurniture.isEmpty()) {
-            System.out.println("It seems like you don't have any furniture yet");
-            return;
-        }
-        System.out.println("Furniture List: ");
-        for (Furniture furniture : listFurniture) {
-            Point furnitureLoc = new Point(furniture.getFurnitureLocation().getX(),furniture.getFurnitureLocation().getY());
-            furniture.setFurnitureLocation(furnitureLoc);
-            System.out.println(furniture.getType() + " at position (" + furniture.getFurnitureLocation().getX() + "," +
-                    furniture.getFurnitureLocation().getY() + ")");
-        }
-    }
-
+    }  
+    
+    // public void displayFurniture() {
+    //     if (listFurniture.isEmpty()) {
+    //         System.out.println("It seems like you don't have any furniture yet");
+    //         return;
+    //     }
+    //     System.out.println("Furniture List: ");  
+    //     for (Furniture furniture : listFurniture) {
+    //         Point furnitureLoc = new Point(furniture.getFurnitureLocation().getX(),furniture.getFurnitureLocation().getY());
+    //         furniture.setFurnitureLocation(furnitureLoc);
+    //             System.out.println(furniture.getType() + " at position (" + furniture.getFurnitureLocation().getX() + "," +
+    //             furniture.getFurnitureLocation().getY() + ")");
+    //     }
+    // }
 
     //getter
     public String getRoomName(){
@@ -158,7 +156,7 @@ public class Room {
     public Room getKanan(){
         return this.kanan;
     }
-    public ArrayList<Furniture>getFurniture(){
+    public ArrayList<Furniture> getFurniture(){
         return this.listFurniture;
     }
 
@@ -182,4 +180,42 @@ public class Room {
         this.listFurniture = listFurniture;
     }
 
+
+    //method
+    public void placeFurniture(Point point, Furniture furniture){
+        if (canPlaceFurniture(point, furniture)) {
+            // Tandai seluruh sel yang ditempati dengan True
+            for (int i = point.getX(); i < point.getX() + furniture.getLength(); i++) {
+                for (int j = point.getY(); j < point.getY() + furniture.getWidth(); j++) {
+                    roomGrid[i][j] = true;
+                }
+            }
+            // Set posisi Furniture
+            listFurniture.add(furniture);
+            furniture.setLocation(point);
+        } else {
+            System.out.println("Furniture can't be placed.");
+        }
+    }
+
+
+    public boolean canPlaceFurniture(Point point, Furniture furniture){
+        // Periksa apakah ukuran furniture cukup di ruangan
+        if (point.getX() + furniture.getLength() > roomLength || point.getY() + furniture.getWidth() > roomWidth) {
+            return false;
+        }
+
+        // Periksa apakah sel yang akan ditempati furniture kosong
+        for (int i = point.getX(); i < point.getX() + furniture.getLength(); i++) {
+            for (int j = point.getY(); j <point.getY() + furniture.getWidth(); j++) {
+                if (roomGrid[i][j]) {
+                    return false;
+                }
+            }
+        }
+
+        return true; // Aman untuk diletakkan
+    }
+
 }
+
