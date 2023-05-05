@@ -117,6 +117,8 @@ public class Main {
             put(milk.getType(), milk);
         }};
 
+        
+
 
 
         // Mulai main gamenya
@@ -456,6 +458,10 @@ class MenuOptions{
 
     public void moveRoom(Sim currentSim){
         currentSim.simMoveRoom();
+    }
+
+    public void editRoom(Room currentSim, ArrayList<Furniture> listOfFurniture, ArrayList<FoodIngredients> listOfFoodIngredients, ArrayList<FoodCuisine> listOfFoodCuisine){
+        currentSim.editRoom(listOfFurniture, listOfFoodIngredients, listOfFoodCuisine);
     }
     
 }
