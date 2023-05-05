@@ -23,6 +23,7 @@ public class Sim {
     private House curHouse;
     private Room curRoom;
     private World curWorld;
+    private Map<String, PurchasableObject> objectMap;
 
     //Attribute untuk ngecek kondisi
     private int activeDuration;
@@ -711,7 +712,9 @@ public class Sim {
         }
         // cek status
     }
-
+    public Map<String, PurchasableObject> getObjectMap() {
+        return objectMap;
+    }
     public void simBuyItem(Map<String, PurchasableObject> objectMap, String itemName, int amount) throws negativeParameterException, invalidMultitudeNumber {
         if (amount < 0) {
             throw new negativeParameterException(amount);
@@ -835,26 +838,26 @@ public class Sim {
 
     //method untuk berkunjung
     public void simVisit(House destination) {
-        simChangeStatus("On the way to visit " + destination.toString());
-        double distance = Math.sqrt(Math.pow(destination.getLocation().getX() - getLocation().getX(), 2)
-                + Math.pow(destination.getLocation().getY() - getLocation().getY(), 2));
+        simChangeStatus("On the way to visit " + destination.getHouseName());
+        double distance = Math.sqrt(Math.pow(destination.getLocation().getX() - curHouse.getLocation().getX(), 2)
+                + Math.pow(destination.getLocation().getY() - curHouse.getLocation().getY(), 2));
         int time = (int) distance;
-            try {
-                setActiveDuration(time);
-                System.out.println("Visiting " + destination.toString());
-                for (int j = 0; j < time; j++) {
-                    System.out.print("...");
-                    curWorld.getWorldTime().wait(1);
-                    changeLastSleep(1);
-                    changeLastBathroom(1);
-                }
-                System.out.println("");
-                addSimNeed("Mood", 10);
-                decreaseSimNeed("Hunger", 10);
-            } 
-            catch (negativeParameterException n) {
-                System.out.println(n.getMessage());
+        try {
+            setActiveDuration(time);
+            System.out.println("Visiting " + destination.getHouseName());
+            for (int j = 0; j < time; j++) {
+                System.out.print("...");
+                curWorld.getWorldTime().wait(1);
+                changeLastSleep(1);
+                changeLastBathroom(1);
             }
+            System.out.println("");
+            addSimNeed("Mood", 10);
+            decreaseSimNeed("Hunger", 10);
+        }
+        catch (negativeParameterException n) {
+            System.out.println(n.getMessage());
+        }
         simDeathCheck();
         if (isSimAlive){
             simStatus = "Idle";
@@ -899,7 +902,19 @@ public class Sim {
         scanner.close();
     }
 
+    public void listPurchasableObjects(Map<String, PurchasableObject> objectMap) {
+        System.out.println("List of available items:");
+        for (String itemName : objectMap.keySet()) {
+            PurchasableObject object = objectMap.get(itemName);
+            System.out.println(itemName + " - " + " (" + object.getPrice());
+        }
+    }
+
     // Melihat waktu
+
+    public void pindahBarang(){
+
+    }
     public void simCheckTime(Clock clock) {
         WorldTime worldTime = curWorld.getWorldTime();
         System.out.println("Time remaining today: " + worldTime.getTimeRemaining());

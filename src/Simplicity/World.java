@@ -5,7 +5,7 @@ import java.util.*;
 public class World {
 	private int worldLength;
 	private int worldWidth;
-    private List<House> worldHouses; //ini kalau nama class untuk house = House, kalau ga, diganti aja yaaaa sama bawah2nya punten
+    private List<House> worldHouses;
 	
 	//Attribute untuk menghitung singleton instance
 	private static World instance;

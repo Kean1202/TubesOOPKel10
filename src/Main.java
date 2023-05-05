@@ -1,6 +1,7 @@
 import Simplicity.*;
 import Simplicity.Objects.*;
 import Simplicity.Objects.Canvas;
+import javax.swing.JOptionPane;
 
 import java.util.*;
 import java.util.List;
@@ -122,23 +123,59 @@ public class Main {
         // Mulai main gamenya
         gameState = false;
         MenuOptions mainMenu = new MenuOptions();
+        Scanner scanner = new Scanner(System.in);
+        String choice = null;
+        boolean lostGame = false;
         while (!gameState){
             mainMenu.printMenu(gameState);
-            while (!gameState){
-                // TODO langsung exit dari menu
-                gameState = mainMenu.executeChoiceOutsideGame(gameState);
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextLine();
+            if (choice.equals("3")){
+                // langsung exit
+                gameState = true;
+            }
+            // pilihan non-exit
+            else{
+                gameState = mainMenu.executeChoiceOutsideGame(choice, gameState);
             }
         }
-        // Add sim pertama
-        System.out.println("Welcome to Simplicity! Let's add your first Sim!");
-        mainMenu.addSim(simList, allJobs, world);
-        currentSim = simList.get(0);
-        while (gameState){
-            mainMenu.printMenu(gameState);
-            gameState = mainMenu.checkState(simList, gameState);
-            mainMenu.executeChoiceInGame(gameState, simList, currentSim, allJobs, world, listOfFoodCuisine,listOfFoodIngredients, listOfFurniture,purchasableMap);
+        if (!choice.equals("3")){
+            //kondisi pengguna tidak memilih exit langsung
+            // Add sim pertama
+            System.out.println("Welcome to Simplicity! Let's add your first Sim!");
+            mainMenu.addSim(simList, allJobs, world);
+            currentSim = simList.get(0);
         }
-        System.out.println("All of your sims are dead, GAME OVER");
+        else{
+            gameState = false;
+        }
+
+        while (gameState){
+            // Print menu game
+            mainMenu.printMenu(gameState);
+            // cek status game masih bisa lanjut atau gk
+            gameState = mainMenu.checkState(simList, gameState);
+            // Validasi input
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextLine();
+            //testing
+//            List<House> houses = world.getworldHouses();
+//            for (House house: houses){
+//                System.out.println(house.getHouseName());
+//            }
+            // Jalanin input
+            gameState = mainMenu.executeChoiceInGame(choice, gameState, simList, currentSim, allJobs, world, listOfFoodCuisine,listOfFoodIngredients, listOfFurniture,purchasableMap);
+        }
+        // berhenti karena exit
+        if (choice.equals("3")){
+            System.out.println("Exiting game..");
+
+        }
+        // berhenti karena sim habis
+        else if (simList.isEmpty()){
+            System.out.println("All of your sims are dead, GAME OVER");
+        }
+
 
     }
 
@@ -153,20 +190,21 @@ class MenuOptions{
         if (gameState){
             System.out.println("========== SIMPLICITY MENU ==========");
             System.out.println("1.  START GAME");
-            System.out.println("2.  HELP");
-            System.out.println("3.  EXIT");
-            System.out.println("4.  VIEW SIM INFO");
-            System.out.println("5.  VIEW CURRENT LOCATION");
-            System.out.println("6.  VIEW INVENTORY");
-            System.out.println("7.  UPGRADE HOUSE");
-            System.out.println("8.  VISIT HOUSE");
-            System.out.println("9.  MOVE ROOM");
-            System.out.println("10.  EDIT ROOM");
-            System.out.println("11. ADD SIM");
-            System.out.println("12. CHANGE SIM");
-            System.out.println("13. LIST OBJECT");
-            System.out.println("14. GO TO OBJECT");
-            System.out.println("15. ACTION");
+            System.out.println("2.  HELP");                     // udah
+            System.out.println("3.  EXIT");                     // udah
+            System.out.println("4.  VIEW SIM INFO");            // udah
+            System.out.println("5.  VIEW CURRENT LOCATION");    // udah
+            System.out.println("6.  VIEW INVENTORY");           // udah
+            System.out.println("7.  UPGRADE HOUSE");         // belum kelar
+            System.out.println("8.  VISIT HOUSE");           // udah
+            System.out.println("9.  MOVE ROOM");            // udah
+            System.out.println("10.  EDIT ROOM");           // tinggal pindahBarang
+            System.out.println("11. ADD SIM");              // udah
+            System.out.println("12. CHANGE SIM");           // udah
+            System.out.println("13. LIST OBJECT");          // udah
+            System.out.println("14. GO TO OBJECT");         // udah
+            System.out.println("15. ACTION");               // belum ->
+            System.out.println("16. WORK");                 // udah
             System.out.println("========== /////////////// ==========");
             System.out.println("");
         }
@@ -182,11 +220,7 @@ class MenuOptions{
     }
 
     //method untuk memilih option ketika sudah di dalam game (In Progress)
-    public boolean executeChoiceInGame(boolean gameState, ArrayList<Sim> listSim, Sim currentSim, Job[] allJobs, World world,  ArrayList<FoodCuisine> listOfFoodCuisine, ArrayList<FoodIngredients> listOfFoodIngredients, ArrayList<Furniture> listOfFurniture, Map<String, PurchasableObject> purchasableMap){
-        Scanner scanner = new Scanner(System.in);
-        String choice;
-        System.out.print("Enter your choice: ");
-        choice = scanner.nextLine();
+    public boolean executeChoiceInGame(String choice, boolean gameState, ArrayList<Sim> listSim, Sim currentSim, Job[] allJobs, World world,  ArrayList<FoodCuisine> listOfFoodCuisine, ArrayList<FoodIngredients> listOfFoodIngredients, ArrayList<Furniture> listOfFurniture, Map<String, PurchasableObject> purchasableMap){
         switch(choice) {
             case "1":
                 if (gameState){
@@ -203,41 +237,53 @@ class MenuOptions{
                 exitGame(gameState);
                 break;
             case "4":
-                viewSimInfo(null, false, null);
+                viewSimInfo(currentSim, gameState, listSim);
                 break;
             case "5":
-                viewSimLocation(null);
+                viewSimLocation(currentSim);
                 break;
             case "6":
-                viewSimInventory(null, false, null);
+                viewSimInventory(currentSim, gameState, listSim);
                 break;
             case "7":
-                houseUpgrade(null);
+                houseUpgrade(currentSim);
                 break;
             case "8":
-                visitHouse(null, null);
+                visitHouse(world, currentSim);
                 break;
             case "9":
-                moveRoom(null);
+                moveRoom(currentSim);
                 break;
-//          case "10":
-//              editRoom();
-//              break;
+          case "10":
+              editRoom(currentSim.getCurRoom(), currentSim, purchasableMap);
+              break;
             case "11":
-                addSim(null, null, null);
+                addSim(listSim, allJobs, world);
                 break;
             case "12":
-                changeSim(null);
+                changeSim(listSim);
                 break;
             case "13":
-                listOfObject(null, null, null);
+                listOfObject(currentSim);
                 break;
-//          case "14":
-//              goToObject();
-//              break;
+          case "14":
+              goToObject(currentSim);
+              break;
 //          case "15":
 //              action();
 //              break;
+            case "16":
+                try{
+                    work(currentSim);
+                }
+                catch (invalidMultitudeNumber i){
+                    System.out.println(i.getMessage());
+                }
+                catch (negativeParameterException n){
+                    System.out.println(n.getMessage());
+                }
+
+                break;
             case "0":
                 break;
             default:
@@ -248,11 +294,7 @@ class MenuOptions{
     }
 
     // Method untuk menerima command sebelum gameState = true
-    public boolean executeChoiceOutsideGame(boolean gameState){
-        Scanner scanner = new Scanner(System.in);
-        String choice;
-        System.out.print("Enter your choice: ");
-        choice = scanner.nextLine();
+    public boolean executeChoiceOutsideGame(String choice, boolean gameState){
         switch (choice){
             case "1":
                 if (gameState){
@@ -282,7 +324,18 @@ class MenuOptions{
         return gameState;
     }
     public void printHelp(){
-        System.out.println("To be implemented");
+        System.out.println("A GUIDE TO SIMPLICITY");
+        System.out.println("-Start the game to enable gameplay-");
+        System.out.println("-You start the game by creating your very first Sim");
+        System.out.println("-Every sim acts just like you! They have a meter representing their mood, health, and hunger-");
+        System.out.println("-Every sim starts with 80 of each status. the higher the number, the better-");
+        System.out.println("-You can command your sim to do certain things, such as working, cooking, and eating-");
+        System.out.println("-Each action will take time. Once you finish them, your Sim's mood might increase or decrease-");
+        System.out.println("-You can also add new Sims to your game, the goal is to make sure none of the sims' status goes to 0-");
+        System.out.println("-If any of your Sims' status drops down to 0, the sim dies. If you run out of Sims, you lose-");
+        System.out.println("-You can choose actions by typing in the number according to the menu printed on the screen, Goodluck!-");
+        System.out.println("");
+        System.out.println("");
     }
 
     public boolean exitGame(boolean gameState){
@@ -415,26 +468,9 @@ class MenuOptions{
         return newSim;
     }
 
-    public void listOfObject(ArrayList<Furniture> listOfFurniture, ArrayList<FoodIngredients> listOfFoodIngredients, ArrayList<FoodCuisine> listOfFoodCuisine){
-        int i = 1;
+    public void listOfObject(Sim currentSim){
         System.out.println("========== LIST OF OBJECTS ==========");
-        System.out.println("\n============= FURNITURE =============");
-        for (Furniture furniture: listOfFurniture){
-            System.out.println(i + ". "+ furniture.getType());
-            i++;
-        }
-        i = 1;
-        System.out.println("========= FOOD INGREDIENTS =========");
-        for (FoodIngredients foodIngredients: listOfFoodIngredients){
-            System.out.println(i + ". "+ foodIngredients.getType());
-            i++;
-        }
-        i = 1;
-        System.out.println("=========== FOOD CUISINE ===========");
-        for (FoodCuisine foodCuisine: listOfFoodCuisine){
-            System.out.println(i + ". "+ foodCuisine.getType());
-            i++;
-        }
+        currentSim.getCurRoom().displayFurniture();
         System.out.println("========== /////////////// ==========");
     }
 
@@ -450,14 +486,125 @@ class MenuOptions{
 
     }
 
-    public void visitHouse (House destination, Sim currentSim){
-        currentSim.simVisit(destination);
+    public void visitHouse (World world, Sim currentSim){
+        if (currentSim.getSimAlive()){
+            // syaratnya sim harus hidup
+            List<House> houses = world.getworldHouses();
+            int i = 1;
+            Scanner scanner = new Scanner(System.in);
+            for (House house: houses){
+                System.out.println(i + ". "+ house.getHouseName());
+            }
+            System.out.println("Choose a house number: ");
+            int chosenHouse = Integer.parseInt(scanner.nextLine());
+            if (chosenHouse <= houses.size() && chosenHouse > 0){
+                House destination = houses.get(chosenHouse-1);
+                currentSim.simVisit(destination);
+            }
+            else{
+                System.out.println("Sorry, that house number does not exist");
+            }
+        }
+        else{
+            //sim udah mati
+            System.out.println("This sim is dead and is unable to perform any actions");
+        }
+
+
     }
 
     public void moveRoom(Sim currentSim){
-        currentSim.simMoveRoom();
+        if (currentSim.getSimAlive()){
+            currentSim.simMoveRoom();
+        }
+        else{
+            System.out.println("This sim is dead and is unable to perform any actions");
+        }
     }
-    
+
+    public void goToObject(Sim currentSim){
+        if (currentSim.getSimAlive()){
+            Scanner scanner = new Scanner(System.in);
+            ArrayList<Furniture> listFurniture = currentSim.getCurRoom().getFurniture();
+            System.out.println("List of objects in your current room : ");
+            int i = 1;
+            for(Furniture furniture : listFurniture){
+                System.out.println(i + ". " +  furniture.getType());
+                i++;
+            }
+            System.out.print("Insert the number of the object you want to go to:  ");
+            int numFurniture = scanner.nextInt();
+            if(numFurniture <= listFurniture.size()){
+                Furniture objectDes = listFurniture.get(numFurniture-1);
+                currentSim.getLocation().setX(objectDes.getFurnitureLocation().getX());
+                currentSim.getLocation().setY(objectDes.getFurnitureLocation().getY());
+            }
+            //kalau input numFurniture lebih dari total objek di ruangan
+            else{
+                System.out.println("Input invalid. Please choose an available number!");
+            }
+        }
+        else{
+            System.out.println("This sim is dead and is unable to perform any actions");
+        }
+
+    }
+
+    public void work(Sim currentSim) throws invalidMultitudeNumber, negativeParameterException{
+        if (currentSim.getSimAlive()){
+            System.out.println("Input the work duration in seconds: ");
+            Scanner scanner = new Scanner(System.in);
+            int duration = Integer.parseInt(scanner.nextLine());
+            currentSim.work(duration);
+        }
+        else{
+            System.out.println("This sim is dead and is unable to perform any actions");
+        }
+
+
+    }
+
+    public void editRoom(Room room, Sim currentSim,  Map<String, PurchasableObject> purchasableMap){
+        if (currentSim.getSimAlive()){
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Would you like to place an item or buy an item? (buy/place)");
+            String choice = scanner.nextLine();
+            if (choice.equals("place")){
+                System.out.println("Pilih opsi yang diinginkan:");
+                System.out.println("1. Beli barang baru");
+                System.out.println("2. Pindah barang");
+                System.out.print("Enter your choice: ");
+                choice = scanner.nextLine();
+                switch(choice) {
+                    case "1":
+                        System.out.println("Available items to purchase:");
+                        currentSim.listPurchasableObjects(purchasableMap);
+                        System.out.print("Enter the name of the item to purchase: ");
+                        String itemName = scanner.nextLine();
+                        System.out.print("Enter the amount to purchase: ");
+                        int amount = scanner.nextInt();
+
+                        try {
+                            currentSim.simBuyItem(currentSim.getObjectMap(), itemName, amount);
+                        } catch (negativeParameterException e) {
+                            e.printStackTrace();
+                        } catch (invalidMultitudeNumber e) {
+                            e.printStackTrace();
+                        }
+                        break;
+
+                    case "2":
+                        currentSim.pindahBarang();
+
+                }
+            }
+
+        }
+        else{
+            System.out.println("This sim is dead and is unable to perform any actions");
+        }
+
+    }
 }
 
 

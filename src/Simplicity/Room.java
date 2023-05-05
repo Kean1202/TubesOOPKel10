@@ -1,8 +1,11 @@
 package Simplicity;
 
+import java.util.*;
 import java.util.ArrayList;
 
+
 import Simplicity.Objects.*;
+
 
 
 public class Room {
@@ -15,6 +18,8 @@ public class Room {
     private Room kanan;
     private ArrayList<Furniture> listFurniture = new ArrayList<>();
     private boolean[][] vacantRoom = new boolean[roomLength][roomWidth];
+
+
 
     public Room(String roomName){
         this.roomName=roomName;
@@ -57,14 +62,14 @@ public class Room {
             System.out.println("Cannot place furniture, item not found in inventory");
             return false;
         }
-    
+
         // Check if the furniture fits inside the room
         if (position.getX() + furnitureLength > roomLength ||
                 position.getY() + furnitureWidth > roomWidth) {
             System.out.println("Furniture does not fit inside the room");
             return false;
         }
-    
+
         // Check if the area is vacant
         for (int i = position.getX(); i < position.getX() + furnitureLength; i++) {
             for (int j = position.getY(); j < position.getY() + furnitureWidth; j++) {
@@ -74,14 +79,14 @@ public class Room {
                 }
             }
         }
-    
+
         // Place the furniture
         for (int i = position.getX(); i < position.getX() + furnitureLength; i++) {
             for (int j = position.getY(); j < position.getY() + furnitureWidth; j++) {
                 vacantRoom[i][j] = false;
             }
         }
-        
+
         listFurniture.add(furniture);
         mySim.simInventory.decreaseInventory(furniture, 1);
         return true;
@@ -114,21 +119,22 @@ public class Room {
             System.out.println(" |");
         }
         System.out.println("---+-------------+");
-    }  
-    
+    }
+
     public void displayFurniture() {
         if (listFurniture.isEmpty()) {
             System.out.println("It seems like you don't have any furniture yet");
             return;
         }
-        System.out.println("Furniture List: ");  
+        System.out.println("Furniture List: ");
         for (Furniture furniture : listFurniture) {
             Point furnitureLoc = new Point(furniture.getFurnitureLocation().getX(),furniture.getFurnitureLocation().getY());
             furniture.setFurnitureLocation(furnitureLoc);
-                System.out.println(furniture.getType() + " at position (" + furniture.getFurnitureLocation().getX() + "," +
-                furniture.getFurnitureLocation().getY() + ")");
+            System.out.println(furniture.getType() + " at position (" + furniture.getFurnitureLocation().getX() + "," +
+                    furniture.getFurnitureLocation().getY() + ")");
         }
     }
+
 
     //getter
     public String getRoomName(){
