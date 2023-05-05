@@ -9,8 +9,7 @@ public class Desk extends Furniture{
         super(type, price, length, width);
     }
     
-    //masih prototype
-    public void doAction(Sim sim) {
-        //sim.sleep();
+    public void doAction(Sim sim, FoodCuisine food) {
+        sim.simEat(food);
     }
 }
