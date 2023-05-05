@@ -182,7 +182,7 @@ class MenuOptions{
     }
 
     //method untuk memilih option ketika sudah di dalam game (In Progress)
-    public boolean executeChoiceInGame(boolean gameState, ArrayList<Sim> listSim, Sim currentSim, Job[] allJobs, World world,  ArrayList<FoodCuisine> listOfFoodCuisine, ArrayList<FoodIngredients> listOfFoodIngredients, ArrayList<Furniture> listOfFurniture, Map<String, PurchasableObject> purchasableMap){
+    public boolean executeChoiceInGame(boolean gameState, ArrayList<Sim> listSim, Sim currentSim, Job[] allJobs, World world,  ArrayList<FoodCuisine> listOfFoodCuisine, ArrayList<FoodIngredients> listOfFoodIngredients, ArrayList<Furniture> listOfFurniture, Map<String, PurchasableObject> purchasableMap, House destination){
         Scanner scanner = new Scanner(System.in);
         String choice;
         System.out.print("Enter your choice: ");
@@ -212,10 +212,10 @@ class MenuOptions{
                 viewSimInventory(null, false, null);
                 break;
             case "7":
-                houseUpgrade(null);
+                houseUpgrade(currentSim);
                 break;
             case "8":
-                visitHouse(null, null);
+                visitHouse(destination, currentSim);
                 break;
             case "9":
                 moveRoom(null);
