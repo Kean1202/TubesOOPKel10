@@ -871,42 +871,46 @@ public class Sim {
 
         String roomNow = curRoom.getRoomName(); //room tempat sim berada sekarang -> null
 
-        System.out.println("List of Rooms :"); // menampilkan daftar room yang ada di house
-        for (Room room : roomList){
-            System.out.println(room.getRoomName());
-        }
+        if (roomList.size() > 1){
+            System.out.println("List of Rooms :"); // menampilkan daftar room yang ada di house
+            for (Room room : roomList){
+                System.out.println(room.getRoomName());
+            }
 
-        boolean check = false;
-        while(!check){
-            System.out.print("Insert your destination room : ");
-            String roomName = scanner.nextLine();
-            if (roomNow.toLowerCase().equals(roomName.toLowerCase())){
-                System.out.println("You're already in the room");
-                System.out.println();
-            }else{
-                // room yang di input ada di house
-                for (Room room : roomList){
-                    if (roomName.toLowerCase().equals(room.getRoomName().toLowerCase())){
-                        setRoom(room); // sim pindah ke room tujuan
-                        check = true;
-                        break;
-                    }
-                }
-                // room yang di input tidak ada di house
-                if(!check){
-                    System.out.println("There's no " + roomName + " in this house");
+            boolean check = false;
+            while(!check){
+                System.out.print("Insert your destination room : ");
+                String roomName = scanner.nextLine();
+                if (roomNow.toLowerCase().equals(roomName.toLowerCase())){
+                    System.out.println("You're already in the room");
                     System.out.println();
+                }else{
+                    // room yang di input ada di house
+                    for (Room room : roomList){
+                        if (roomName.toLowerCase().equals(room.getRoomName().toLowerCase())){
+                            setRoom(room); // sim pindah ke room tujuan
+                            check = true;
+                            break;
+                        }
+                    }
+                    // room yang di input tidak ada di house
+                    if(!check){
+                        System.out.println("There's no " + roomName + " in this house");
+                        System.out.println();
+                    }
                 }
             }
         }
-        scanner.close();
+        else{
+            System.out.println("You can't move to any other rooms!");
+        }
     }
 
     public void listPurchasableObjects(Map<String, PurchasableObject> objectMap) {
         System.out.println("List of available items:");
         for (String itemName : objectMap.keySet()) {
             PurchasableObject object = objectMap.get(itemName);
-            System.out.println(itemName + " - " + " (" + object.getPrice());
+            System.out.println(itemName + " - " + " (" + object.getPrice() + ")");
         }
     }
 

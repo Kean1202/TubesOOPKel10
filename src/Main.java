@@ -567,12 +567,10 @@ class MenuOptions{
     public void editRoom(Room room, Sim currentSim,  Map<String, PurchasableObject> purchasableMap){
         if (currentSim.getSimAlive()){
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Would you like to place an item or buy an item? (buy/place)");
-            String choice = scanner.nextLine();
-            if (choice.equals("place")){
-                System.out.println("Pilih opsi yang diinginkan:");
-                System.out.println("1. Beli barang baru");
-                System.out.println("2. Pindah barang");
+            String choice;
+                System.out.println("Choose the option you want to do:");
+                System.out.println("1. Buy a new item");
+                System.out.println("2. Place an item");
                 System.out.print("Enter your choice: ");
                 choice = scanner.nextLine();
                 switch(choice) {
@@ -581,11 +579,12 @@ class MenuOptions{
                         currentSim.listPurchasableObjects(purchasableMap);
                         System.out.print("Enter the name of the item to purchase: ");
                         String itemName = scanner.nextLine();
+                        boolean foundName = false;
                         System.out.print("Enter the amount to purchase: ");
                         int amount = scanner.nextInt();
 
                         try {
-                            currentSim.simBuyItem(currentSim.getObjectMap(), itemName, amount);
+                            currentSim.simBuyItem(purchasableMap, itemName, amount);
                         } catch (negativeParameterException e) {
                             e.printStackTrace();
                         } catch (invalidMultitudeNumber e) {
@@ -597,7 +596,6 @@ class MenuOptions{
                         currentSim.pindahBarang();
 
                 }
-            }
 
         }
         else{
