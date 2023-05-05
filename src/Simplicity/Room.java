@@ -1,10 +1,11 @@
 package Simplicity;
 
+import java.util.*;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 import Simplicity.Objects.*;
-import Simplicity.*;
+
 
 
 public class Room {
@@ -17,7 +18,8 @@ public class Room {
     private Room kanan;
     private ArrayList<Furniture> listFurniture = new ArrayList<>();
     private boolean[][] vacantRoom = new boolean[roomLength][roomWidth];
-    private Menu menu;
+    
+    
 
     public Room(String roomName){
         this.roomName=roomName;
@@ -137,6 +139,7 @@ public class Room {
         System.out.println("Pilih opsi yang diinginkan:");
         System.out.println("1. Beli barang baru");
         System.out.println("2. Pindah barang");
+        Map<String, PurchasableObject> objectMap = new HashMap<String, PurchasableObject>();
         Scanner scanner = new Scanner(System.in);
         String choice;
         System.out.print("Enter your choice: ");
@@ -144,9 +147,26 @@ public class Room {
          switch(choice) {
             case "1":
                 System.out.println("Available items to purchase:");
-                mysim.simBuyItem(null,itemName, roomLength);
-                
-         }
+                mysim.listPurchasableObjects(objectMap);
+                System.out.print("Enter the name of the item to purchase: ");
+                String itemName = scanner.nextLine();
+                System.out.print("Enter the amount to purchase: ");
+                int amount = scanner.nextInt();
+    
+                try {
+                    mysim.simBuyItem(mysim.getObjectMap(), itemName, amount);
+                } catch (negativeParameterException e) {
+                    e.printStackTrace();
+                } catch (invalidMultitudeNumber e) {
+                    e.printStackTrace();
+                }
+                break;
+            
+            case "2":
+                mysim.pindahBarang();
+                            
+                    }
+            
                 
 
 

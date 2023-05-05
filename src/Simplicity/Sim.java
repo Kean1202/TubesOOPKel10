@@ -23,6 +23,7 @@ public class Sim {
     private House curHouse;
     private Room curRoom;
     private World curWorld;
+    private Map<String, PurchasableObject> objectMap;
 
     //Attribute untuk ngecek kondisi
     private int activeDuration;
@@ -711,6 +712,10 @@ public class Sim {
         }
         // cek status
     }
+    
+    public Map<String, PurchasableObject> getObjectMap() {
+        return objectMap;
+    }
 
     public void simBuyItem(Map<String, PurchasableObject> objectMap, String itemName, int amount) throws negativeParameterException, invalidMultitudeNumber {
         if (amount < 0) {
@@ -898,6 +903,8 @@ public class Sim {
         }
         scanner.close();
     }
+
+    public void pindahBarang();
 
     public void listPurchasableObjects(Map<String, PurchasableObject> objectMap) {
         System.out.println("List of available items:");
