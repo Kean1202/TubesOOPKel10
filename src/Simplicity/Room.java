@@ -133,7 +133,7 @@ public class Room {
         }
     }
 
-    public void editRoom(ArrayList<Furniture> listOfFurniture, ArrayList<FoodIngredients> listOfFoodIngredients, ArrayList<FoodCuisine> listOfFoodCuisine){
+    public void editRoom(Sim mysim){
         System.out.println("Pilih opsi yang diinginkan:");
         System.out.println("1. Beli barang baru");
         System.out.println("2. Pindah barang");
@@ -143,26 +143,8 @@ public class Room {
         choice = scanner.nextLine();
          switch(choice) {
             case "1":
-                int i = 1;
-                System.out.println("========== LIST OF OBJECTS ==========");
-                System.out.println("\n============= FURNITURE =============");
-                for (Furniture furniture: listOfFurniture){
-                    System.out.println(i + ". "+ furniture.getType());
-                    i++;
-                }
-                i = 1;
-                System.out.println("========= FOOD INGREDIENTS =========");
-                for (FoodIngredients foodIngredients: listOfFoodIngredients){
-                    System.out.println(i + ". "+ foodIngredients.getType());
-                    i++;
-                }
-                i = 1;
-                System.out.println("=========== FOOD CUISINE ===========");
-                for (FoodCuisine foodCuisine: listOfFoodCuisine){
-                    System.out.println(i + ". "+ foodCuisine.getType());
-                    i++;
-                }
-                System.out.println("========== /////////////// ==========");
+                System.out.println("Available items to purchase:");
+                mysim.simBuyItem(null,itemName, roomLength);
                 
          }
                 
