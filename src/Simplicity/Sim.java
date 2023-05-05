@@ -981,7 +981,18 @@ public class Sim {
     }
 
     //Method untuk pengecekan dan pelaksanaan tindakan yang bisa ditinggal
-
+    
+    //Method menyimpan barang 
+    public void simPlaceFurniture(Point point, Map<String, PurchasableObject> purchasableMap, String itemName){
+        //implementasi simpanBarang
+            Scanner scan = new Scanner(System.in);
+            PurchasableObject object = purchasableMap.get(itemName);
+            if(object instanceof Furniture){
+                
+            } else {
+                System.out.println("Nama barang yang anda input tidak valid!");
+            }
+        }
     // TODO yang implementasi waktu bikin perhitungan waktu per hari dan pergantian hari
 
 
