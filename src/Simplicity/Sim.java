@@ -899,6 +899,14 @@ public class Sim {
         scanner.close();
     }
 
+    public void listPurchasableObjects(Map<String, PurchasableObject> objectMap) {
+        System.out.println("List of available items:");
+        for (String itemName : objectMap.keySet()) {
+            PurchasableObject object = objectMap.get(itemName);
+            System.out.println(itemName + " - " + " (" + object.getPrice());
+        }
+    }
+
     // Melihat waktu
     public void simCheckTime(Clock clock) {
         WorldTime worldTime = curWorld.getWorldTime();
