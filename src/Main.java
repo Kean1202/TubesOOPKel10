@@ -120,6 +120,7 @@ public class Main {
         MenuOptions mainMenu = new MenuOptions();
         gameState = false;
         mainMenu.printMenu();
+        mainMenu.executeChoice();
         mainMenu.addSim(listOfSims, allJobs, world);
         currentSim = mainMenu.changeSim(listOfSims);
         mainMenu.listOfObject(listOfFurniture, listOfFoodIngredients, listOfFoodCuisine);
@@ -159,15 +160,77 @@ class MenuOptions{
         System.out.println("5.  VIEW CURRENT LOCATION");
         System.out.println("6.  VIEW INVENTORY");
         System.out.println("7.  UPGRADE HOUSE");
-        System.out.println("8.  MOVE ROOM");
-        System.out.println("9.  EDIT ROOM");
-        System.out.println("10. ADD SIM");
-        System.out.println("11. CHANGE SIM");
-        System.out.println("12. LIST OBJECT");
-        System.out.println("13. GO TO OBJECT");
-        System.out.println("14. ACTION");
+        System.out.println("8.  VISIT HOUSE");
+        System.out.println("9.  MOVE ROOM");
+        System.out.println("10.  EDIT ROOM");
+        System.out.println("11. ADD SIM");
+        System.out.println("12. CHANGE SIM");
+        System.out.println("13. LIST OBJECT");
+        System.out.println("14. GO TO OBJECT");
+        System.out.println("15. ACTION");
         System.out.println("========== /////////////// ==========");
     }
+
+    //method untuk memilih option (In Progress)
+    public void executeChoice() {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+        System.out.print("Enter your choice: ");
+        choice = scanner.nextInt();
+        switch(choice) {
+//          case 1:
+//              StartGame();
+//              break;
+//          case 2:
+//              Help();
+//              break;
+//          case 3:
+//              Exit();
+//              break;
+            case 4:
+                viewSimInfo(null, false, null);
+                break;
+            case 5:
+                viewSimLocation(null);
+                break;
+            case 6:
+                viewSimInventory(null, false, null);
+                break;
+            case 7:
+                houseUpgrade(null);
+                break;
+            case 8:
+                visitHouse(null, null);
+                break;
+
+            case 9:
+                moveRoom(null);
+                break;
+//          case 10:
+//              editRoom();
+//              break;
+            case 11:
+                addSim(null, null, null);
+                break;
+            case 12:
+                changeSim(null);
+                break;
+            case 13:
+                listOfObject(null, null, null);
+                break;
+//          case 14:
+//              goToObject();
+//              break;
+//          case 15:
+//              action();
+//              break;
+            case 0:
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+        }
+    }
+
 
     public void viewSimInfo(Sim mySim, boolean gameState, ArrayList<Sim> simList){
         if (gameState && !simList.isEmpty()){
@@ -317,12 +380,20 @@ class MenuOptions{
         System.out.println("========== /////////////// ==========");
     }
 
-    public void houseUpgrade(Sim currentSim, boolean gameState, ArrayList<Sim> listOfSims) {
+    public void houseUpgrade(Sim currentSim) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("How many rooms do you want to add?");
         int roomTotal = scanner.nextInt();
-        currentSim.HouseUpgrade(roomTotal);
+        if (currentSim != null) {
+            currentSim.HouseUpgrade(roomTotal);
+        } else {
+            System.out.println("currentSim is null");
+        }
 
+    }
+
+    public void visitHouse (House destination, Sim currentSim){
+        currentSim.simVisit(destination);
     }
 
     public void moveRoom(Sim currentSim){
