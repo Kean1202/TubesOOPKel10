@@ -120,19 +120,16 @@ public class Room {
         System.out.println("---+-------------+");
     }  
     
-    // public void displayFurniture() {
-    //     if (listFurniture.isEmpty()) {
-    //         System.out.println("It seems like you don't have any furniture yet");
-    //         return;
-    //     }
-    //     System.out.println("Furniture List: ");  
-    //     for (Furniture furniture : listFurniture) {
-    //         Point furnitureLoc = new Point(furniture.getFurnitureLocation().getX(),furniture.getFurnitureLocation().getY());
-    //         furniture.setFurnitureLocation(furnitureLoc);
-    //             System.out.println(furniture.getType() + " at position (" + furniture.getFurnitureLocation().getX() + "," +
-    //             furniture.getFurnitureLocation().getY() + ")");
-    //     }
-    // }
+    public void displayFurniture() {
+        if (listFurniture.isEmpty()) {
+            System.out.println("It seems like you don't have any furniture yet");
+            return;
+        }
+        System.out.println("Furniture List: ");  
+        for (Furniture furniture : listFurniture) {
+            System.out.println(furniture.getType());
+        }
+    }
 
     //getter
     public String getRoomName(){
