@@ -29,8 +29,9 @@ public abstract class Furniture extends SimplicityObject implements PurchasableO
     public void setWidth(int width){
         this.width = width;
     }
-    public void setFurnitureLocation(Point furnitureLocation ){
-        this.furnitureLocation=furnitureLocation;
+
+    public void setLocation(Point furnitureLocation) {
+        this.furnitureLocation = furnitureLocation;
     }
     
     //Getter
