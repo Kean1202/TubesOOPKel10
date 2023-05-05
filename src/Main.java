@@ -1,6 +1,9 @@
 import Simplicity.*;
 import Simplicity.Objects.*;
+import Simplicity.Objects.Canvas;
+
 import java.util.*;
+import java.util.List;
 
 
 public class Main {
@@ -8,7 +11,7 @@ public class Main {
         //Current SIM
         Sim currentSim = null;
         // LIST OF SIMS
-        ArrayList<Sim> listOfSims;
+        ArrayList<Sim> simList = new ArrayList<>();;
         // GAME STATE
         boolean gameState = false;
         //WORLD
@@ -113,122 +116,177 @@ public class Main {
             put(beans.getType(), beans);
             put(milk.getType(), milk);
         }};
-        
 
-        //TESTING
-        listOfSims = new ArrayList<>();
-        MenuOptions mainMenu = new MenuOptions();
+
+
+        // Mulai main gamenya
         gameState = false;
-        mainMenu.printMenu();
-        mainMenu.executeChoice();
-        mainMenu.addSim(listOfSims, allJobs, world);
-        currentSim = mainMenu.changeSim(listOfSims);
-        mainMenu.listOfObject(listOfFurniture, listOfFoodIngredients, listOfFoodCuisine);
+        MenuOptions mainMenu = new MenuOptions();
+        while (!gameState){
+            mainMenu.printMenu(gameState);
+            while (!gameState){
+                // TODO langsung exit dari menu
+                gameState = mainMenu.executeChoiceOutsideGame(gameState);
+            }
+        }
+        // Add sim pertama
+        System.out.println("Welcome to Simplicity! Let's add your first Sim!");
+        mainMenu.addSim(simList, allJobs, world);
+        currentSim = simList.get(0);
+        while (gameState){
+            mainMenu.printMenu(gameState);
+            gameState = mainMenu.checkState(simList, gameState);
+            mainMenu.executeChoiceInGame(gameState, simList, currentSim, allJobs, world, listOfFoodCuisine,listOfFoodIngredients, listOfFurniture,purchasableMap);
+        }
+        System.out.println("All of your sims are dead, GAME OVER");
 
-//        try{
-//
-////            currentSim.simBuyItem(purchasableMap, "rice", 1);
-////            toilet.doAction(currentSim);
-////            toilet.doAction(currentSim);
-////            currentSim.work(120);
-//
-//        }
-//        catch (invalidMultitudeNumber n){
-//            System.out.println(n.getMessage());
-//        }
-//        catch (negativeParameterException e){
-//            System.out.println(e.getMessage());
-//        }
-//
-//        currentSim.simInventory.printInventory();
-//
     }
 
 }
 
 class MenuOptions{
-    public void startGame(boolean gameState){
-        gameState = true;
+    public boolean startGame(){
+        return true ;
     }
 
-    public void printMenu(){
-        System.out.println("========== SIMPLICITY MENU ==========");
-        System.out.println("1.  START GAME");
-        System.out.println("2.  HELP");
-        System.out.println("3.  EXIT");
-        System.out.println("4.  VIEW SIM INFO");
-        System.out.println("5.  VIEW CURRENT LOCATION");
-        System.out.println("6.  VIEW INVENTORY");
-        System.out.println("7.  UPGRADE HOUSE");
-        System.out.println("8.  VISIT HOUSE");
-        System.out.println("9.  MOVE ROOM");
-        System.out.println("10.  EDIT ROOM");
-        System.out.println("11. ADD SIM");
-        System.out.println("12. CHANGE SIM");
-        System.out.println("13. LIST OBJECT");
-        System.out.println("14. GO TO OBJECT");
-        System.out.println("15. ACTION");
-        System.out.println("========== /////////////// ==========");
+    public void printMenu(boolean gameState){
+        if (gameState){
+            System.out.println("========== SIMPLICITY MENU ==========");
+            System.out.println("1.  START GAME");
+            System.out.println("2.  HELP");
+            System.out.println("3.  EXIT");
+            System.out.println("4.  VIEW SIM INFO");
+            System.out.println("5.  VIEW CURRENT LOCATION");
+            System.out.println("6.  VIEW INVENTORY");
+            System.out.println("7.  UPGRADE HOUSE");
+            System.out.println("8.  VISIT HOUSE");
+            System.out.println("9.  MOVE ROOM");
+            System.out.println("10.  EDIT ROOM");
+            System.out.println("11. ADD SIM");
+            System.out.println("12. CHANGE SIM");
+            System.out.println("13. LIST OBJECT");
+            System.out.println("14. GO TO OBJECT");
+            System.out.println("15. ACTION");
+            System.out.println("========== /////////////// ==========");
+            System.out.println("");
+        }
+        else{
+            System.out.println("========== SIMPLICITY MENU ==========");
+            System.out.println("1.  START GAME");
+            System.out.println("2.  HELP");
+            System.out.println("3.  EXIT");
+            System.out.println("========== /////////////// ==========");
+            System.out.println("");
+        }
+
     }
 
-    //method untuk memilih option (In Progress)
-    public void executeChoice() {
+    //method untuk memilih option ketika sudah di dalam game (In Progress)
+    public boolean executeChoiceInGame(boolean gameState, ArrayList<Sim> listSim, Sim currentSim, Job[] allJobs, World world,  ArrayList<FoodCuisine> listOfFoodCuisine, ArrayList<FoodIngredients> listOfFoodIngredients, ArrayList<Furniture> listOfFurniture, Map<String, PurchasableObject> purchasableMap){
         Scanner scanner = new Scanner(System.in);
-        int choice;
+        String choice;
         System.out.print("Enter your choice: ");
-        choice = scanner.nextInt();
+        choice = scanner.nextLine();
         switch(choice) {
-//          case 1:
-//              StartGame();
-//              break;
-//          case 2:
-//              Help();
-//              break;
-//          case 3:
-//              Exit();
-//              break;
-            case 4:
+            case "1":
+                if (gameState){
+                    System.out.println("The game is already running...");
+                }
+                else{
+                    gameState = startGame();
+                }
+                break;
+            case "2":
+                printHelp();
+                break;
+            case "3":
+                exitGame(gameState);
+                break;
+            case "4":
                 viewSimInfo(null, false, null);
                 break;
-            case 5:
+            case "5":
                 viewSimLocation(null);
                 break;
-            case 6:
+            case "6":
                 viewSimInventory(null, false, null);
                 break;
-            case 7:
+            case "7":
                 houseUpgrade(null);
                 break;
-            case 8:
+            case "8":
                 visitHouse(null, null);
                 break;
-
-            case 9:
+            case "9":
                 moveRoom(null);
                 break;
-//          case 10:
+//          case "10":
 //              editRoom();
 //              break;
-            case 11:
+            case "11":
                 addSim(null, null, null);
                 break;
-            case 12:
+            case "12":
                 changeSim(null);
                 break;
-            case 13:
+            case "13":
                 listOfObject(null, null, null);
                 break;
-//          case 14:
+//          case "14":
 //              goToObject();
 //              break;
-//          case 15:
+//          case "15":
 //              action();
 //              break;
-            case 0:
+            case "0":
                 break;
             default:
-                System.out.println("Invalid choice. Please try again.");
+                System.out.println("Invalid choice. Please input a number between 1-15.");
+            }
+        return gameState;
+
+    }
+
+    // Method untuk menerima command sebelum gameState = true
+    public boolean executeChoiceOutsideGame(boolean gameState){
+        Scanner scanner = new Scanner(System.in);
+        String choice;
+        System.out.print("Enter your choice: ");
+        choice = scanner.nextLine();
+        switch (choice){
+            case "1":
+                if (gameState){
+                    System.out.println("The game is already running");
+                }
+                else{
+                    gameState = startGame();
+                }
+                break;
+            case "2":
+                    printHelp();
+                    break;
+            case "3":
+                    exitGame(gameState);
+                    break;
+            default:
+                    System.out.println("Invalid choice. please choose a number between 1-3");
         }
+
+        return gameState;
+    }
+
+    public boolean checkState(ArrayList<Sim> listSim, boolean gameState){
+        if (listSim.isEmpty()){
+            gameState = exitGame(gameState);
+        }
+        return gameState;
+    }
+    public void printHelp(){
+        System.out.println("To be implemented");
+    }
+
+    public boolean exitGame(boolean gameState){
+        return false;
     }
 
 
