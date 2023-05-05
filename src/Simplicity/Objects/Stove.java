@@ -9,7 +9,7 @@ public class Stove extends Furniture{
     }
 
     //masih prototype
-    public void doAction(Sim sim) {
-        //sim.sleep();
+    public void doAction(Sim sim, FoodCuisine food) {
+        sim.simCook(food);
     }
 }
