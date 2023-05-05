@@ -23,6 +23,8 @@ public class Main {
         Job doctor = new Job("Doctor", 50);
         Job[] allJobs = Job.getAllJobs(chef,magician,police,programmer,doctor);
 
+        //OBJECTS
+
         //FURNITURE
         Bed singleBed = new Bed("single bed", 100,4, 1);
         Bed queenSizeBed = new Bed("queen size bed",100, 4, 2);
@@ -41,7 +43,24 @@ public class Main {
         Mp3Player mp3Player = new Mp3Player("mp3 player", 100, 1, 1);
         TV tv = new TV("TV", 0, 0, 0);
         YogaMat yogaMat = new YogaMat("yoga mat", 0, 0, 0);
-
+        ArrayList<Furniture> listOfFurniture = new ArrayList<>();
+        listOfFurniture.add(singleBed);
+        listOfFurniture.add(queenSizeBed);
+        listOfFurniture.add(kingSizeBed);
+        listOfFurniture.add(toilet);
+        listOfFurniture.add(gasStove);
+        listOfFurniture.add(elStove);
+        listOfFurniture.add(desk);
+        listOfFurniture.add(clock);
+        listOfFurniture.add(comicBook);
+        listOfFurniture.add(fantasyNovel);
+        listOfFurniture.add(nonficBook);
+        listOfFurniture.add(canvas);
+        listOfFurniture.add(dancePad);
+        listOfFurniture.add(meditationMat);
+        listOfFurniture.add(mp3Player);
+        listOfFurniture.add(tv);
+        listOfFurniture.add(yogaMat);
 
         //INGREDIENTS
         FoodIngredients rice = new FoodIngredients("rice", 5, 5);
@@ -52,6 +71,15 @@ public class Main {
         FoodIngredients carrot = new FoodIngredients("carrot", 3, 2);
         FoodIngredients beans = new FoodIngredients("beans", 3, 2);
         FoodIngredients milk = new FoodIngredients("milk", 3, 1);
+        ArrayList<FoodIngredients> listOfFoodIngredients = new ArrayList<>();
+        listOfFoodIngredients.add(rice);
+        listOfFoodIngredients.add(egg);
+        listOfFoodIngredients.add(chicken);
+        listOfFoodIngredients.add(meat);
+        listOfFoodIngredients.add(spinach);
+        listOfFoodIngredients.add(carrot);
+        listOfFoodIngredients.add(beans);
+        listOfFoodIngredients.add(milk);
 
         //FOOD
         FoodCuisine chickenRice = new FoodCuisine("chicken rice", 16);
@@ -59,8 +87,14 @@ public class Main {
         FoodCuisine beanMilk = new FoodCuisine("bean milk", 5);
         FoodCuisine sauteedVegies = new FoodCuisine("sauteed vegies", 5);
         FoodCuisine steak = new FoodCuisine("steak", 22);
-        
-        //OBJECTS
+        ArrayList<FoodCuisine> listOfFoodCuisine = new ArrayList<>();
+        listOfFoodCuisine.add(chickenRice);
+        listOfFoodCuisine.add(curryRice);
+        listOfFoodCuisine.add(beanMilk);
+        listOfFoodCuisine.add(sauteedVegies);
+        listOfFoodCuisine.add(steak);
+
+        //PURCHASABLE
         Map<String, PurchasableObject> purchasableMap = new HashMap<String, PurchasableObject>(){{
             put(singleBed.getType(), singleBed);
             put(queenSizeBed.getType(), queenSizeBed);
@@ -79,6 +113,7 @@ public class Main {
             put(beans.getType(), beans);
             put(milk.getType(), milk);
         }};
+        
 
         //TESTING
         listOfSims = new ArrayList<>();
@@ -87,8 +122,7 @@ public class Main {
         mainMenu.printMenu();
         mainMenu.addSim(listOfSims, allJobs, world);
         currentSim = mainMenu.changeSim(listOfSims);
-        mainMenu.moveRoom(currentSim);
-
+        mainMenu.listOfObject(listOfFurniture, listOfFoodIngredients, listOfFoodCuisine);
 
 //        try{
 //
@@ -260,27 +294,34 @@ class MenuOptions{
         return newSim;
     }
 
-    
+    public void listOfObject(ArrayList<Furniture> listOfFurniture, ArrayList<FoodIngredients> listOfFoodIngredients, ArrayList<FoodCuisine> listOfFoodCuisine){
+        int i = 1;
+        System.out.println("========== LIST OF OBJECTS ==========");
+        System.out.println("\n============= FURNITURE =============");
+        for (Furniture furniture: listOfFurniture){
+            System.out.println(i + ". "+ furniture.getType());
+            i++;
+        }
+        i = 1;
+        System.out.println("========= FOOD INGREDIENTS =========");
+        for (FoodIngredients foodIngredients: listOfFoodIngredients){
+            System.out.println(i + ". "+ foodIngredients.getType());
+            i++;
+        }
+        i = 1;
+        System.out.println("=========== FOOD CUISINE ===========");
+        for (FoodCuisine foodCuisine: listOfFoodCuisine){
+            System.out.println(i + ". "+ foodCuisine.getType());
+            i++;
+        }
+        System.out.println("========== /////////////// ==========");
+    }
 
     public void houseUpgrade(Sim currentSim, boolean gameState, ArrayList<Sim> listOfSims) {
-
         Scanner scanner = new Scanner(System.in);
         System.out.println("How many rooms do you want to add?");
         int roomTotal = scanner.nextInt();
-        System.out.println("How long do you want to wait for the upgrade to finish (in minutes)?");
-        int duration = scanner.nextInt();
-    
         currentSim.HouseUpgrade(roomTotal);
-        System.out.println("House upgrade is in progress...");
-        System.out.println("Please wait for " + duration + " minutes for the upgrade to finish.");
-    
-        try {
-            Thread.sleep(duration * 60 * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    
-        System.out.println("House upgrade complete!");
 
     }
 
