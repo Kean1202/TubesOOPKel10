@@ -20,7 +20,6 @@ public class Clock extends Furniture {
     
     //masih prototype
     public void doAction(Sim sim) {
-        //sim.viewTime(time)
-        System.out.println("The clock is ticking...");
+        sim.checkTime();
     }
 }
