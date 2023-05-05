@@ -1,6 +1,5 @@
 package Simplicity.Objects;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FoodCuisine extends SimplicityObject implements Edible, Storable{
