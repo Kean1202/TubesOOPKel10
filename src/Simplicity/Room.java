@@ -1,8 +1,10 @@
 package Simplicity;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import Simplicity.Objects.*;
+import Simplicity.*;
 
 
 public class Room {
@@ -15,6 +17,7 @@ public class Room {
     private Room kanan;
     private ArrayList<Furniture> listFurniture = new ArrayList<>();
     private boolean[][] vacantRoom = new boolean[roomLength][roomWidth];
+    private Menu menu;
 
     public Room(String roomName){
         this.roomName=roomName;
@@ -128,6 +131,43 @@ public class Room {
                 System.out.println(furniture.getType() + " at position (" + furniture.getFurnitureLocation().getX() + "," +
                 furniture.getFurnitureLocation().getY() + ")");
         }
+    }
+
+    public void editRoom(ArrayList<Furniture> listOfFurniture, ArrayList<FoodIngredients> listOfFoodIngredients, ArrayList<FoodCuisine> listOfFoodCuisine){
+        System.out.println("Pilih opsi yang diinginkan:");
+        System.out.println("1. Beli barang baru");
+        System.out.println("2. Pindah barang");
+        Scanner scanner = new Scanner(System.in);
+        String choice;
+        System.out.print("Enter your choice: ");
+        choice = scanner.nextLine();
+         switch(choice) {
+            case "1":
+                int i = 1;
+                System.out.println("========== LIST OF OBJECTS ==========");
+                System.out.println("\n============= FURNITURE =============");
+                for (Furniture furniture: listOfFurniture){
+                    System.out.println(i + ". "+ furniture.getType());
+                    i++;
+                }
+                i = 1;
+                System.out.println("========= FOOD INGREDIENTS =========");
+                for (FoodIngredients foodIngredients: listOfFoodIngredients){
+                    System.out.println(i + ". "+ foodIngredients.getType());
+                    i++;
+                }
+                i = 1;
+                System.out.println("=========== FOOD CUISINE ===========");
+                for (FoodCuisine foodCuisine: listOfFoodCuisine){
+                    System.out.println(i + ". "+ foodCuisine.getType());
+                    i++;
+                }
+                System.out.println("========== /////////////// ==========");
+                
+         }
+                
+
+
     }
 
     //getter
