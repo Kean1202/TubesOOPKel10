@@ -96,7 +96,6 @@ public class House {
                         System.out.println("This room name is already used! Please provide another name:");
                         name = sc.nextLine();
                     }
-
                     Room newRoom = new Room(name);
                     room.setUp(newRoom);
                     newRoom.setDown(room);
@@ -115,7 +114,6 @@ public class House {
                         System.out.println("This room name is already used! Please provide another name:");
                         name = sc.nextLine();
                     }
-
                     Room newRoom = new Room(name);
                     room.setDown(newRoom);
                     newRoom.setUp(room);
@@ -134,7 +132,6 @@ public class House {
                         System.out.println("This room name is already used! Please provide another name:");
                         name = sc.nextLine();
                     }
-
                     Room newRoom = new Room(name);
                     room.setLeft(newRoom);
                     newRoom.setRight(room);
@@ -153,8 +150,6 @@ public class House {
                         System.out.println("This room name is already used! Please provide another name:");
                         name = sc.nextLine();
                     }
-
-                    boolean kanan = true;
                     Room newRoom = new Room(name);
                     room.setRight(newRoom);
                     newRoom.setLeft(room);
