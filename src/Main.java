@@ -571,6 +571,7 @@ class MenuOptions{
         if (currentSim.getSimAlive()){
             Scanner scanner = new Scanner(System.in);
             String choice;
+            String itemName;
                 System.out.println("Choose the option you want to do:");
                 System.out.println("1. Buy a new item");
                 System.out.println("2. Place an item");
@@ -581,7 +582,7 @@ class MenuOptions{
                         System.out.println("Available items to purchase:");
                         currentSim.listPurchasableObjects(purchasableMap);
                         System.out.print("Enter the name of the item to purchase: ");
-                        String itemName = scanner.nextLine();
+                        itemName = scanner.nextLine();
                         boolean foundName = false;
                         System.out.print("Enter the amount to purchase: ");
                         int amount = scanner.nextInt();
@@ -596,7 +597,23 @@ class MenuOptions{
                         break;
 
                     case "2":
-                        currentSim.simPlaceFurniture();
+                    currentSim.simInventory.printFurnitureInventory();
+                        System.out.println("Choose your item to place: ");
+                        itemName = scanner.nextLine();
+                        while(!currentSim.simInventory.checkContains(itemName)){
+                            System.out.println("Invalid item name!");
+                            currentSim.simInventory.printFurnitureInventory();
+                            System.out.println("Choose your item to place: ");
+                            itemName = scanner.nextLine();
+                        }
+                        System.out.println("Choose the location to place your item (X): ");
+                        int x = Integer.parseInt(scanner.nextLine());
+                        System.out.println("Choose the location to place your item (Y): ");
+                        int y = Integer.parseInt(scanner.nextLine());
+
+                        Point point = new Point(x, y);
+                        Furniture furniture = (Furniture) purchasableMap.get(itemName);
+                        currentSim.simPlaceFurniture(point, furniture);
 
                 }
 
