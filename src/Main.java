@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 
 import java.util.*;
 import java.util.List;
+import java.lang.Object;
 
 
 public class Main {
@@ -17,6 +18,8 @@ public class Main {
         boolean gameState = false;
         //WORLD
         World world = World.getInstance();
+        
+        
 
 
         //JOBS
@@ -254,7 +257,7 @@ class MenuOptions{
             case "9":
                 moveRoom(currentSim);
                 break;
-          case "10":
+            case "10":
               editRoom(currentSim.getCurRoom(), currentSim, purchasableMap);
               break;
             case "11":
@@ -266,12 +269,12 @@ class MenuOptions{
             case "13":
                 listOfObject(currentSim);
                 break;
-          case "14":
-              goToObject(currentSim);
-              break;
-//          case "15":
-//              action();
-//              break;
+            case "14":
+                goToObject(currentSim);
+                break;
+            case "15":
+                action(currentSim);
+                break;
             case "16":
                 try{
                     work(currentSim);
@@ -604,18 +607,46 @@ class MenuOptions{
 
     }
 
-    public void action(Object object, Sim currentSim){
+    public void action(Sim currentSim){
+        
         if (currentSim.getSimAlive()){
-            if (object instanceof Furniture) {
-                ((Furniture) object).doAction(currentSim);
-            } else {
-                // Invalid object type
-                System.out.println("Invalid object type!");
+            Point simLocation = currentSim.getLocation();
+            Map<String, PurchasableObject> objectMap = currentSim.getObjectMap();
+            System.out.println("Object map retrieved: " + objectMap);
+            for (Map.Entry<String, PurchasableObject> entry : currentSim.getObjectMap().entrySet()){
+                System.out.println("Performing action on furniture...");
+                
+                PurchasableObject nrobject = currentSim.getObjectMap().get(entry.getKey());
+                if (nrobject instanceof Furniture) {
+                    Furniture furniture = (Furniture) nrobject;
+                    Point furnitureLocation = furniture.getFurnitureLocation();
+                    double distanceTo = simLocation.distance(furnitureLocation);
+                    if (distanceTo <= 1 && (furnitureLocation.getX() == simLocation.getX() || furnitureLocation.getY() == simLocation.getY())) {
+                        System.out.println("Nearby furniture:");
+                        System.out.println("- Type: " + furniture.getType());
+                        System.out.println("What action do you want to take? ");
+                        Scanner scanner = new Scanner(System.in);
+                        String actionInput = scanner.nextLine();
+                        while (!actionInput.equals(furniture.getType())) {
+                            System.out.println("Invalid object name!");
+                            System.out.println("What action do you want to take? ");
+                            actionInput = scanner.nextLine();
+                        }
+                        furniture.doAction(currentSim);
+                        break;
+                } else {
+                    // Invalid object type
+                    System.out.println("Invalid object type!");
+                }
+                }
+                 
             }
+            
         }
         else{
             System.out.println("This sim is dead and is unable to perform any actions");
         }
+        System.out.println("Action performed successfully!");
     }
 }
 
