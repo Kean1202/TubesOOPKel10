@@ -4,3 +4,10 @@
 #### Dirasiella Damasari Hamdani - 18219072
 #### Muhammad Rabbani Brata - 18219118
 #### Laurensia Audrey Pramashinta - 18221114
+
+Contents :
+    1. Installation
+    2. Tahapan Kompilasi
+
+
+
