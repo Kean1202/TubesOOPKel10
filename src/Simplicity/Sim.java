@@ -1,11 +1,8 @@
 package Simplicity;
 
 import Simplicity.Objects.*;
-import Simplicity.Objects.Clock; // supaya ngga ambigu dengan Clock bawaan java
-import Simplicity.House.*;
 
 
-import java.time.*;
 import java.util.*;
 
 public class Sim {
@@ -919,7 +916,7 @@ public class Sim {
     public void pindahBarang(){
 
     }
-    public void simCheckTime(Clock clock) {
+    public void simCheckTime() {
         WorldTime worldTime = curWorld.getWorldTime();
         System.out.println("Time remaining today: " + worldTime.getTimeRemaining());
         System.out.println("Time remaining for upgrade house: " + timeRemainingUpgrade);
@@ -993,6 +990,7 @@ public class Sim {
                 System.out.println("Nama barang yang anda input tidak valid!");
             }
         }
+
     // TODO yang implementasi waktu bikin perhitungan waktu per hari dan pergantian hari
 
 

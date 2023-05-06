@@ -1,6 +1,6 @@
 package Simplicity;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import Simplicity.Objects.*;
 
@@ -9,48 +9,23 @@ public class Room {
     private final int roomLength=6 ; // semua panjang room 6
     private final int roomWidth=6 ; // semua lebar room 6
     private String roomName;
-    private Room atas;
-    private Room bawah;
-    private Room kiri;
-    private Room kanan;
+    private Room up;
+    private Room down;
+    private Room left;
+    private Room right;
     private ArrayList<Furniture> listFurniture = new ArrayList<>();
     private boolean[][] roomGrid = new boolean[roomLength][roomWidth];
 
-    public Room(String roomName){
-        this.roomName=roomName;
-        atas = null;
-        bawah = null;
-        kiri = null;
-        kanan = null;
-        listFurniture = new ArrayList<Furniture>();
-        for (int i = 0; i < roomLength; i++) {
-            for (int j = 0; j < roomWidth; j++) {
-                roomGrid[i][j] = false;
-            }
-        }
+    public Room(String name){
+        this.roomName = name;
+        this.listFurniture = new ArrayList<>();
+        this.roomGrid = new boolean[roomWidth][roomLength];
+        up = null;
+        down = null;
+        left = null;
+        right = null;
     }
-
-
-
-    //default room
-    public void defaultRoom(Sim mySim) {
-        setRoomName("default room");
-        atas = null;
-        bawah = null;
-        kiri = null;
-        kanan = null;
-        Bed singleBed = new Bed("single bed", 100,4, 1);
-        Toilet toilet = new Toilet("toilet", 10, 1, 1);
-        Stove gasStove = new Stove("gas stove", 50, 2, 1);
-        Clock clock = new Clock("clock", 10, 1, 1, 0);
-        Desk desk = new Desk("desk", 50, 3, 3);
-
-        pasangBarang(singleBed,new Point(0,0), mySim);
-        pasangBarang(toilet,new Point(4,0), mySim);
-        pasangBarang(gasStove,new Point(0,2), mySim);
-        pasangBarang(clock,new Point(4,2), mySim);
-        pasangBarang(desk,new Point(1, 3), mySim);
-    }
+    
 
     //method
     public boolean pasangBarang(Furniture furniture, Point position, Sim mySim) {
@@ -141,17 +116,17 @@ public class Room {
     public int getRoomLength() {
         return roomLength;
     }
-    public Room getAtas(){
-        return this.atas;
+    public Room getUp(){
+        return this.up;
     }
-    public Room getBawah(){
-        return this.bawah;
+    public Room getDown(){
+        return this.down;
     }
-    public Room getKiri(){
-        return this.kiri;
+    public Room getLeft(){
+        return this.left;
     }
-    public Room getKanan(){
-        return this.kanan;
+    public Room getRight(){
+        return this.right;
     }
     public ArrayList<Furniture> getFurniture(){
         return this.listFurniture;
@@ -161,17 +136,17 @@ public class Room {
     public void setRoomName(String roomName){
         this.roomName = roomName;
     }
-    public void setAtas(Room room){
-        this.atas=room;
+    public void setUp(Room room){
+        this.up=room;
     }
-    public void setBawah(Room room){
-        this.bawah=room;
+    public void setDown(Room room){
+        this.down=room;
     }
-    public void setKiri(Room room){
-        this.kiri=room;
+    public void setLeft(Room room){
+        this.left=room;
     }
-    public void setKanan(Room room){
-        this.kanan=room;
+    public void setRight(Room room){
+        this.right=room;
     }
     public void setListObjek(ArrayList<Furniture> listFurniture) {
         this.listFurniture = listFurniture;
@@ -181,13 +156,12 @@ public class Room {
     //method
     public void placeFurniture(Point point, Furniture furniture){
         if (canPlaceFurniture(point, furniture)) {
-            // Tandai seluruh sel yang ditempati dengan True
+            // sel yg ditempatin = true
             for (int i = point.getX(); i < point.getX() + furniture.getLength(); i++) {
                 for (int j = point.getY(); j < point.getY() + furniture.getWidth(); j++) {
                     roomGrid[i][j] = true;
                 }
             }
-            // Set posisi Furniture
             listFurniture.add(furniture);
             furniture.setLocation(point);
         } else {
@@ -197,12 +171,12 @@ public class Room {
 
 
     public boolean canPlaceFurniture(Point point, Furniture furniture){
-        // Periksa apakah ukuran furniture cukup di ruangan
+        // Check furnitur cukup di ruangan
         if (point.getX() + furniture.getLength() > roomLength || point.getY() + furniture.getWidth() > roomWidth) {
             return false;
         }
 
-        // Periksa apakah sel yang akan ditempati furniture kosong
+        // cek sel kosong
         for (int i = point.getX(); i < point.getX() + furniture.getLength(); i++) {
             for (int j = point.getY(); j <point.getY() + furniture.getWidth(); j++) {
                 if (roomGrid[i][j]) {
