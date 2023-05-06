@@ -765,7 +765,7 @@ public class Sim {
                                             }
                                             setTimeDelivery(new Random().nextInt(1, 6) * 30 * 1000);
                                             isItemInDelivery = true;
-                                            System.out.println("\nYou have bought " + ((SimplicityObject) object).getType() + " for " + object.getPrice() + " Simplicity Dollars.");
+                                            System.out.println("\nYou have bought " + ((SimplicityObject) object).getType() + " for " + object.getPrice() * amount + " Simplicity Dollars.");
                                             System.out.println("Please wait for " + timeRemainingDelivery / 1000 + " seconds...");
                                             if (timeRemainingDelivery < getActiveDuration()) {
                                                 Thread.sleep(timeRemainingDelivery);
@@ -1123,6 +1123,10 @@ public class Sim {
             else{
                 System.out.println("Your inventory is empty");
             }
+        }
+
+        public boolean isEmpty(){
+            return MapInventory.isEmpty();
         }
     }
 

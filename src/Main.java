@@ -502,6 +502,7 @@ class MenuOptions{
             Scanner scanner = new Scanner(System.in);
             for (House house: houses){
                 System.out.println(i + ". "+ house.getHouseName());
+                i++;
             }
             System.out.println("Choose a house number: ");
             int chosenHouse = Integer.parseInt(scanner.nextLine());
@@ -545,8 +546,9 @@ class MenuOptions{
             if(numFurniture <= listFurniture.size()){
                 Furniture objectDes = listFurniture.get(numFurniture-1);
                 currentSim.setNearbyFurniture(objectDes.getType());
-                currentSim.getLocation().setX(objectDes.getFurnitureLocation().getX());
-                currentSim.getLocation().setY(objectDes.getFurnitureLocation().getY());
+                Point newPoint = new Point(objectDes.getFurnitureLocation().getX(), objectDes.getFurnitureLocation().getY());
+                currentSim.setLocation(newPoint);
+                System.out.println("You have moved to the " + objectDes.getType());
             }
             //kalau input numFurniture lebih dari total objek di ruangan
             else{
@@ -603,7 +605,11 @@ class MenuOptions{
                         break;
 
                     case "2":
-                    currentSim.simInventory.printFurnitureInventory();
+                        if (currentSim.simInventory.isEmpty()){
+                            System.out.println("You have no items to place!");
+                            break;
+                        }
+                        currentSim.simInventory.printFurnitureInventory();
                         System.out.println("Choose your item to place: ");
                         itemName = scanner.nextLine();
                         while(!currentSim.simInventory.checkContains(itemName)){
@@ -620,6 +626,7 @@ class MenuOptions{
                         Point point = new Point(x, y);
                         Furniture furniture = (Furniture) purchasableMap.get(itemName);
                         currentSim.simPlaceFurniture(point, furniture);
+                        break;
 
                 }
 
@@ -755,7 +762,7 @@ class MenuOptions{
 
     public void changeJob(Sim currentSim, Job[] allJobs){
         for (int j = 0; j < allJobs.length; j++){
-            System.out.println(allJobs[j]);
+            System.out.println(allJobs[j].getName());
         }
         System.out.println("Select a job you want to switch to: ");
         Scanner scanner = new Scanner(System.in);
@@ -784,13 +791,15 @@ class MenuOptions{
             System.out.println("Input the exercise duration in seconds: ");
             Scanner scanner = new Scanner(System.in);
             int duration = Integer.parseInt(scanner.nextLine());
-            currentSim.work(duration);
+            currentSim.exercise(duration);
         }
         else{
             System.out.println("This sim is dead and is unable to perform any actions");
         }
 
-
+    }
+    public void killSim(Sim currentSim){
+        currentSim.deactivateSim();
     }
 }
 
