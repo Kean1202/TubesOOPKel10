@@ -603,6 +603,20 @@ class MenuOptions{
         }
 
     }
+
+    public void action(Object object, Sim currentSim){
+        if (currentSim.getSimAlive()){
+            if (object instanceof Furniture) {
+                ((Furniture) object).doAction(currentSim);
+            } else {
+                // Invalid object type
+                System.out.println("Invalid object type!");
+            }
+        }
+        else{
+            System.out.println("This sim is dead and is unable to perform any actions");
+        }
+    }
 }
 
 
