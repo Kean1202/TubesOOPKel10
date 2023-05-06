@@ -1060,6 +1060,20 @@ public class Sim {
             }
         }
 
+        public void printFurnitureInventory(){
+            if (!MapInventory.isEmpty()){
+                System.out.println("Furnitures in your inventory: ");
+                for (Map.Entry<SimplicityObject, Integer> entry: MapInventory.entrySet()){
+                    if(entry instanceof Furniture){
+                        System.out.println(entry.getKey().getType() + ", amount: " + entry.getValue());
+                    }
+                }
+            }
+
+            else{
+                System.out.println("Your inventory is empty");
+            }
+        }
     }
 
 
