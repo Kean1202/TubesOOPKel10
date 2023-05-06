@@ -809,7 +809,7 @@ public class Sim {
                                     Thread.sleep(timeRemainingUpgrade);
                                     simDecreaseMoney(upgradeCost);
                                     // Tambahkan ruangan ke dalam house
-                                    house.setRoomTotal(house.getRoomTotal() + roomTotal);
+                                    house.addRoom(curRoom);
                                     System.out.println("\nYour house has been upgraded!");
                                     isHouseBeingUpgraded = false;
                                 }
@@ -913,20 +913,6 @@ public class Sim {
 
     // Melihat waktu
 
-    public void simPlaceFurniture(Point point, Furniture furniture){
-//        if (!simInventory.checkContains(furniture.getType())) {
-//            System.out.println("Cannot place furniture, item not found in inventory");
-//        }
-//
-//        // Check if the furniture fits inside the room
-//        if (point.getX() + furniture.getLength() > curRoom.getRoomLength() ||
-//                point.getY() + furniture.getWidth() > curRoom.getRoomWidth()) {
-//            System.out.println("Furniture does not fit inside the room");
-//        }
-//
-        curRoom.placeFurniture(point, furniture);
-
-    }
     public void simCheckTime() {
         WorldTime worldTime = curWorld.getWorldTime();
         System.out.println("Time remaining today: " + worldTime.getTimeRemaining());
@@ -990,18 +976,26 @@ public class Sim {
 
     //Method untuk pengecekan dan pelaksanaan tindakan yang bisa ditinggal
     
-    //Method menyimpan barang 
-    public void simPlaceFurniture(Point point, Map<String, PurchasableObject> purchasableMap, String itemName){
-        //implementasi simpanBarang
-            Scanner scan = new Scanner(System.in);
-            PurchasableObject object = purchasableMap.get(itemName);
-            if(object instanceof Furniture){
-                
-            } else {
-                System.out.println("Nama barang yang anda input tidak valid!");
-            }
+    //Method menyimpan barang
+    public void simPlaceFurniture(Point point, Furniture furniture){
+        if (!simInventory.checkContains(furniture.getType())) {
+            System.out.println("Cannot place furniture, item not found in inventory");
+            return;
         }
-
+ //
+ //        // Check if the furniture fits inside the room
+ //        if (point.getX() + furniture.getLength() > curRoom.getRoomLength() ||
+ //                point.getY() + furniture.getWidth() > curRoom.getRoomWidth()) {
+ //            System.out.println("Furniture does not fit inside the room");
+ //        }
+ //          
+         if(curRoom.placeFurniture(point, furniture)){
+             simInventory.decreaseInventory(furniture, 1);
+         }
+         else{
+             return;
+         }
+     }
     // TODO yang implementasi waktu bikin perhitungan waktu per hari dan pergantian hari
 
 
