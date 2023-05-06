@@ -13,7 +13,8 @@ Contents :
     
 
 System Requirements :
-    1. Windows/Linux
+
+&nbsp;&nbsp;&nbsp;&nbsp;    1. Windows/Linux
     2. Java
     3. Ubuntu Linux Tool (for Windows) 
 
