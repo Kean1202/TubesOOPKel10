@@ -101,6 +101,7 @@ public class Main {
         listOfFoodCuisine.add(sauteedVegies);
         listOfFoodCuisine.add(steak);
 
+
         //PURCHASABLE
         Map<String, PurchasableObject> purchasableMap = new HashMap<String, PurchasableObject>(){{
             put(singleBed.getType(), singleBed);
@@ -198,16 +199,18 @@ class MenuOptions{
             System.out.println("4.  VIEW SIM INFO");            // udah
             System.out.println("5.  VIEW CURRENT LOCATION");    // udah
             System.out.println("6.  VIEW INVENTORY");           // udah
-            System.out.println("7.  UPGRADE HOUSE");         // belum kelar
+            System.out.println("7.  UPGRADE HOUSE");         // udah
             System.out.println("8.  VISIT HOUSE");           // udah
             System.out.println("9.  MOVE ROOM");            // udah
-            System.out.println("10.  EDIT ROOM");           // tinggal pindahBarang
+            System.out.println("10.  EDIT ROOM");           // udah
             System.out.println("11. ADD SIM");              // udah
             System.out.println("12. CHANGE SIM");           // udah
             System.out.println("13. LIST OBJECT");          // udah
             System.out.println("14. GO TO OBJECT");         // udah
-            System.out.println("15. ACTION");               // belum ->
+            System.out.println("15. ACTION");               // udah
             System.out.println("16. WORK");                 // udah
+            System.out.println("17. CHANGE JOB");                 // udah
+            System.out.println("18. EXERCISE");                 // udah
             System.out.println("========== /////////////// ==========");
             System.out.println("");
         }
@@ -273,7 +276,12 @@ class MenuOptions{
                 goToObject(currentSim);
                 break;
             case "15":
-                action(currentSim);
+                try{
+                    action(currentSim, listOfFoodIngredients, listOfFoodCuisine, listOfFurniture);
+                }
+                catch (invalidMultitudeNumber i){
+                    System.out.println(i.getMessage());
+                }
                 break;
             case "16":
                 try{
@@ -286,6 +294,20 @@ class MenuOptions{
                     System.out.println(n.getMessage());
                 }
 
+                break;
+            case "17":
+                changeJob(currentSim, allJobs);
+                break;
+            case "18":
+                try{
+                    exercise(currentSim);
+                }
+                catch (invalidMultitudeNumber i){
+                    System.out.println(i.getMessage());
+                }
+                catch (negativeParameterException n){
+                    System.out.println(n.getMessage());
+                }
                 break;
             case "0":
                 break;
@@ -424,15 +446,6 @@ class MenuOptions{
         Sim newSim = new Sim(newName, allJobs, world, x, y);
         // Masukin house kw world
         world.addworldHouse(newSim.getSimHouse());
-        // Sim diberi item awal
-        Bed singleBed = new Bed("single bed", 100,4, 1);
-        Toilet toilet = new Toilet("toilet", 10, 1, 1);
-        Stove gasStove = new Stove("gas stove", 50, 2, 1);
-        Desk desk = new Desk("desk", 50, 3, 3);
-        newSim.simInventory.addInventory(singleBed, 1);
-        newSim.simInventory.addInventory(toilet, 1);
-        newSim.simInventory.addInventory(gasStove, 1);
-        newSim.simInventory.addInventory(desk, 1);
         // Sim ditambah ke arraylist
         simList.add(newSim);
         System.out.println("Sim successfully added");
@@ -478,15 +491,7 @@ class MenuOptions{
     }
 
     public void houseUpgrade(Sim currentSim) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("How many rooms do you want to add?");
-        int roomTotal = scanner.nextInt();
-        if (currentSim != null) {
-            currentSim.HouseUpgrade(roomTotal);
-        } else {
-            System.out.println("currentSim is null");
-        }
-
+        currentSim.HouseUpgrade();
     }
 
     public void visitHouse (World world, Sim currentSim){
@@ -539,6 +544,7 @@ class MenuOptions{
             int numFurniture = scanner.nextInt();
             if(numFurniture <= listFurniture.size()){
                 Furniture objectDes = listFurniture.get(numFurniture-1);
+                currentSim.setNearbyFurniture(objectDes.getType());
                 currentSim.getLocation().setX(objectDes.getFurnitureLocation().getX());
                 currentSim.getLocation().setY(objectDes.getFurnitureLocation().getY());
             }
@@ -624,46 +630,167 @@ class MenuOptions{
 
     }
 
-    public void action(Sim currentSim){
-        
+    public void action(Sim currentSim, ArrayList<FoodIngredients> listOfIngredients, ArrayList<FoodCuisine> listOfFoodCuisine, ArrayList<Furniture> listOfFurniture) throws invalidMultitudeNumber{
+        Scanner scanner = new Scanner(System.in);
+        Furniture furniture = null;
         if (currentSim.getSimAlive()){
-            Point simLocation = currentSim.getLocation();
-            Map<String, PurchasableObject> objectMap = currentSim.getObjectMap();
-            System.out.println("Object map retrieved: " + objectMap);
-            for (Map.Entry<String, PurchasableObject> entry : currentSim.getObjectMap().entrySet()){
-                System.out.println("Performing action on furniture...");
-                
-                PurchasableObject nrobject = currentSim.getObjectMap().get(entry.getKey());
-                if (nrobject instanceof Furniture) {
-                    Furniture furniture = (Furniture) nrobject;
-                    Point furnitureLocation = furniture.getFurnitureLocation();
-                    double distanceTo = simLocation.distance(furnitureLocation);
-                    if (distanceTo <= 1 && (furnitureLocation.getX() == simLocation.getX() || furnitureLocation.getY() == simLocation.getY())) {
-                        System.out.println("Nearby furniture:");
-                        System.out.println("- Type: " + furniture.getType());
-                        System.out.println("What action do you want to take? ");
-                        Scanner scanner = new Scanner(System.in);
-                        String actionInput = scanner.nextLine();
-                        while (!actionInput.equals(furniture.getType())) {
-                            System.out.println("Invalid object name!");
-                            System.out.println("What action do you want to take? ");
-                            actionInput = scanner.nextLine();
-                        }
-                        furniture.doAction(currentSim);
-                        break;
-                } else {
-                    // Invalid object type
-                    System.out.println("Invalid object type!");
+            for (Furniture furn: listOfFurniture){
+                if (currentSim.getNearbyFurniture().toLowerCase().equals(furn.getType().toLowerCase())){
+                    furniture = furn;
                 }
-                }
-                 
             }
-            
+            switch(currentSim.getNearbyFurniture().toLowerCase()){
+                case ("bed"):
+                    System.out.println("How long do you want to sleep? ");
+                    int duration = Integer.parseInt(scanner.nextLine());
+                    Bed bed = (Bed) furniture;
+                    bed.doAction(currentSim, duration);
+                    break;
+                case ("comic book"):
+                    Book comicBook = (Book) furniture;
+                    comicBook.doAction(currentSim);
+                    break;
+                case ("fantasy novel"):
+                    Book fantasyNovel = (Book) furniture;
+                    fantasyNovel.doAction(currentSim);
+                    break;
+                case ("non-fiction book"):
+                    Book nfBook = (Book) furniture;
+                    nfBook.doAction(currentSim);
+                    break;
+                case ("clock"):
+                    Clock clock = (Clock) furniture;
+                    clock.doAction(currentSim);
+                    break;
+                case ("desk"):
+                    Desk desk = (Desk) furniture;
+                    System.out.println("Choose a food below");
+                    currentSim.simInventory.printFoodInventory();
+                    String foodChosen = scanner.nextLine();
+                    if (currentSim.simInventory.checkContains(foodChosen)){
+                        for (FoodIngredients ingredient: listOfIngredients){
+                            Edible food = null;
+                            if (ingredient.getType().toLowerCase().equals(foodChosen.toLowerCase())){
+                                food = ingredient;
+                                desk.doAction(currentSim, food);
+                            }
+                        }
+
+                        for (FoodCuisine cuisine: listOfFoodCuisine){
+                            Edible food = null;
+                            if (cuisine.getType().toLowerCase().equals(foodChosen.toLowerCase())){
+                                food = cuisine;
+                                desk.doAction(currentSim, food);
+                            }
+                        }
+
+                    }
+                    else{
+                        System.out.println("No food with that name in your inventory");
+                    }
+                    break;
+                case ("dance pad"):
+                    DancePad dancePad = (DancePad) furniture;
+                    dancePad.doAction(currentSim);
+                    break;
+
+                case ("canvas"):
+                    Canvas canvas = (Canvas) furniture;
+                    canvas.doAction(currentSim);
+                    break;
+                case ("meditation mat"):
+                    MeditationMat medMat = (MeditationMat) furniture;
+                    medMat.doAction(currentSim);
+                    break;
+
+                case ("yoga mat"):
+                    YogaMat yogaMat = (YogaMat) furniture;
+                    yogaMat.doAction(currentSim);
+                    break;
+
+                case ("mp3 player"):
+                    Mp3Player mp3 = (Mp3Player) furniture;
+                    mp3.doAction(currentSim);
+                    break;
+
+                case ("tv"):
+                    TV tv = (TV) furniture;
+                    tv.doAction(currentSim);
+                    break;
+
+                case ("stove"):
+                    Stove stove = (Stove) furniture;
+                    System.out.println("Please choose something to cook: ");
+                    for (FoodCuisine cuisine: listOfFoodCuisine){
+                        System.out.println(cuisine.getType());
+                    }
+                    String cuisineChosen = scanner.nextLine();
+                    FoodCuisine fc = null;
+                    for (FoodCuisine cuisine: listOfFoodCuisine){
+                        if (cuisineChosen.toLowerCase().equals(cuisine.getType().toLowerCase())){
+                            fc = cuisine;
+                        }
+                    }
+                    if (fc != null){
+                        stove.doAction(currentSim, fc);
+                    }
+                    else{
+                        System.out.println("Food not found");
+                    }
+                    break;
+
+                case ("toilet"):
+                    Toilet toilet = (Toilet) furniture;
+                    toilet.doAction(currentSim);
+                    break;
+
+
+            }
+        }
+        else{
+            System.out.println("Your sim is dead and is unable to perform any actions");
+        }
+        System.out.println("Action performed successfully!");
+    }
+
+    public void changeJob(Sim currentSim, Job[] allJobs){
+        for (int j = 0; j < allJobs.length; j++){
+            System.out.println(allJobs[j]);
+        }
+        System.out.println("Select a job you want to switch to: ");
+        Scanner scanner = new Scanner(System.in);
+        String jobChosen = scanner.nextLine();
+        int i = 0;
+        boolean found = false;
+        Job job = null;
+        while (!found && i < allJobs.length){
+            if (allJobs[i].getName().toLowerCase().equals(jobChosen.toLowerCase())){
+                found = true;
+                job = allJobs[i];
+            }
+            i++;
+        }
+        if (found && job != null){
+            currentSim.simChangeJob(job);
+        }
+        else{
+            System.out.println("Job not found");
+        }
+
+    }
+
+    public void exercise(Sim currentSim) throws invalidMultitudeNumber, negativeParameterException{
+        if (currentSim.getSimAlive()){
+            System.out.println("Input the exercise duration in seconds: ");
+            Scanner scanner = new Scanner(System.in);
+            int duration = Integer.parseInt(scanner.nextLine());
+            currentSim.work(duration);
         }
         else{
             System.out.println("This sim is dead and is unable to perform any actions");
         }
-        System.out.println("Action performed successfully!");
+
+
     }
 }
 

@@ -36,7 +36,7 @@ public class Sim {
     private boolean isHouseBeingUpgraded = false;
     private int bathroomCounter;
     private int sleepCounter;
-
+    private String nearbyFurniture;
 
     // get random job
     public Job getRandomJob(Job[] array){
@@ -146,6 +146,7 @@ public class Sim {
     public House getSimHouse(){return house;}
     public House getCurHouse(){return curHouse;}
     public Room getCurRoom(){return curRoom;}
+    public String getNearbyFurniture() {return nearbyFurniture;}
     // END OF GETTERS
 
     //Setters
@@ -309,6 +310,10 @@ public class Sim {
 
     public void setActiveDuration(int amount){
         activeDuration = amount*1000;
+    }
+
+    public void setNearbyFurniture(String furniture) {
+        nearbyFurniture = furniture;
     }
     // END OF SETTERS
 
@@ -630,8 +635,10 @@ public class Sim {
     }
 
     // Method untuk Makan
-    public void simEat(FoodCuisine food){
-        if (simInventory.checkContains(food.getType())){
+    public void simEat(Edible food){
+        if (food instanceof FoodCuisine){
+            FoodCuisine food1 = (FoodCuisine) food;
+            if (simInventory.checkContains(food1.getType())){
 
                 try{
                     setActiveDuration(30);
@@ -644,16 +651,44 @@ public class Sim {
                     addSimNeed("Hunger", food.getRepletion());
                     hasEaten = true;
                     changeLastSleep(30);
-                    simInventory.decreaseInventory(food, 1);
+                    simInventory.decreaseInventory(food1, 1);
                     // lastBathroom gadiubah karena baru kelar makan
                 }
                 catch (negativeParameterException n){
                     System.out.println(n.getMessage());
                 }
+            }
+            else{
+                System.out.println("You don't have "+ food1.getType() + " in your inventory");
+            }
         }
         else{
-            System.out.println("You don't have "+ food.getType() + " in your inventory");
+            FoodIngredients food1 = (FoodIngredients) food;
+            if (simInventory.checkContains(food1.getType())){
+
+                try{
+                    setActiveDuration(30);
+                    System.out.println("Eating");
+                    for (int j = 0; j<30/2; j++){
+                        System.out.print("...");
+                        curWorld.getWorldTime().wait(30/5);
+                    }
+                    System.out.println("");
+                    addSimNeed("Hunger", food.getRepletion());
+                    hasEaten = true;
+                    changeLastSleep(30);
+                    simInventory.decreaseInventory(food1, 1);
+                    // lastBathroom gadiubah karena baru kelar makan
+                }
+                catch (negativeParameterException n){
+                    System.out.println(n.getMessage());
+                }
+            }
+            else{
+                System.out.println("You don't have "+ food1.getType() + " in your inventory");
+            }
         }
+
         simDeathCheck();
         if (isSimAlive){
             simStatus = "Idle";
@@ -783,51 +818,51 @@ public class Sim {
             }
         }
     }
-    
-    public void HouseUpgrade(int roomTotal) {
-        int upgradeCost = 1500 * roomTotal;
+
+    public void HouseUpgrade() {
+        int upgradeCost = 1500;
         if (simMoney < upgradeCost) {
             System.out.println("Insufficient funds to upgrade the house.");
             return;
         }
         Thread thread = new Thread(new Runnable() {
             public void run(){
-                        try {
-                            Thread.sleep(300); 
-                            while (getSimStatus().equals("Idle")) {
-                                Thread.sleep(1);
-                            }
-                            setTimeUpgrade(18*60*1000);
-                            isHouseBeingUpgraded = true;
-                            System.out.println("\nYou have upgraded your house for " + upgradeCost + " Simplicity Dollars.");
-                            int tempActiveDuration = getActiveDuration();
-                            while(timeRemainingUpgrade > 0 && isHouseBeingUpgraded) {
-                                Thread.sleep(200); 
-                                tempActiveDuration = getActiveDuration();
-                                if(timeRemainingUpgrade < tempActiveDuration){
-                                    System.out.println("\n///Upgrade in progress///");
-                                    Thread.sleep(timeRemainingUpgrade);
-                                    simDecreaseMoney(upgradeCost);
-                                    // Tambahkan ruangan ke dalam house
-                                    house.addRoom(curRoom);
-                                    System.out.println("\nYour house has been upgraded!");
-                                    isHouseBeingUpgraded = false;
-                                }
-                                else{
-                                    System.out.println("\n///Upgrade in progress///");
-                                    System.out.println("Please wait for " + String.format("%.2f",(float) timeRemainingUpgrade / 60000)  + " minutes...");
-                                    System.out.println("///Upgrade in progress///");
-                                    Thread.sleep(tempActiveDuration + 100);
-                                    timeRemainingUpgrade -= tempActiveDuration;
-                                }
-                                while (getSimStatus().equals("Idle")) {
-                                    Thread.sleep(1);
-                                }
-                            }
-                            }
-                            catch (InterruptedException e) {
-                                System.out.println(e.getMessage());
+                try {
+                    Thread.sleep(300);
+                    while (getSimStatus().equals("Idle")) {
+                        Thread.sleep(1);
+                    }
+                    setTimeUpgrade(18*60*1000);
+                    isHouseBeingUpgraded = true;
+                    System.out.println("\nYou have upgraded your house for " + upgradeCost + " Simplicity Dollars.");
+                    int tempActiveDuration = getActiveDuration();
+                    while(timeRemainingUpgrade > 0 && isHouseBeingUpgraded) {
+                        Thread.sleep(200);
+                        tempActiveDuration = getActiveDuration();
+                        if(timeRemainingUpgrade < tempActiveDuration){
+                            System.out.println("\n///Upgrade in progress///");
+                            Thread.sleep(timeRemainingUpgrade);
+                            simDecreaseMoney(upgradeCost);
+                            // Tambahkan ruangan ke dalam house
+                            house.addRoom(curRoom);
+                            System.out.println("\nYour house has been upgraded!");
+                            isHouseBeingUpgraded = false;
                         }
+                        else{
+                            System.out.println("\n///Upgrade in progress///");
+                            System.out.println("Please wait for " + String.format("%.2f",(float) timeRemainingUpgrade / 60000)  + " minutes...");
+                            System.out.println("///Upgrade in progress///");
+                            Thread.sleep(tempActiveDuration + 100);
+                            timeRemainingUpgrade -= tempActiveDuration;
+                        }
+                        while (getSimStatus().equals("Idle")) {
+                            Thread.sleep(1);
+                        }
+                    }
+                }
+                catch (InterruptedException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         });
         thread.start();
@@ -1065,6 +1100,21 @@ public class Sim {
                 System.out.println("Furnitures in your inventory: ");
                 for (Map.Entry<SimplicityObject, Integer> entry: MapInventory.entrySet()){
                     if(entry instanceof Furniture){
+                        System.out.println(entry.getKey().getType() + ", amount: " + entry.getValue());
+                    }
+                }
+            }
+
+            else{
+                System.out.println("Your inventory is empty");
+            }
+        }
+
+        public void printFoodInventory(){
+            if (!MapInventory.isEmpty()){
+                System.out.println("Food in your inventory: ");
+                for (Map.Entry<SimplicityObject, Integer> entry: MapInventory.entrySet()){
+                    if(entry instanceof Edible){
                         System.out.println(entry.getKey().getType() + ", amount: " + entry.getValue());
                     }
                 }
