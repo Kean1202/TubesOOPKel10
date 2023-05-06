@@ -48,6 +48,7 @@ Simplicity merupakan sebuah game yang dibangun dengan menggunakan Java diatas pl
 &nbsp;&nbsp;&nbsp;&nbsp; 4. Ubah alamat direktori menjadi alamat hasil clone dengan menjalankan command "cd {base directory}/TubesOOPKel10/src"
 
 &nbsp;&nbsp;&nbsp;&nbsp; 5. Jalankan command "compile.sh"
+
 &nbsp;&nbsp;&nbsp;&nbsp; 6. Jalankan command "run.sh"
 
 
