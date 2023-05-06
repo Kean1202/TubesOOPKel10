@@ -39,4 +39,8 @@ public class House {
     public void setHouseName(String houseName) {
         this.name = houseName;
     }
+
+    public void addRoom() {
+ 
+    }
 }
