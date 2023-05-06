@@ -23,7 +23,8 @@ Tahapan Kompilasi (Windows)
 &nbsp;&nbsp;&nbsp;&nbsp;    2. Git clone "https://github.com/Kean1202/TubesOOPKel10.git"
 &nbsp;&nbsp;&nbsp;&nbsp;    3. Jalankan command "bash"
 &nbsp;&nbsp;&nbsp;&nbsp;    4. Ubah alamat direktori menjadi alamat hasil clone dengan menjalankan command "cd {base directory}/TubesOOPKel10/src"
-&nbsp;&nbsp;&nbsp;&nbsp;    5. Jalankan command "run.sh"
+&nbsp;&nbsp;&nbsp;&nbsp;    5. Jalankan command "compile.sh"
+&nbsp;&nbsp;&nbsp;&nbsp;    6. Jalankan command "run.sh"
 
 
     
