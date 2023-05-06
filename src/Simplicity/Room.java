@@ -154,7 +154,7 @@ public class Room {
 
 
     //method
-    public void placeFurniture(Point point, Furniture furniture){
+    public boolean placeFurniture(Point point, Furniture furniture){
         if (canPlaceFurniture(point, furniture)) {
             // sel yg ditempatin = true
             for (int i = point.getX(); i < point.getX() + furniture.getLength(); i++) {
@@ -164,8 +164,10 @@ public class Room {
             }
             listFurniture.add(furniture);
             furniture.setLocation(point);
+            return true;
         } else {
             System.out.println("Furniture can't be placed.");
+            return false;
         }
     }
 
