@@ -596,7 +596,7 @@ class MenuOptions{
                         break;
 
                     case "2":
-                        currentSim.pindahBarang();
+                        currentSim.simPlaceFurniture();
 
                 }
 
