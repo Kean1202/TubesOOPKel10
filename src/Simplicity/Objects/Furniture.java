@@ -1,6 +1,7 @@
 package Simplicity.Objects;
 
 import Simplicity.Point;
+import Simplicity.Sim;
 
 public abstract class Furniture extends SimplicityObject implements PurchasableObject, Storable{
     //Atributes
@@ -8,6 +9,7 @@ public abstract class Furniture extends SimplicityObject implements PurchasableO
     private int length;
     private int width;
     private Point furnitureLocation;
+    
 
     //Constructor
     public Furniture(String type, int price, int length, int width){
@@ -16,6 +18,7 @@ public abstract class Furniture extends SimplicityObject implements PurchasableO
         this.length = length;
         this.width = width;
     }
+    public abstract void doAction(Sim sim);
     
     //Setter
     public void setPrice(int price){
