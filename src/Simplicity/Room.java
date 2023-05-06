@@ -28,43 +28,43 @@ public class Room {
     
 
     //method
-    public boolean pasangBarang(Furniture furniture, Point position, Sim mySim) {
-        int furnitureLength = furniture.getLength();
-        int furnitureWidth = furniture.getWidth();
-
-        if (!mySim.simInventory.checkContains(furniture.getType())) {
-            System.out.println("Cannot place furniture, item not found in inventory");
-            return false;
-        }
-    
-        // Check if the furniture fits inside the room
-        if (position.getX() + furnitureLength > roomLength ||
-                position.getY() + furnitureWidth > roomWidth) {
-            System.out.println("Furniture does not fit inside the room");
-            return false;
-        }
-    
-        // Check if the area is vacant
-        for (int i = position.getX(); i < position.getX() + furnitureLength; i++) {
-            for (int j = position.getY(); j < position.getY() + furnitureWidth; j++) {
-                if (!roomGrid[i][j]) {
-                    System.out.println("Cannot place furniture, area is not vacant");
-                    return false;
-                }
-            }
-        }
-    
-        // Place the furniture
-        for (int i = position.getX(); i < position.getX() + furnitureLength; i++) {
-            for (int j = position.getY(); j < position.getY() + furnitureWidth; j++) {
-                roomGrid[i][j] = false;
-            }
-        }
-        
-        listFurniture.add(furniture);
-        mySim.simInventory.decreaseInventory(furniture, 1);
-        return true;
-    }
+//    public boolean pasangBarang(Furniture furniture, Point position, Sim mySim) {
+//        int furnitureLength = furniture.getLength();
+//        int furnitureWidth = furniture.getWidth();
+//
+//        if (!mySim.simInventory.checkContains(furniture.getType())) {
+//            System.out.println("Cannot place furniture, item not found in inventory");
+//            return false;
+//        }
+//
+//        // Check if the furniture fits inside the room
+//        if (position.getX() + furnitureLength > roomLength ||
+//                position.getY() + furnitureWidth > roomWidth) {
+//            System.out.println("Furniture does not fit inside the room");
+//            return false;
+//        }
+//
+//        // Check if the area is vacant
+//        for (int i = position.getX(); i < position.getX() + furnitureLength; i++) {
+//            for (int j = position.getY(); j < position.getY() + furnitureWidth; j++) {
+//                if (!roomGrid[i][j]) {
+//                    System.out.println("Cannot place furniture, area is not vacant");
+//                    return false;
+//                }
+//            }
+//        }
+//
+//        // Place the furniture
+//        for (int i = position.getX(); i < position.getX() + furnitureLength; i++) {
+//            for (int j = position.getY(); j < position.getY() + furnitureWidth; j++) {
+//                roomGrid[i][j] = false;
+//            }
+//        }
+//
+//        listFurniture.add(furniture);
+//        mySim.simInventory.decreaseInventory(furniture, 1);
+//        return true;
+//    }
 
     public void printRoom() {
         char[][] room = new char[roomLength][roomWidth];
@@ -185,7 +185,7 @@ public class Room {
             }
         }
 
-        return true; // Aman untuk diletakkan
+        return true;
     }
 
 }

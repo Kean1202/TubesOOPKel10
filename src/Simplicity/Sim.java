@@ -913,7 +913,18 @@ public class Sim {
 
     // Melihat waktu
 
-    public void pindahBarang(){
+    public void simPlaceFurniture(Point point, Furniture furniture){
+//        if (!simInventory.checkContains(furniture.getType())) {
+//            System.out.println("Cannot place furniture, item not found in inventory");
+//        }
+//
+//        // Check if the furniture fits inside the room
+//        if (point.getX() + furniture.getLength() > curRoom.getRoomLength() ||
+//                point.getY() + furniture.getWidth() > curRoom.getRoomWidth()) {
+//            System.out.println("Furniture does not fit inside the room");
+//        }
+//
+        curRoom.placeFurniture(point, furniture);
 
     }
     public void simCheckTime() {
