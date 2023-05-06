@@ -820,7 +820,7 @@ public class Sim {
     }
 
     public void HouseUpgrade() {
-        int upgradeCost = 1500;
+        int upgradeCost = 50;
         if (simMoney < upgradeCost) {
             System.out.println("Insufficient funds to upgrade the house.");
             return;
@@ -832,7 +832,7 @@ public class Sim {
                     while (getSimStatus().equals("Idle")) {
                         Thread.sleep(1);
                     }
-                    setTimeUpgrade(18*60*1000);
+                    setTimeUpgrade(1);
                     isHouseBeingUpgraded = true;
                     System.out.println("\nYou have upgraded your house for " + upgradeCost + " Simplicity Dollars.");
                     int tempActiveDuration = getActiveDuration();
