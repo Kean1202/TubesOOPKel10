@@ -8,22 +8,22 @@
 Simplicity merupakan sebuah game yang dibangun dengan menggunakan Java diatas platform Windows
 
 Contents :
-    1. System Requirements
-    2. Tahapan Kompilasi
+&nbsp;&nbsp;&nbsp;&nbsp;    1. System Requirements
+&nbsp;&nbsp;&nbsp;&nbsp;    2. Tahapan Kompilasi
     
 
 System Requirements :
 
 &nbsp;&nbsp;&nbsp;&nbsp;    1. Windows/Linux
-    2. Java
-    3. Ubuntu Linux Tool (for Windows) 
+&nbsp;&nbsp;&nbsp;&nbsp;    2. Java
+&nbsp;&nbsp;&nbsp;&nbsp;    3. Ubuntu Linux Tool (for Windows) 
 
 Tahapan Kompilasi (Windows)
-    1. Buka terminal
-    2. Git clone "https://github.com/Kean1202/TubesOOPKel10.git"
-    3. Jalankan command "bash"
-    4. Ubah alamat direktori menjadi alamat hasil clone dengan menjalankan command "cd {base directory}/TubesOOPKel10/src"
-    5. Jalankan command "run.sh"
+&nbsp;&nbsp;&nbsp;&nbsp;    1. Buka terminal
+&nbsp;&nbsp;&nbsp;&nbsp;    2. Git clone "https://github.com/Kean1202/TubesOOPKel10.git"
+&nbsp;&nbsp;&nbsp;&nbsp;    3. Jalankan command "bash"
+&nbsp;&nbsp;&nbsp;&nbsp;    4. Ubah alamat direktori menjadi alamat hasil clone dengan menjalankan command "cd {base directory}/TubesOOPKel10/src"
+&nbsp;&nbsp;&nbsp;&nbsp;    5. Jalankan command "run.sh"
 
 
     
