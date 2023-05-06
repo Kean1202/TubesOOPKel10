@@ -24,4 +24,9 @@ public class Point {
     public void setY(int y) {
         this.y = y;
     }
+    public double distance(Point otherPoint) {
+        double dx = otherPoint.getX() - this.getX();
+        double dy = otherPoint.getY() - this.getY();
+        return Math.sqrt(dx * dx + dy * dy);
+    }
 }
